@@ -18,4 +18,30 @@ public class Controlador {
     private ColaMensajes colaMensajes;
     private ConfiguracionSistema configuracionSistema;
     private ColaProcesos colaProcesos;
+
+    public ColaMensajes getColaMensajes() {
+        return colaMensajes;
+    }
+
+    public void setColaMensajes(ColaMensajes colaMensajes) {
+        this.colaMensajes = colaMensajes;
+    }
+
+    public ConfiguracionSistema getConfiguracionSistema() {
+        return configuracionSistema;
+    }
+
+    public void setConfiguracionSistema(ConfiguracionSistema configuracionSistema) {
+        this.configuracionSistema = configuracionSistema;
+    }
+
+    public ColaProcesos getColaProcesos() {
+        return colaProcesos;
+    }
+
+    public void setColaProcesos(ColaProcesos colaProcesos) {
+        this.colaProcesos = colaProcesos;
+    }
+    
+    
 }

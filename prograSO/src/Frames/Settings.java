@@ -9,6 +9,7 @@ import Controlador.DtoConfiguracion;
 import Controlador.Singleton;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import modelo.ConfiguracionSistema;
 import modelo.Direccionamiento;
 import modelo.Formato;
 import modelo.ManejoColas;
@@ -401,15 +402,12 @@ public class Settings extends javax.swing.JFrame {
         String addresingType = (String)this.jComboBox_adressingType.getSelectedItem();
         String addresingSubType = (String)this.jComboBox_addresingSubType.getSelectedItem();
         String cantidadProcesosString = this.jTextField_numberOfProcesses.getText();
-<<<<<<< HEAD
         int cantidadProcesos = Integer.getInteger(cantidadProcesosString);  
         String addresing = addresingType + addresingSubType;
-=======
         System.out.println("Cantidad: "+cantidadProcesosString);
-        int cantidadProcesos = Integer.parseInt(cantidadProcesosString);
         
->>>>>>> origin/master
-        
+        //int cantidadProcesos = Integer.parseInt(cantidadProcesosString);
+
         // Instancia de objetos
         ManejoColas manejoColas = new ManejoColas(manejoColasString);
         Formato formato = new Formato(tipoContenido,tipoLargo,largo);
@@ -417,15 +415,11 @@ public class Settings extends javax.swing.JFrame {
         Sincronizacion sincronizacion = new Sincronizacion(syncSend,syncReceive);
         
         // Instancia DTO
-        DtoConfiguracion dtoConfiguracion = new DtoConfiguracion(largo,manejoColas,
-        formato,direccionamiento,sincronizacion,cantidadProcesos);
-        
-        
-        
+        ConfiguracionSistema configuracion = new ConfiguracionSistema(cantidadProcesos, largo, sincronizacion, direccionamiento, formato, manejoColas);
         
        // DtoConfiguracion dtoConfiguracion = new dtoConfiguracion();
         
-        
+        Singleton.getInstance().getControlador().setConfiguracionSistema(configuracion);
 
 
         this.dispose();

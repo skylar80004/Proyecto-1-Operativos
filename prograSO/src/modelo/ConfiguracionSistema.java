@@ -15,16 +15,14 @@ public class ConfiguracionSistema {
     private Sincronizacion sincronizacion;
     private Direccionamiento direccionamiento;
     private Formato formato;
-    private ColaMensajes colaMensajes;
     private ManejoColas manejoColas;
 
-    public ConfiguracionSistema(int numeroProcesos, int tamanoCola, Sincronizacion sincronizacion, Direccionamiento direccionamiento, Formato formato, ColaMensajes colaMensajes, ManejoColas manejoColas) {
+    public ConfiguracionSistema(int numeroProcesos, int tamanoCola, Sincronizacion sincronizacion, Direccionamiento direccionamiento, Formato formato, ManejoColas manejoColas) {
         this.numeroProcesos = numeroProcesos;
         this.tamanoCola = tamanoCola;
         this.sincronizacion = sincronizacion;
         this.direccionamiento = direccionamiento;
         this.formato = formato;
-        this.colaMensajes = colaMensajes;
         this.manejoColas = manejoColas;
     }
 
@@ -66,14 +64,6 @@ public class ConfiguracionSistema {
 
     public void setFormato(Formato formato) {
         this.formato = formato;
-    }
-
-    public ColaMensajes getColaMensajes() {
-        return colaMensajes;
-    }
-
-    public void setColaMensajes(ColaMensajes colaMensajes) {
-        this.colaMensajes = colaMensajes;
     }
 
     public ManejoColas getManejoColas() {
