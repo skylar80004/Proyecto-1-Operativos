@@ -5,8 +5,11 @@
  */
 package Frames;
 
+import Controlador.DtoConfiguracion;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import modelo.Formato;
+import modelo.ManejoColas;
 
 /**
  *
@@ -21,8 +24,8 @@ public class Settings extends javax.swing.JFrame {
         Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
         int height = pantalla.height;
         int width = pantalla.width;
-        setSize(width/2, height/2);		
- 
+        setSize(width/2, height/2);
+
         setLocationRelativeTo(null);
         initComponents();
     }
@@ -309,12 +312,12 @@ public class Settings extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(label_title)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jTabbedPane_tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 688, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(label_title))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTabbedPane_tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 688, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -331,28 +334,28 @@ public class Settings extends javax.swing.JFrame {
 
     private void jComboBox_adressingTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_adressingTypeItemStateChanged
         // TODO add your handling code here:
-        
+
         String addresingParameter = (String)this.jComboBox_adressingType.getSelectedItem();
         //System.out.println(addresingParameter);
-        
+
         if (addresingParameter.equals("Directo")){
-            
+
             this.jComboBox_addresingSubType.removeAllItems();
             this.jLabel_dirSend.setVisible(true);
             this.jComboBox_addresingSubType.addItem("Receive Explícito");
             this.jComboBox_addresingSubType.addItem("Receive Implícito");
-            
-            
+
+
         }
         else{
-            
+
             this.jComboBox_addresingSubType.removeAllItems();
             this.jComboBox_addresingSubType.addItem("Estático");
             this.jComboBox_addresingSubType.addItem("Dinámico");
             this.jLabel_dirSend.setVisible(false);
-            
+
         }
-                
+
     }//GEN-LAST:event_jComboBox_adressingTypeItemStateChanged
 
     private void jTextField_sizeOfQueueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_sizeOfQueueActionPerformed
@@ -374,6 +377,38 @@ public class Settings extends javax.swing.JFrame {
 
     private void jButton_guardarSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_guardarSettingsActionPerformed
         // TODO add your handling code here:
+
+
+        String tipoContenido = (String)this.jComboBox_typeContent.getSelectedItem();
+        String tipoLargo = (String)this.jComboBox_format.getSelectedItem();
+        
+        int largo;
+        if(tipoLargo.equals("Largo Fijo")){
+            String largoString = this.jTextField_size.getText();
+            largo = Integer.getInteger(largoString);
+        }
+        else{
+             largo = 0;
+        }
+        
+        String manejoColasString = (String)this.jComboBox_manejoDeColas.getSelectedItem();
+        String syncSend = (String)this.jComboBox_sendParameters.getSelectedItem();
+        String syncReceive = (String)this.jComboBox_receiveParameters.getSelectedItem();
+        
+        String addresingType = (String)this.jComboBox_adressingType.getSelectedItem();
+        String addresingSubType = (String)this.jComboBox_addresingSubType.getSelectedItem();
+        String cantidadProcesosString = this.jTextField_numberOfProcesses.getText();
+        int cantidadProcesos = Integer.getInteger(cantidadProcesosString);
+        
+        
+        ManejoColas manejoColas = new ManejoColas(manejoColasString);
+        Formato formato = new Formato(tipoContenido,tipoLargo,largo);
+      //  Direccionamiento direccionamiento = new Direccionamiento()
+       // DtoConfiguracion dtoConfiguracion = new dtoConfiguracion();
+        
+        
+
+
         this.dispose();
     }//GEN-LAST:event_jButton_guardarSettingsActionPerformed
 
@@ -384,7 +419,7 @@ public class Settings extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
