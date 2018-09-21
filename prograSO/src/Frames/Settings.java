@@ -401,8 +401,14 @@ public class Settings extends javax.swing.JFrame {
         String addresingType = (String)this.jComboBox_adressingType.getSelectedItem();
         String addresingSubType = (String)this.jComboBox_addresingSubType.getSelectedItem();
         String cantidadProcesosString = this.jTextField_numberOfProcesses.getText();
+<<<<<<< HEAD
         int cantidadProcesos = Integer.getInteger(cantidadProcesosString);  
         String addresing = addresingType + addresingSubType;
+=======
+        System.out.println("Cantidad: "+cantidadProcesosString);
+        int cantidadProcesos = Integer.parseInt(cantidadProcesosString);
+        
+>>>>>>> origin/master
         
         // Instancia de objetos
         ManejoColas manejoColas = new ManejoColas(manejoColasString);
