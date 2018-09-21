@@ -10,39 +10,23 @@ package modelo;
  * @author Rigo-PC
  */
 public class Direccionamiento {
-    private String directoReceive;
-    private String indirecto;
-    private int tamano;
+    
+    private String tipoDireccionamiento;
 
-    public Direccionamiento(String directoReceive, String indirecto, int tamano) {
-        this.directoReceive = directoReceive;
-        this.indirecto = indirecto;
-        this.tamano = tamano;
+
+    public Direccionamiento(String tipoDireccionamiento) {
+        this.tipoDireccionamiento = tipoDireccionamiento;
+
     }
 
-    public String getDirectoReceive() {
-        return directoReceive;
+    public String getTipoDireccionamiento() {
+        return tipoDireccionamiento;
     }
 
-    public void setDirectoReceive(String directoReceive) {
-        this.directoReceive = directoReceive;
+    public void setTipoDireccionamiento(String tipoDireccionamiento) {
+        this.tipoDireccionamiento = tipoDireccionamiento;
     }
 
-    public String getIndirecto() {
-        return indirecto;
-    }
-
-    public void setIndirecto(String indirecto) {
-        this.indirecto = indirecto;
-    }
-
-    public int getTamano() {
-        return tamano;
-    }
-
-    public void setTamano(int tamano) {
-        this.tamano = tamano;
-    }
     
     
     
