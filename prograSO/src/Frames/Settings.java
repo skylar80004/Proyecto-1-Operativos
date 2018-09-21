@@ -6,10 +6,13 @@
 package Frames;
 
 import Controlador.DtoConfiguracion;
+import Controlador.Singleton;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import modelo.Direccionamiento;
 import modelo.Formato;
 import modelo.ManejoColas;
+import modelo.Sincronizacion;
 
 /**
  *
@@ -378,7 +381,7 @@ public class Settings extends javax.swing.JFrame {
     private void jButton_guardarSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_guardarSettingsActionPerformed
         // TODO add your handling code here:
 
-
+        // Datos de interfaz
         String tipoContenido = (String)this.jComboBox_typeContent.getSelectedItem();
         String tipoLargo = (String)this.jComboBox_format.getSelectedItem();
         
@@ -388,7 +391,7 @@ public class Settings extends javax.swing.JFrame {
             largo = Integer.getInteger(largoString);
         }
         else{
-             largo = 0;
+             largo = -1;
         }
         
         String manejoColasString = (String)this.jComboBox_manejoDeColas.getSelectedItem();
@@ -398,12 +401,22 @@ public class Settings extends javax.swing.JFrame {
         String addresingType = (String)this.jComboBox_adressingType.getSelectedItem();
         String addresingSubType = (String)this.jComboBox_addresingSubType.getSelectedItem();
         String cantidadProcesosString = this.jTextField_numberOfProcesses.getText();
-        int cantidadProcesos = Integer.getInteger(cantidadProcesosString);
+        int cantidadProcesos = Integer.getInteger(cantidadProcesosString);  
+        String addresing = addresingType + addresingSubType;
         
-        
+        // Instancia de objetos
         ManejoColas manejoColas = new ManejoColas(manejoColasString);
         Formato formato = new Formato(tipoContenido,tipoLargo,largo);
-      //  Direccionamiento direccionamiento = new Direccionamiento()
+        Direccionamiento direccionamiento = new Direccionamiento(addresing);
+        Sincronizacion sincronizacion = new Sincronizacion(syncSend,syncReceive);
+        
+        // Instancia DTO
+        DtoConfiguracion dtoConfiguracion = new DtoConfiguracion(largo,manejoColas,
+        formato,direccionamiento,sincronizacion,cantidadProcesos);
+        
+        
+        
+        
        // DtoConfiguracion dtoConfiguracion = new dtoConfiguracion();
         
         
