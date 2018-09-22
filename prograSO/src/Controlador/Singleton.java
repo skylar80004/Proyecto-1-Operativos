@@ -10,6 +10,8 @@ package Controlador;
  * @author Rigo-PC
  */
 public class Singleton {
+    
+    private int cantidadProcesosCreados = 0; 
     private static Singleton INSTANCE = null;
     private Controlador controlador;
 
@@ -21,6 +23,15 @@ public class Singleton {
         return controlador;
     }
 
+    public int getCantidadProcesosCreados() {
+        return cantidadProcesosCreados;
+    }
+
+    public void setCantidadProcesosCreados(int cantidadProcesosCreados) {
+        this.cantidadProcesosCreados = cantidadProcesosCreados;
+    }
+    
+    
     public void setControlador(Controlador controlador) {
         this.controlador = controlador;
     }

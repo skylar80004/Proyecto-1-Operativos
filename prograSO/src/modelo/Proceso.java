@@ -10,6 +10,8 @@ package modelo;
  * @author Rigo-PC
  */
 public class Proceso {
+    
+    
     private int identificador;
     private String estado;
     private int prioridad;
@@ -21,6 +23,13 @@ public class Proceso {
         this.prioridad = prioridad;
     }
 
+    
+    
+    public void ImprimirProceso(){
+        System.out.println("Proceso # " + this.identificador +
+        " estado: " + this.estado + " Prioridad: " + this.prioridad);
+    }
+    
     public int getIdentificador() {
         return identificador;
     }

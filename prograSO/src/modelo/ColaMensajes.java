@@ -16,9 +16,9 @@ public class ColaMensajes {
     private int tamano;
     private ArrayList<Mensaje> listaMensajes;
     
-    public ColaMensajes(int tamano, ArrayList<Mensaje> listaMensajes) {
+    public ColaMensajes(int tamano) {
         this.tamano = tamano;
-        this.listaMensajes = listaMensajes;
+        this.listaMensajes = new ArrayList<Mensaje>();
     }
 
     public int getTamano() {

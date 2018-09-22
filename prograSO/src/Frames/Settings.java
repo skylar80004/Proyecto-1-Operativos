@@ -9,6 +9,8 @@ import Controlador.DtoConfiguracion;
 import Controlador.Singleton;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import modelo.ColaMensajes;
+import modelo.ColaProcesos;
 import modelo.ConfiguracionSistema;
 import modelo.Direccionamiento;
 import modelo.Formato;
@@ -389,7 +391,7 @@ public class Settings extends javax.swing.JFrame {
         int largo;
         if(tipoLargo.equals("Largo Fijo")){
             String largoString = this.jTextField_size.getText();
-            largo = Integer.getInteger(largoString);
+            largo = Integer.parseInt(largoString);
         }
         else{
              largo = -1;
@@ -402,9 +404,11 @@ public class Settings extends javax.swing.JFrame {
         String addresingType = (String)this.jComboBox_adressingType.getSelectedItem();
         String addresingSubType = (String)this.jComboBox_addresingSubType.getSelectedItem();
         String cantidadProcesosString = this.jTextField_numberOfProcesses.getText();
-        int cantidadProcesos = Integer.getInteger(cantidadProcesosString);  
+        int cantidadProcesos = Integer.parseInt(cantidadProcesosString);  
         String addresing = addresingType + addresingSubType;
-        System.out.println("Cantidad: "+cantidadProcesosString);
+        
+        String tamanoColaMensajesString = (String)this.jTextField_sizeOfQueue.getText();
+        int tamanoColaMensajes = Integer.parseInt(tamanoColaMensajesString);
         
         //int cantidadProcesos = Integer.parseInt(cantidadProcesosString);
 
@@ -414,12 +418,28 @@ public class Settings extends javax.swing.JFrame {
         Direccionamiento direccionamiento = new Direccionamiento(addresing);
         Sincronizacion sincronizacion = new Sincronizacion(syncSend,syncReceive);
         
-        // Instancia DTO
+        // Instancia Confuguracion
         ConfiguracionSistema configuracion = new ConfiguracionSistema(cantidadProcesos, largo, sincronizacion, direccionamiento, formato, manejoColas);
         
-       // DtoConfiguracion dtoConfiguracion = new dtoConfiguracion();
-        
+        // Configuracion
         Singleton.getInstance().getControlador().setConfiguracionSistema(configuracion);
+        int tamanoColaProcesos = Singleton.getInstance().getControlador().getConfiguracionSistema().getNumeroProcesos();
+        
+        // Cola de Procesos
+        ColaProcesos colaProcesos = new ColaProcesos(tamanoColaProcesos);
+        Singleton.getInstance().getControlador().setColaProcesos(colaProcesos);
+        
+        // Cola de Mensajes
+        ColaMensajes colaMensajes = new ColaMensajes(tamanoColaMensajes);
+        Singleton.getInstance().getControlador().setColaMensajes(colaMensajes);
+        
+        System.out.println("Configuracion Lista");
+        
+        
+        // Creacion de Procesos
+        Singleton.getInstance().getControlador().crearProcesos();
+        Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
+        
 
 
         this.dispose();

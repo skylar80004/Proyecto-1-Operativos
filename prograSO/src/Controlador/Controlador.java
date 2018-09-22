@@ -8,6 +8,7 @@ package Controlador;
 import modelo.ColaMensajes;
 import modelo.ColaProcesos;
 import modelo.ConfiguracionSistema;
+import modelo.Proceso;
 
 /**
  *
@@ -19,6 +20,9 @@ public class Controlador {
     private ConfiguracionSistema configuracionSistema;
     private ColaProcesos colaProcesos;
 
+    
+    
+    
     public ColaMensajes getColaMensajes() {
         return colaMensajes;
     }
@@ -42,6 +46,28 @@ public class Controlador {
     public void setColaProcesos(ColaProcesos colaProcesos) {
         this.colaProcesos = colaProcesos;
     }
+    
+    
+    public boolean crearProcesos(){
+        
+        int identificador ;
+        int cantidadProcesos = this.getConfiguracionSistema().getNumeroProcesos();
+        
+        
+        for(int i = 0; i < cantidadProcesos; i++){
+            
+            identificador = Singleton.getInstance().getCantidadProcesosCreados();
+            Proceso proceso = new Proceso(identificador,"Ready",identificador);
+            identificador++;
+            Singleton.getInstance().setCantidadProcesosCreados(identificador);
+            
+            //Singleton.getInstance().getControlador().getColaProcesos();
+            Singleton.getInstance().getControlador().getColaProcesos().AgregarProceso(proceso);
+            
+        }
+        return true;
+    }
+    
     
     
 }
