@@ -30,6 +30,13 @@ public class Mensaje {
         this.largo = largo;
         this.contenido = contenido;
     }
+    
+    
+    public void ImprimirMensaje(){
+        
+        System.out.println("ID Mensaje: " + this.id + " Tipo Contenido: " + this.tipo + " Destino: " + destino + 
+                " Fuente: " + fuente + " Largo: " + largo + " Contenido: " + contenido);
+    }
 
     public int getId() {
         return id;
