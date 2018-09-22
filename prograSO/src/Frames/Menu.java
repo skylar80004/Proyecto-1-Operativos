@@ -5,8 +5,14 @@
  */
 package Frames;
 
+import Controlador.Singleton;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import modelo.ColaProcesos;
+import modelo.ConfiguracionSistema;
+import modelo.Proceso;
 
 /**
  *
@@ -25,6 +31,9 @@ public class Menu extends javax.swing.JFrame {
  
         setLocationRelativeTo(null);
         initComponents();
+        this.jPanel_create.setVisible(false);
+        this.jPanel_receive.setVisible(false);
+        this.jPanel_send.setVisible(false);
     }
 
     /**
@@ -442,11 +451,55 @@ public class Menu extends javax.swing.JFrame {
         settings.show();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    
+    public void mensajeDialog(String mensaje, String tituloBarra){
+        
+        JOptionPane.showMessageDialog(null, mensaje, tituloBarra, JOptionPane.INFORMATION_MESSAGE);
+    }
     private void jButton_createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_createActionPerformed
         // TODO add your handling code here:
+        
+        
+        
+        ConfiguracionSistema configuracion = Singleton.getInstance().getControlador().getConfiguracionSistema();
+        if(configuracion == null){
+            String mensajeError = "Se debe establecer la configuración para crear un mensaje";
+            String tituloDeBarra = "Falta Configuración";
+            this.mensajeDialog(mensajeError, tituloDeBarra);
+            return;
+        }
+        
         jPanel_create.setVisible(true);
         jPanel_send.setVisible(false);
         jPanel_receive.setVisible(false);
+
+        // Opciones de tipo de Mensaje
+        this.jComboBox_msgType.removeAllItems();
+        this.jComboBox_msgType.addItem("Texto");
+        this.jComboBox_msgType.addItem("Archivo");
+        this.jComboBox_msgType.addItem("Video");
+        this.jComboBox_msgType.addItem("Audio");
+        
+        // Opciones de Source y Destination
+        ColaProcesos colaProceso = Singleton.getInstance().getControlador().getColaProcesos();
+        ArrayList<Proceso> listaProcesos = colaProceso.getListaProcesos();
+        
+        
+        this.jComboBox_msgDestination.removeAllItems();
+        this.jComboBox_msgSource.removeAllItems();
+        String identificadorProceso=  "" ;
+        
+        for(Proceso proceso: listaProcesos){
+            
+            identificadorProceso = String.valueOf(proceso.getIdentificador());
+            this.jComboBox_msgDestination.addItem(identificadorProceso);
+            this.jComboBox_msgSource.addItem(identificadorProceso);
+            
+        }
+
+        
+        
+        
     }//GEN-LAST:event_jButton_createActionPerformed
 
     private void jButton_sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_sendActionPerformed

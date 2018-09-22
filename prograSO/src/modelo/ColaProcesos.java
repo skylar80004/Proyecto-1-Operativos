@@ -14,26 +14,30 @@ import java.util.ArrayList;
 public class ColaProcesos {
     private int tamano;
     private ArrayList<Proceso> listaProcesos;
-    
+
     public ColaProcesos(int tamano){
-        
+
         this.tamano = tamano;
         listaProcesos = new ArrayList<Proceso>();
     }
-    
+
+
+    public ArrayList<Proceso> getListaProcesos(){
+        return this.listaProcesos;
+    }
     public void ImprimirColaProcesos(){
-        
+
         for (Proceso proceso : this.listaProcesos) {
             proceso.ImprimirProceso();
         }
-         
+
     }
-    
+
        public void AgregarProceso(Proceso proceso){
         this.listaProcesos.add(proceso);
     }
-        
-    
-    
-    
+
+
+
+
 }

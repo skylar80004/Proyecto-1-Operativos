@@ -54,6 +54,10 @@ public class Controlador {
         int cantidadProcesos = this.getConfiguracionSistema().getNumeroProcesos();
         
         
+        if (cantidadProcesos == 0){
+            return false;
+        }
+        
         for(int i = 0; i < cantidadProcesos; i++){
             
             identificador = Singleton.getInstance().getCantidadProcesosCreados();
