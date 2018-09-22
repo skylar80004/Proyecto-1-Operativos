@@ -11,7 +11,8 @@ package Controlador;
  */
 public class Singleton {
     
-    private int cantidadProcesosCreados = 0; 
+    private int cantidadProcesosCreados = 0;  // Usado como identificador
+    private int cantidadMensajesCreados = 0;  // Usado como identificador
     private static Singleton INSTANCE = null;
     private Controlador controlador;
 
@@ -23,6 +24,9 @@ public class Singleton {
         return controlador;
     }
 
+    public int getCantidadMensajes(){
+        return this.cantidadMensajesCreados;
+    }
     public int getCantidadProcesosCreados() {
         return cantidadProcesosCreados;
     }

@@ -21,6 +21,19 @@ public class ColaMensajes {
         this.listaMensajes = new ArrayList<Mensaje>();
     }
 
+    
+    public void agregarMensaje(Mensaje mensaje){
+        this.listaMensajes.add(mensaje);
+        
+    }
+    
+    public void ImprimirColaMensaje(){
+        
+        for(Mensaje mensaje: this.listaMensajes){
+            mensaje.ImprimirMensaje();
+        }
+    }
+    
     public int getTamano() {
         return tamano;
     }

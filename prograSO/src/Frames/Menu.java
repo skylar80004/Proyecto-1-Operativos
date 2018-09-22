@@ -10,8 +10,10 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.ColaMensajes;
 import modelo.ColaProcesos;
 import modelo.ConfiguracionSistema;
+import modelo.Mensaje;
 import modelo.Proceso;
 
 /**
@@ -460,7 +462,7 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         
-        
+        // Validar Configuracion
         ConfiguracionSistema configuracion = Singleton.getInstance().getControlador().getConfiguracionSistema();
         if(configuracion == null){
             String mensajeError = "Se debe establecer la configuración para crear un mensaje";
@@ -469,6 +471,7 @@ public class Menu extends javax.swing.JFrame {
             return;
         }
         
+        // Configuracion Correcta
         jPanel_create.setVisible(true);
         jPanel_send.setVisible(false);
         jPanel_receive.setVisible(false);
@@ -504,20 +507,105 @@ public class Menu extends javax.swing.JFrame {
 
     private void jButton_sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_sendActionPerformed
         // TODO add your handling code here:
+        
+        
+        // Validar Configuracion
+        ConfiguracionSistema configuracion = Singleton.getInstance().getControlador().getConfiguracionSistema();
+        if(configuracion == null){
+            String mensajeError = "Se debe establecer la configuración para enviar un mensaje";
+            String tituloDeBarra = "Falta Configuración";
+            this.mensajeDialog(mensajeError, tituloDeBarra);
+            return;
+        }
+        
         jPanel_send.setVisible(true);
         jPanel_create.setVisible(false);
         jPanel_receive.setVisible(false);
+
+        // Opciones de sendDestination
+        ColaProcesos colaProceso = Singleton.getInstance().getControlador().getColaProcesos();
+        ArrayList<Proceso> listaProcesos = colaProceso.getListaProcesos();
+        
+        String identificadorProceso;
+        this.jComboBox_sendDestination.removeAllItems();
+        for(Proceso proceso : listaProcesos){
+            
+            identificadorProceso = String.valueOf(proceso.getIdentificador());
+            this.jComboBox_sendDestination.addItem(identificadorProceso);
+        }
+        
+        
+        // Opciones de Mensaje
+        ColaMensajes colaMensajes = Singleton.getInstance().getControlador().getColaMensajes();
+        ArrayList<Mensaje> listaMensajes = colaMensajes.getListaMensajes();
+        String contenidoMensaje;
+        
+        for(Mensaje mensaje: listaMensajes){
+            contenidoMensaje = (String)mensaje.getContenido();
+            this.jComboBox_sendMsg.addItem(contenidoMensaje);
+        }
+        
+        
+        
+        
     }//GEN-LAST:event_jButton_sendActionPerformed
 
     private void jButton_receiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_receiveActionPerformed
         // TODO add your handling code here:
+        
+        // Validar Configuracion
+        ConfiguracionSistema configuracion = Singleton.getInstance().getControlador().getConfiguracionSistema();
+        if(configuracion == null){
+            String mensajeError = "Se debe establecer la configuración para recibir un mensaje";
+            String tituloDeBarra = "Falta Configuración";
+            this.mensajeDialog(mensajeError, tituloDeBarra);
+            return;
+        }
+        
         jPanel_receive.setVisible(true);
         jPanel_create.setVisible(false);
         jPanel_send.setVisible(false);
+        
+        
+        
     }//GEN-LAST:event_jButton_receiveActionPerformed
 
     private void jButton_ejecutarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ejecutarCActionPerformed
         // TODO add your handling code here:
+        
+        
+        String tipoContenido = (String)this.jComboBox_msgType.getSelectedItem();
+        String destinoString = (String)this.jComboBox_msgDestination.getSelectedItem();
+        String fuenteString = (String)this.jComboBox_msgSource.getSelectedItem();
+        
+        int destino = Integer.parseInt(destinoString);
+        int fuente = Integer.parseInt(fuenteString);
+        
+        String largoString = this.jTextField_msgLenght.getText();
+        int largo = Integer.parseInt(largoString);
+        String contenido = this.jTextField_msgContents.getText();
+        int idMensaje = Singleton.getInstance().getCantidadMensajes();
+        
+        
+        Mensaje mensaje = new Mensaje(idMensaje, tipoContenido, destino, fuente, largo, contenido);
+        
+        // Cambiar esto a una funcion del controlador
+        Singleton.getInstance().getControlador().getColaMensajes().agregarMensaje(mensaje);
+        
+        
+        // Falta sumar la cantiad de mensajes
+        
+        
+        String mensajeDialogoContenido = "Se ha creado el mensaje";
+        String tituloDialogoContenido = "Mensaje creado";
+        this.mensajeDialog(mensajeDialogoContenido ,tituloDialogoContenido);
+        
+        Singleton.getInstance().getControlador().getColaMensajes().ImprimirColaMensaje();
+        
+        
+        
+        
+        
     }//GEN-LAST:event_jButton_ejecutarCActionPerformed
 
     /**
