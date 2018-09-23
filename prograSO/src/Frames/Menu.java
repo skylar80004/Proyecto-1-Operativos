@@ -238,6 +238,11 @@ public class Menu extends javax.swing.JFrame {
         jPanel_send.setVisible(false);
 
         jButton_ejecutarS.setText("Ejecutar");
+        jButton_ejecutarS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_ejecutarSActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Send()");
 
@@ -343,7 +348,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(jPanel_receiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox_receiveSource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox_receiveMsg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addComponent(jButton_ejecutarR)
                 .addContainerGap())
         );
@@ -663,6 +668,24 @@ public class Menu extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_jButton_ejecutarCActionPerformed
+
+    private void jButton_ejecutarSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ejecutarSActionPerformed
+        // TODO add your handling code here:
+        
+        
+        String idProcesoDestinoString = (String)this.jComboBox_sendDestination.getSelectedItem();
+        int idProcesoDestino = Integer.parseInt(idProcesoDestinoString);
+        String contenidoMensaje = (String)this.jComboBox_sendMsg.getSelectedItem();
+        
+        Singleton.getInstance().getControlador().Send(idProcesoDestino, contenidoMensaje);
+        
+            
+            
+            
+        
+        
+        
+    }//GEN-LAST:event_jButton_ejecutarSActionPerformed
 
     /**
      * @param args the command line arguments

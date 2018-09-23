@@ -22,6 +22,35 @@ public class ColaMensajes {
     }
 
     
+    
+    public boolean agregarIdDestino(String contenidoMensaje, int idDestino){
+        
+        Mensaje mensajeTemporal;
+        String contenidoTemporal;
+        for(int i = 0; i < this.listaMensajes.size(); i++){
+            
+            mensajeTemporal = listaMensajes.get(i);
+            contenidoTemporal = (String)mensajeTemporal.getContenido();
+            if(contenidoTemporal.equals(contenidoMensaje)){
+                mensajeTemporal.setDestino(idDestino);
+                listaMensajes.set(i, mensajeTemporal);
+                return true;
+            }
+        }
+        return false;
+    }
+    public Mensaje encontrarMensaje(String contenidoMensaje){
+        
+        String contenidoActual;
+        for(Mensaje mensaje : listaMensajes){
+            
+            contenidoActual = (String)mensaje.getContenido();
+            if (contenidoActual.equals(contenidoMensaje)){
+                return mensaje;
+            }
+        }
+        return null;
+    }
     public void agregarMensaje(Mensaje mensaje){
         this.listaMensajes.add(mensaje);
         

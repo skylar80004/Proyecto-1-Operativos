@@ -23,11 +23,80 @@ public class Controlador {
 
     
     
+    
+    public void CambiarEstadoProceso(int idProceso, String estado){
+        
+        int idTemporal;
+        Proceso procesoTemporal ;
+        for(int i = 0; i < this.colaProcesos.getListaProcesos().size();i++){
+            
+            procesoTemporal =  this.colaProcesos.getListaProcesos().get(i);
+            idTemporal = procesoTemporal.getIdentificador();
+            if(idTemporal == idProceso){
+                
+                procesoTemporal.setEstado(estado);
+                this.colaProcesos.getListaProcesos().set(i, procesoTemporal);
+                return;
+                
+            }
+        }
+    }
+    
+    public boolean isBlockingSend(){
+        
+        String configSyncSend = this.configuracionSistema.getSincronizacion().getSend();
+        if(configSyncSend.equals("Blocking")){
+            return true;
+        }
+        else{
+            return false;
+        }
+        
+    }
+    
+    
+    public void Send(int destino, String contenidoMensaje){
+        
+        boolean sendDirect = this.IsDirectSend();
+        boolean sendBlocking = this.isBlockingSend();
+        
+        if(sendDirect){ // Direccionamiento Directo
+            
+            agregarIdDestinoAMensaje(contenidoMensaje, destino);
+            
+            
+        } // Direccionamiento Indirecto
+        else{
+            
+            
+        }
+        
+        // Synchronization
+        
+        if(sendBlocking){
+            this.CambiarEstadoProceso(destino, "Blocked");
+        }
+        
+        
+        
+    }
+    public boolean agregarIdDestinoAMensaje(String contenido, int idDestino){
+        
+        return this.colaMensajes.agregarIdDestino(contenido, idDestino);
+    }
+    
+        
+    public Mensaje encontrarMensaje(String contenidoMensaje){
+        Mensaje mensaje = this.colaMensajes.encontrarMensaje(contenidoMensaje);
+        return mensaje;
+    }
     // Pregunta si la configuracion tiene Send de tipo Directo
     public boolean IsDirectSend(){
         
+        
+        boolean isDirect = this.configuracionSistema.getDireccionamiento().isDirect();
         //String direcionamiento = this.getConfiguracionSistema().getDireccionamiento();
-        return true;
+        return isDirect;
         
     }
     
