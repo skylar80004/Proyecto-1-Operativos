@@ -55,6 +55,67 @@ public class Controlador {
     }
     
     
+
+    
+    public boolean isReceiveExplicit(){
+        
+        return this.configuracionSistema.getDireccionamiento().isReceiveExplicit();
+        
+    }
+    public boolean isReceiveIndirectStatic(){
+       return this.configuracionSistema.getDireccionamiento().isIndirectStatic();
+    }
+    
+    
+    public void Receive(int idProcesoFuente, String contenido){
+        
+        
+        boolean isDirectAdressing = this.IsDirectSend();
+        if(isDirectAdressing){ // Direccionamiento Directo
+            
+            boolean receiveDirectExplicit = this.isReceiveExplicit();
+            
+            if(receiveDirectExplicit){ // Receive Directo Explicito
+                          System.out.println("Recieve Directo Explicito");
+            }          
+            else{ // Receive Directo Implicito
+                System.out.println("Recieve Directo Implicito");
+            }
+            
+        }
+        else{ // Direccionamiento Indirecto
+            boolean isIndirectStatic = this.isReceiveIndirectStatic();
+            if(isIndirectStatic){ // Direccionamiento indirecto estatico
+                System.out.println("Recieve Indirecto estatico");
+            }
+            else{ // Direccionamiento indirecto dinamico
+                System.out.println("Recieve Indirecto dinamico");
+            }
+        }
+        
+        
+        
+        
+        
+    }
+    public void Create(String tipoContenido, String destinoString, String fuenteString, int largo, String contenido){
+        
+        
+        int destino = Integer.parseInt(destinoString);
+        int fuente = Integer.parseInt(fuenteString);
+        int idMensaje = Singleton.getInstance().getCantidadMensajesCreados();
+        
+        
+        Mensaje mensaje = new Mensaje(idMensaje, tipoContenido, destino, fuente, largo, contenido);
+        
+        // Agrega mensaje a la cola de mensajes
+        Singleton.getInstance().getControlador().AgregarMensaje(mensaje);
+        int cantidadMensajes = Singleton.getInstance().getCantidadMensajesCreados();
+        cantidadMensajes++;
+        
+        Singleton.getInstance().setCantidadMensajesCreados(cantidadMensajes);
+        
+    }
     public void Send(int destino, String contenidoMensaje){
         
         boolean sendDirect = this.IsDirectSend();
@@ -68,7 +129,7 @@ public class Controlador {
         } // Direccionamiento Indirecto
         else{
             
-            
+            // El mensaje ya se encuentra en la cola de mensajes       
         }
         
         // Synchronization

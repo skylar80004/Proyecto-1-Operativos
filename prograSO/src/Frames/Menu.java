@@ -300,6 +300,11 @@ public class Menu extends javax.swing.JFrame {
         jPanel_receive.setVisible(false);
 
         jButton_ejecutarR.setText("Ejecutar");
+        jButton_ejecutarR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_ejecutarRActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Receive()");
 
@@ -635,28 +640,15 @@ public class Menu extends javax.swing.JFrame {
         String tipoContenido = (String)this.jComboBox_msgType.getSelectedItem();
         String destinoString = (String)this.jComboBox_msgDestination.getSelectedItem();
         String fuenteString = (String)this.jComboBox_msgSource.getSelectedItem();
-        
-        int destino = Integer.parseInt(destinoString);
-        int fuente = Integer.parseInt(fuenteString);
-        
         String largoString = this.jTextField_msgLenght.getText();
         int largo = Integer.parseInt(largoString);
         String contenido = this.jTextField_msgContents.getText();
-        int idMensaje = Singleton.getInstance().getCantidadMensajesCreados();
         
         
-        Mensaje mensaje = new Mensaje(idMensaje, tipoContenido, destino, fuente, largo, contenido);
+        //Comando Create
+        Singleton.getInstance().getControlador().Create(tipoContenido, destinoString,fuenteString,largo,contenido);
         
-        // Agrega mensaje a la cola de mensajes
-        Singleton.getInstance().getControlador().AgregarMensaje(mensaje);
-        int cantidadMensajes = Singleton.getInstance().getCantidadMensajesCreados();
-        cantidadMensajes++;
-        
-        // Se aumenta la cantidad de mensajes creados
-        Singleton.getInstance().setCantidadMensajesCreados(cantidadMensajes);
-        // Falta sumar la cantiad de mensajes
-        
-        
+
         String mensajeDialogoContenido = "Se ha creado el mensaje";
         String tituloDialogoContenido = "Mensaje creado";
         this.mensajeDialog(mensajeDialogoContenido ,tituloDialogoContenido);
@@ -686,6 +678,17 @@ public class Menu extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_jButton_ejecutarSActionPerformed
+
+    private void jButton_ejecutarRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ejecutarRActionPerformed
+        // TODO add your handling code here:
+        String idProcesoFuenteString = (String)this.jComboBox_receiveSource.getSelectedItem();
+        String contenidoMensaje = (String)this.jComboBox_receiveMsg.getSelectedItem();
+        int idProcesoFuente = Integer.parseInt(idProcesoFuenteString);
+        
+        Singleton.getInstance().getControlador().Receive(idProcesoFuente,contenidoMensaje);
+        
+        
+    }//GEN-LAST:event_jButton_ejecutarRActionPerformed
 
     /**
      * @param args the command line arguments
