@@ -584,15 +584,18 @@ public class Menu extends javax.swing.JFrame {
         String largoString = this.jTextField_msgLenght.getText();
         int largo = Integer.parseInt(largoString);
         String contenido = this.jTextField_msgContents.getText();
-        int idMensaje = Singleton.getInstance().getCantidadMensajes();
+        int idMensaje = Singleton.getInstance().getCantidadMensajesCreados();
         
         
         Mensaje mensaje = new Mensaje(idMensaje, tipoContenido, destino, fuente, largo, contenido);
         
-        // Cambiar esto a una funcion del controlador
-        Singleton.getInstance().getControlador().getColaMensajes().agregarMensaje(mensaje);
+        // Agrega mensaje a la cola de mensajes
+        Singleton.getInstance().getControlador().AgregarMensaje(mensaje);
+        int cantidadMensajes = Singleton.getInstance().getCantidadMensajesCreados();
+        cantidadMensajes++;
         
-        
+        // Se aumenta la cantidad de mensajes creados
+        Singleton.getInstance().setCantidadMensajesCreados(cantidadMensajes);
         // Falta sumar la cantiad de mensajes
         
         

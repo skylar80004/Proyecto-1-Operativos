@@ -8,6 +8,7 @@ package Controlador;
 import modelo.ColaMensajes;
 import modelo.ColaProcesos;
 import modelo.ConfiguracionSistema;
+import modelo.Mensaje;
 import modelo.Proceso;
 
 /**
@@ -26,6 +27,13 @@ public class Controlador {
     public ColaMensajes getColaMensajes() {
         return colaMensajes;
     }
+    
+    public void AgregarMensaje(Mensaje mensaje){
+        
+        this.colaMensajes.agregarMensaje(mensaje);
+        
+    }
+            
 
     public void setColaMensajes(ColaMensajes colaMensajes) {
         this.colaMensajes = colaMensajes;

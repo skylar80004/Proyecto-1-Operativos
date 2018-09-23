@@ -24,7 +24,11 @@ public class Singleton {
         return controlador;
     }
 
-    public int getCantidadMensajes(){
+    public void setCantidadMensajesCreados(int cantidadMensajesCreados){
+        this.cantidadMensajesCreados = cantidadMensajesCreados;
+        
+    }
+    public int getCantidadMensajesCreados(){
         return this.cantidadMensajesCreados;
     }
     public int getCantidadProcesosCreados() {
