@@ -12,8 +12,15 @@ package modelo;
 public class Direccionamiento {
     
     private String tipoDireccionamiento;
-
-
+    
+    
+    private boolean direct ; 
+    private boolean receiveExplicit;
+    private boolean receiveImplicit;
+    private boolean indirectStatic;
+    private boolean indirectDynamic;
+    
+    
     public Direccionamiento(String tipoDireccionamiento) {
         this.tipoDireccionamiento = tipoDireccionamiento;
 
@@ -21,6 +28,46 @@ public class Direccionamiento {
 
     public String getTipoDireccionamiento() {
         return tipoDireccionamiento;
+    }
+
+    public boolean isDirect() {
+        return direct;
+    }
+
+    public void setDirect(boolean direct) {
+        this.direct = direct;
+    }
+
+    public boolean isReceiveExplicit() {
+        return receiveExplicit;
+    }
+
+    public void setReceiveExplicit(boolean receiveExplicit) {
+        this.receiveExplicit = receiveExplicit;
+    }
+
+    public boolean isReceiveImplicit() {
+        return receiveImplicit;
+    }
+
+    public void setReceiveImplicit(boolean receiveImplicit) {
+        this.receiveImplicit = receiveImplicit;
+    }
+
+    public boolean isIndirectStatic() {
+        return indirectStatic;
+    }
+
+    public void setIndirectStatic(boolean indirectStatic) {
+        this.indirectStatic = indirectStatic;
+    }
+
+    public boolean isIndirectDynamic() {
+        return indirectDynamic;
+    }
+
+    public void setIndirectDynamic(boolean indirectDynamic) {
+        this.indirectDynamic = indirectDynamic;
     }
 
     public void setTipoDireccionamiento(String tipoDireccionamiento) {

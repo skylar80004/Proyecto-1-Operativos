@@ -415,7 +415,37 @@ public class Settings extends javax.swing.JFrame {
         // Instancia de objetos
         ManejoColas manejoColas = new ManejoColas(manejoColasString);
         Formato formato = new Formato(tipoContenido,tipoLargo,largo);
+        
+        // Direccionamiento
         Direccionamiento direccionamiento = new Direccionamiento(addresing);
+        
+        if(addresingType.equals("Directo")){
+            direccionamiento.setDirect(true);
+            
+            if(addresingSubType.equals("Receive Explícito")){
+                direccionamiento.setReceiveExplicit(true);
+                direccionamiento.setReceiveImplicit(false);
+            }
+            else{
+                direccionamiento.setReceiveExplicit(false);
+                direccionamiento.setReceiveImplicit(true);
+            }  
+        }
+        else{
+            direccionamiento.setDirect(false);
+            if(addresingSubType.equals("Estático")){
+                direccionamiento.setIndirectStatic(true);
+                direccionamiento.setIndirectDynamic(false);
+            }
+            else{           
+                direccionamiento.setIndirectStatic(false);
+                direccionamiento.setIndirectDynamic(true);
+                
+            }
+                
+        }
+        
+        //---------------------------------------------------------------------
         Sincronizacion sincronizacion = new Sincronizacion(syncSend,syncReceive);
         
         // Instancia Confuguracion

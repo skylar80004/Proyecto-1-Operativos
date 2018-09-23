@@ -23,6 +23,13 @@ public class Controlador {
 
     
     
+    // Pregunta si la configuracion tiene Send de tipo Directo
+    public boolean IsDirectSend(){
+        
+        //String direcionamiento = this.getConfiguracionSistema().getDireccionamiento();
+        return true;
+        
+    }
     
     public ColaMensajes getColaMensajes() {
         return colaMensajes;

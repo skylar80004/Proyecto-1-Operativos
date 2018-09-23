@@ -523,23 +523,36 @@ public class Menu extends javax.swing.JFrame {
         jPanel_receive.setVisible(false);
 
         // Opciones de sendDestination
-        ColaProcesos colaProceso = Singleton.getInstance().getControlador().getColaProcesos();
-        ArrayList<Proceso> listaProcesos = colaProceso.getListaProcesos();
         
-        String identificadorProceso;
-        this.jComboBox_sendDestination.removeAllItems();
-        for(Proceso proceso : listaProcesos){
+        boolean direccionamientoDirecto = Singleton.getInstance().
+                getControlador().getConfiguracionSistema().
+                getDireccionamiento().isDirect();
+        
+        
+        // Direct Send
+        if(direccionamientoDirecto){
             
-            identificadorProceso = String.valueOf(proceso.getIdentificador());
-            this.jComboBox_sendDestination.addItem(identificadorProceso);
+            ColaProcesos colaProceso = Singleton.getInstance().getControlador().getColaProcesos();
+            ArrayList<Proceso> listaProcesos = colaProceso.getListaProcesos();
+            String identificadorProceso;
+            this.jComboBox_sendDestination.removeAllItems();
+            for(Proceso proceso : listaProcesos){
+
+                identificadorProceso = String.valueOf(proceso.getIdentificador());
+                this.jComboBox_sendDestination.addItem(identificadorProceso);
+            }
+            
         }
-        
-        
+        else{
+            this.jComboBox_sendDestination.setVisible(false);
+        }
+
         // Opciones de Mensaje
         ColaMensajes colaMensajes = Singleton.getInstance().getControlador().getColaMensajes();
         ArrayList<Mensaje> listaMensajes = colaMensajes.getListaMensajes();
         String contenidoMensaje;
         
+        this.jComboBox_sendMsg.removeAllItems();
         for(Mensaje mensaje: listaMensajes){
             contenidoMensaje = (String)mensaje.getContenido();
             this.jComboBox_sendMsg.addItem(contenidoMensaje);
@@ -565,6 +578,46 @@ public class Menu extends javax.swing.JFrame {
         jPanel_receive.setVisible(true);
         jPanel_create.setVisible(false);
         jPanel_send.setVisible(false);
+        
+        
+        
+        boolean direccionamientoDirecto = Singleton.getInstance().
+                getControlador().getConfiguracionSistema().
+                getDireccionamiento().isDirect();
+        
+        
+        // Direct Receive
+        if(direccionamientoDirecto){
+            
+            ColaProcesos colaProceso = Singleton.getInstance().getControlador().getColaProcesos();
+            ArrayList<Proceso> listaProcesos = colaProceso.getListaProcesos();
+            String identificadorProceso;
+            this.jComboBox_receiveSource.removeAllItems();
+            for(Proceso proceso : listaProcesos){
+
+                identificadorProceso = String.valueOf(proceso.getIdentificador());
+                this.jComboBox_receiveSource.addItem(identificadorProceso);
+            }
+            
+            // Opciones de Mensaje
+        ColaMensajes colaMensajes = Singleton.getInstance().getControlador().getColaMensajes();
+        ArrayList<Mensaje> listaMensajes = colaMensajes.getListaMensajes();
+        String contenidoMensaje;
+        
+        this.jComboBox_sendMsg.removeAllItems();
+        for(Mensaje mensaje: listaMensajes){
+            contenidoMensaje = (String)mensaje.getContenido();
+            this.jComboBox_sendMsg.addItem(contenidoMensaje);
+        }
+        
+            
+        }
+        else{   
+            this.jComboBox_receiveMsg.setVisible(false);
+        }
+
+        
+        
         
         
         
