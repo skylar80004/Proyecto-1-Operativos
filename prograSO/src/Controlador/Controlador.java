@@ -24,7 +24,7 @@ public class Controlador {
     
     
     
-    public void CambiarEstadoProceso(int idProceso, String estado){
+    public void CambiarEstadoProcesoReceive(int idProceso, String estado){
         
         int idTemporal;
         Proceso procesoTemporal ;
@@ -34,7 +34,25 @@ public class Controlador {
             idTemporal = procesoTemporal.getIdentificador();
             if(idTemporal == idProceso){
                 
-                procesoTemporal.setEstado(estado);
+                procesoTemporal.setEstadoReceive(estado);
+                this.colaProcesos.getListaProcesos().set(i, procesoTemporal);
+                return;
+                
+            }
+        }
+    }
+    
+    public void CambiarEstadoProcesoSend(int idProceso, String estado){
+        
+        int idTemporal;
+        Proceso procesoTemporal ;
+        for(int i = 0; i < this.colaProcesos.getListaProcesos().size();i++){
+            
+            procesoTemporal =  this.colaProcesos.getListaProcesos().get(i);
+            idTemporal = procesoTemporal.getIdentificador();
+            if(idTemporal == idProceso){
+                
+                procesoTemporal.setEstadoSend(estado);
                 this.colaProcesos.getListaProcesos().set(i, procesoTemporal);
                 return;
                 
@@ -141,9 +159,12 @@ public class Controlador {
         
         // Synchronization
         
+        /*
         if(sendBlocking){
             this.CambiarEstadoProceso(destino, "Blocked");
         }
+        */
+        
         
         return true;
         
@@ -152,16 +173,22 @@ public class Controlador {
     }
     
     
-    public boolean isProcessBlocked(int idProceso){
+    public boolean isProcessSendBlocked(int idProceso){
         
-        return this.colaProcesos.isProcessBlocked(idProceso);
+        return this.colaProcesos.isProcessSendBlocked(idProceso);
+        
+    }
+    
+    public boolean isProcessReceiveBlocked(int idProceso){
+        
+        return this.colaProcesos.isProcessReceiveBlocked(idProceso);
         
     }
     
     public boolean agregarIdDestinoAMensaje(String contenido, int idDestino){
         
-        boolean isProcessBlocked = this.isProcessBlocked(idDestino);
-        if(isProcessBlocked){
+        boolean isProcessReceiveBlocked = this.isProcessReceiveBlocked(idDestino);
+        if(isProcessReceiveBlocked){
             return false;
             
         }
@@ -229,10 +256,17 @@ public class Controlador {
             return false;
         }
         
+        String estadoSend ;
+        String estadoReceive;
         for(int i = 0; i < cantidadProcesos; i++){
             
             identificador = Singleton.getInstance().getCantidadProcesosCreados();
-            Proceso proceso = new Proceso(identificador,"Ready",identificador);
+            
+            //estado = this.configuracionSistema.
+            estadoSend = this.configuracionSistema.getSincronizacion().getSend();
+            estadoReceive = this.configuracionSistema.getSincronizacion().getReceive();
+            
+            Proceso proceso = new Proceso(identificador,estadoSend,estadoReceive,identificador);
             identificador++;
             Singleton.getInstance().setCantidadProcesosCreados(identificador);
             

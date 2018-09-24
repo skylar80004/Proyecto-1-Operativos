@@ -689,8 +689,9 @@ public class Menu extends javax.swing.JFrame {
         
         String contenidoMensajeDialog = "Se ha enviado el mensaje";
         String tituloBarra = "Send";
+        
         if(send){
-            
+          
             contenidoMensajeDialog = "Se ha enviado el mensaje";
             this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
             

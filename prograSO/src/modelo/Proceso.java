@@ -13,21 +13,39 @@ public class Proceso {
     
     
     private int identificador;
-    private String estado;
+    private String estadoSend;
+    private String estadoReceive;
     private int prioridad;
     private int ProgramCounter;
 
-    public Proceso(int identificador, String estado, int prioridad) {
+    public Proceso(int identificador, String estadoSend, String estadoReceive, int prioridad) {
         this.identificador = identificador;
-        this.estado = estado;
+        this.estadoSend = estadoSend;
+        this.estadoReceive = estadoReceive;
         this.prioridad = prioridad;
+    }
+
+    public String getEstadoSend() {
+        return estadoSend;
+    }
+
+    public void setEstadoSend(String estadoSend) {
+        this.estadoSend = estadoSend;
+    }
+
+    public String getEstadoReceive() {
+        return estadoReceive;
+    }
+
+    public void setEstadoReceive(String estadoReceive) {
+        this.estadoReceive = estadoReceive;
     }
 
     
     
     public void ImprimirProceso(){
         System.out.println("Proceso # " + this.identificador +
-        " estado: " + this.estado + " Prioridad: " + this.prioridad);
+        " estado Send: " + this.estadoSend + " estado Receive: " + estadoReceive + " Prioridad: " + this.prioridad);
     }
     
     public int getIdentificador() {
@@ -38,13 +56,7 @@ public class Proceso {
         this.identificador = identificador;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
+ 
 
     public int getPrioridad() {
         return prioridad;

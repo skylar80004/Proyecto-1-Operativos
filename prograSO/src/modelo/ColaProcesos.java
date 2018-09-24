@@ -27,19 +27,34 @@ public class ColaProcesos {
     }
     
     
-    public boolean isProcessBlocked(int idProceso){
+    public boolean isProcessSendBlocked(int idProceso){
         
         for(Proceso proceso : this.listaProcesos){
             
             int idProcesoTemporal = proceso.getIdentificador();
-            String estadoTemporal  = proceso.getEstado();
-            if(idProcesoTemporal == idProceso && estadoTemporal.equals("Blocked")){
+            String estadoTemporal  = proceso.getEstadoSend();
+            if(idProcesoTemporal == idProceso && estadoTemporal.equals("Blocking")){
                 return true;
             }
         }
         return false;
         
     }
+    
+    public boolean isProcessReceiveBlocked(int idProceso){
+        
+        for(Proceso proceso : this.listaProcesos){
+            
+            int idProcesoTemporal = proceso.getIdentificador();
+            String estadoTemporal  = proceso.getEstadoReceive();
+            if(idProcesoTemporal == idProceso && estadoTemporal.equals("Blocking")){
+                return true;
+            }
+        }
+        return false;
+        
+    }
+    
     public void ImprimirColaProcesos(){
 
         for (Proceso proceso : this.listaProcesos) {

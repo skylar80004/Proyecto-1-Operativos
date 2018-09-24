@@ -470,7 +470,7 @@ public class Settings extends javax.swing.JFrame {
         Singleton.getInstance().getControlador().crearProcesos();
         Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
         
-
+        Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
 
         this.dispose();
     }//GEN-LAST:event_jButton_guardarSettingsActionPerformed
