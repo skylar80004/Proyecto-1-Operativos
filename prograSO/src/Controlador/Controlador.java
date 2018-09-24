@@ -95,7 +95,7 @@ public class Controlador {
     }
     
     
-    public void Receive(int idProcesoFuente, String contenido){
+    public boolean Receive(int idProcesoFuente, String contenido){
         
         
         boolean isDirectAdressing = this.IsDirectSend();
@@ -105,10 +105,12 @@ public class Controlador {
             
             if(receiveDirectExplicit){ // Receive Directo Explicito
                           System.out.println("Recieve Directo Explicito");
-                          
+                return true;
             }          
             else{ // Receive Directo Implicito
+                boolean envio = agregarIdFuenteAMensaje(contenido, idProcesoFuente);
                 System.out.println("Recieve Directo Implicito");
+                return true;
                 
             }
             
@@ -119,19 +121,17 @@ public class Controlador {
                 
                 
                 
-                
-                
                 System.out.println("Recieve Indirecto estatico");
+                return false;
+                
             }
             else{ // Direccionamiento indirecto dinamico
                 System.out.println("Recieve Indirecto dinamico");
+                return false;
             }
         }
         
-        
-        
-        
-        
+  
     }
     public void Create(String tipoContenido, String destinoString, String fuenteString, int largo, String contenido){
         
@@ -226,6 +226,19 @@ public class Controlador {
         
     }
     
+    public boolean agregarIdFuenteAMensaje(String contenido, int idFuente){
+        
+        boolean isProcessSourceBlocked = this.isProcessSendBlocked(idFuente);
+        if(isProcessSourceBlocked){
+            return false;
+            
+        }
+        else{
+            return this.colaMensajes.agregarIdFuente(contenido, idFuente);
+            
+        }
+        
+    }
         
     public Mensaje encontrarMensaje(String contenidoMensaje){
         Mensaje mensaje = this.colaMensajes.encontrarMensaje(contenidoMensaje);

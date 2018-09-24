@@ -40,6 +40,23 @@ public class ColaMensajes {
         }
         return false;
     }
+    public boolean agregarIdFuente(String contenidoMensaje, int idFuente){
+        
+        Mensaje mensajeTemporal;
+        String contenidoTemporal;
+        for(int i = 0; i < this.listaMensajes.size(); i++){
+            
+            mensajeTemporal = listaMensajes.get(i);
+            contenidoTemporal = (String)mensajeTemporal.getContenido();
+            if(contenidoTemporal.equals(contenidoMensaje)){
+                mensajeTemporal.setFuente(idFuente);
+                listaMensajes.set(i, mensajeTemporal);
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public Mensaje encontrarMensaje(String contenidoMensaje){
         
         String contenidoActual;
