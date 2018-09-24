@@ -9,6 +9,7 @@ import Controlador.DtoConfiguracion;
 import Controlador.Singleton;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import modelo.CasilleroMensajes;
 import modelo.ColaMensajes;
 import modelo.ColaProcesos;
 import modelo.ConfiguracionSistema;
@@ -465,6 +466,10 @@ public class Settings extends javax.swing.JFrame {
         
         System.out.println("Configuracion Lista");
         
+        
+        // Casillero de Mensajes int largoMaximo, String manejoCola, String tipoLargo){ 
+        CasilleroMensajes casilleroMensajes = new CasilleroMensajes(largo,manejoColasString,tipoLargo);
+        Singleton.getInstance().getControlador().setCasilleroMensaje(casilleroMensajes);
         
         // Creacion de Procesos
         Singleton.getInstance().getControlador().crearProcesos();

@@ -5,6 +5,7 @@
  */
 package Controlador;
 
+import modelo.CasilleroMensajes;
 import modelo.ColaMensajes;
 import modelo.ColaProcesos;
 import modelo.ConfiguracionSistema;
@@ -20,6 +21,15 @@ public class Controlador {
     private ColaMensajes colaMensajes;
     private ConfiguracionSistema configuracionSistema;
     private ColaProcesos colaProcesos;
+    private CasilleroMensajes casilleroMensaje;
+
+    public CasilleroMensajes getCasilleroMensaje() {
+        return casilleroMensaje;
+    }
+
+    public void setCasilleroMensaje(CasilleroMensajes casilleroMensaje) {
+        this.casilleroMensaje = casilleroMensaje;
+    }
 
     
     
@@ -106,6 +116,11 @@ public class Controlador {
         else{ // Direccionamiento Indirecto
             boolean isIndirectStatic = this.isReceiveIndirectStatic();
             if(isIndirectStatic){ // Direccionamiento indirecto estatico
+                
+                
+                
+                
+                
                 System.out.println("Recieve Indirecto estatico");
             }
             else{ // Direccionamiento indirecto dinamico
@@ -153,6 +168,8 @@ public class Controlador {
             
         } // Direccionamiento Indirecto
         else{
+            
+            
             
             // El mensaje ya se encuentra en la cola de mensajes       
         }
