@@ -389,13 +389,13 @@ public class Settings extends javax.swing.JFrame {
         String tipoContenido = (String)this.jComboBox_typeContent.getSelectedItem();
         String tipoLargo = (String)this.jComboBox_format.getSelectedItem();
         
-        int largo;
+        int largoMensajes;
         if(tipoLargo.equals("Largo Fijo")){
             String largoString = this.jTextField_size.getText();
-            largo = Integer.parseInt(largoString);
+            largoMensajes = Integer.parseInt(largoString);
         }
         else{
-             largo = -1;
+             largoMensajes = -1;
         }
         
         String manejoColasString = (String)this.jComboBox_manejoDeColas.getSelectedItem();
@@ -415,7 +415,7 @@ public class Settings extends javax.swing.JFrame {
 
         // Instancia de objetos
         ManejoColas manejoColas = new ManejoColas(manejoColasString);
-        Formato formato = new Formato(tipoContenido,tipoLargo,largo);
+        Formato formato = new Formato(tipoContenido,tipoLargo,largoMensajes);
         
         // Direccionamiento
         Direccionamiento direccionamiento = new Direccionamiento(addresing);
@@ -450,7 +450,7 @@ public class Settings extends javax.swing.JFrame {
         Sincronizacion sincronizacion = new Sincronizacion(syncSend,syncReceive);
         
         // Instancia Confuguracion
-        ConfiguracionSistema configuracion = new ConfiguracionSistema(cantidadProcesos, largo, sincronizacion, direccionamiento, formato, manejoColas);
+        ConfiguracionSistema configuracion = new ConfiguracionSistema(cantidadProcesos, tamanoColaMensajes, sincronizacion, direccionamiento, formato, manejoColas);
         
         // Configuracion
         Singleton.getInstance().getControlador().setConfiguracionSistema(configuracion);
@@ -468,7 +468,7 @@ public class Settings extends javax.swing.JFrame {
         
         
         // Casillero de Mensajes int largoMaximo, String manejoCola, String tipoLargo){ 
-        CasilleroMensajes casilleroMensajes = new CasilleroMensajes(largo,manejoColasString,tipoLargo);
+        CasilleroMensajes casilleroMensajes = new CasilleroMensajes(tamanoColaMensajes,manejoColasString,tipoLargo);
         Singleton.getInstance().getControlador().setCasilleroMensaje(casilleroMensajes);
         
         // Creacion de Procesos

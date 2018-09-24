@@ -682,7 +682,16 @@ public class Menu extends javax.swing.JFrame {
         
         
         String idProcesoDestinoString = (String)this.jComboBox_sendDestination.getSelectedItem();
-        int idProcesoDestino = Integer.parseInt(idProcesoDestinoString);
+        int idProcesoDestino;
+        try{
+            idProcesoDestino = Integer.parseInt(idProcesoDestinoString);
+            
+        }
+        catch(Exception e){
+            idProcesoDestino = 0;
+            
+        }
+        
         String contenidoMensaje = (String)this.jComboBox_sendMsg.getSelectedItem();
         
         boolean send = Singleton.getInstance().getControlador().Send(idProcesoDestino, contenidoMensaje);

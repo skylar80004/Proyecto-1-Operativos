@@ -163,14 +163,24 @@ public class Controlador {
             if(!agregarMensaje){ // El mensaje no se puedo enviar ya que el proceso esta bloqueado
                 return false;
             }
-            
-            
-            
+
         } // Direccionamiento Indirecto
         else{
+            System.out.println("Direccionamiento Indirecto");
             
+            Mensaje mensaje = this.colaMensajes.encontrarMensaje(contenidoMensaje);
+            boolean agregar = this.casilleroMensaje.AgregarMensaje(mensaje);
             
+            if(!agregar){
+                System.out.println("No se agrego");
+                return false;
+            }
             
+            int largoActualCasillero = this.casilleroMensaje.getListaMensajes().size();
+            int largoMaximo = this.casilleroMensaje.getLargoMaximo();
+            System.out.println("Largo maximo del casillero: " + largoMaximo );
+            System.out.println("Cantidad de mensajes en el casillero: " + largoActualCasillero);
+
             // El mensaje ya se encuentra en la cola de mensajes       
         }
         

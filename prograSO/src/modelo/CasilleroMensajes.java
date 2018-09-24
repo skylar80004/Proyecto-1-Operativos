@@ -24,37 +24,56 @@ public class CasilleroMensajes {
         this.largoMaximo = largoMaximo;
         this.manejoCola = manejoCola;
         this.tipoLargo = tipoLargo;
-        
-        
+  
     }
     
     public boolean AgregarMensaje(Mensaje mensaje){
         
         
-        if(tipoLargo.equals("LargoFijo")){
-            
-            int largoActual = this.listaMensajes.size();
-            if(largoActual <= largoMaximo){
-                
-                this.listaMensajes.add(mensaje);
-                return true;
-                
-            }
-            else{
-                
-                return false;
-                
-            }
-            
-        }
-        else{ // Largo variable
+        int largoActual = this.listaMensajes.size();
+        if(largoActual < this.largoMaximo){
             
             this.listaMensajes.add(mensaje);
             return true;
             
         }
+        else{
+            return false;
+            
+        }
         
-        
+    }
+
+    public ArrayList<Mensaje> getListaMensajes() {
+        return listaMensajes;
+    }
+
+    public void setListaMensajes(ArrayList<Mensaje> listaMensajes) {
+        this.listaMensajes = listaMensajes;
+    }
+
+    public int getLargoMaximo() {
+        return largoMaximo;
+    }
+
+    public void setLargoMaximo(int largoMaximo) {
+        this.largoMaximo = largoMaximo;
+    }
+
+    public String getManejoCola() {
+        return manejoCola;
+    }
+
+    public void setManejoCola(String manejoCola) {
+        this.manejoCola = manejoCola;
+    }
+
+    public String getTipoLargo() {
+        return tipoLargo;
+    }
+
+    public void setTipoLargo(String tipoLargo) {
+        this.tipoLargo = tipoLargo;
     }
     
 }
