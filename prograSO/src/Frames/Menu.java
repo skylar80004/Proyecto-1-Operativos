@@ -6,9 +6,14 @@
 package Frames;
 
 import Controlador.Singleton;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelo.ColaMensajes;
 import modelo.ColaProcesos;
@@ -84,6 +89,7 @@ public class Menu extends javax.swing.JFrame {
         jComboBox_receiveSource = new javax.swing.JComboBox<>();
         jLabel14 = new javax.swing.JLabel();
         jComboBox_receiveMsg = new javax.swing.JComboBox<>();
+        jButton_manualUsuario = new javax.swing.JButton();
 
         jRadioButton1.setText("jRadioButton1");
 
@@ -403,7 +409,7 @@ public class Menu extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel_receive, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 146, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton_GuardarDatos)
                     .addComponent(jButton_play))
@@ -420,24 +426,33 @@ public class Menu extends javax.swing.JFrame {
                     .addContainerGap(183, Short.MAX_VALUE)))
         );
 
+        jButton_manualUsuario.setText("Manual de Usuario");
+        jButton_manualUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_manualUsuarioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(134, 134, 134)
-                            .addComponent(jLabel1))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(107, 107, 107)
-                            .addComponent(jLabel2)
-                            .addGap(61, 61, 61)
-                            .addComponent(jButton1)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton_manualUsuario)
+                                .addGap(37, 37, 37)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -448,8 +463,9 @@ public class Menu extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jButton1)
+                    .addComponent(jButton_manualUsuario))
+                .addGap(12, 12, 12)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -690,6 +706,22 @@ public class Menu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton_ejecutarRActionPerformed
 
+    private void jButton_manualUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_manualUsuarioActionPerformed
+        // TODO add your handling code here:
+        
+      if (Desktop.isDesktopSupported()) {
+        try {
+        File myFile = new File("D:\\Tec\\2 Semestre 2018\\Principios de Sistemas Operativos\\Proyecto 1\\OperativosGit\\Proyecto-1-Operativos\\prograSO\\src\\Frames\\manual.pdf");
+        Desktop.getDesktop().open(myFile);
+        } 
+        catch (IOException ex) {
+        // no application registered for PDFs
+        }
+        }
+      
+      
+    }//GEN-LAST:event_jButton_manualUsuarioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -732,6 +764,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton jButton_ejecutarC;
     private javax.swing.JButton jButton_ejecutarR;
     private javax.swing.JButton jButton_ejecutarS;
+    private javax.swing.JButton jButton_manualUsuario;
     private javax.swing.JButton jButton_play;
     private javax.swing.JButton jButton_receive;
     private javax.swing.JButton jButton_send;
