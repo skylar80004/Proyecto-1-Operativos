@@ -25,6 +25,7 @@ public class ColaMensajes {
     
     public boolean agregarIdDestino(String contenidoMensaje, int idDestino){
         
+        
         Mensaje mensajeTemporal;
         String contenidoTemporal;
         for(int i = 0; i < this.listaMensajes.size(); i++){

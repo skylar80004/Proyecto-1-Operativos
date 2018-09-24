@@ -77,9 +77,11 @@ public class Controlador {
             
             if(receiveDirectExplicit){ // Receive Directo Explicito
                           System.out.println("Recieve Directo Explicito");
+                          
             }          
             else{ // Receive Directo Implicito
                 System.out.println("Recieve Directo Implicito");
+                
             }
             
         }
@@ -116,14 +118,19 @@ public class Controlador {
         Singleton.getInstance().setCantidadMensajesCreados(cantidadMensajes);
         
     }
-    public void Send(int destino, String contenidoMensaje){
+    public boolean Send(int destino, String contenidoMensaje){
         
         boolean sendDirect = this.IsDirectSend();
         boolean sendBlocking = this.isBlockingSend();
         
         if(sendDirect){ // Direccionamiento Directo
             
-            agregarIdDestinoAMensaje(contenidoMensaje, destino);
+            boolean agregarMensaje = agregarIdDestinoAMensaje(contenidoMensaje, destino);
+            
+            if(!agregarMensaje){ // El mensaje no se puedo enviar ya que el proceso esta bloqueado
+                return false;
+            }
+            
             
             
         } // Direccionamiento Indirecto
@@ -138,12 +145,31 @@ public class Controlador {
             this.CambiarEstadoProceso(destino, "Blocked");
         }
         
+        return true;
+        
         
         
     }
+    
+    
+    public boolean isProcessBlocked(int idProceso){
+        
+        return this.colaProcesos.isProcessBlocked(idProceso);
+        
+    }
+    
     public boolean agregarIdDestinoAMensaje(String contenido, int idDestino){
         
-        return this.colaMensajes.agregarIdDestino(contenido, idDestino);
+        boolean isProcessBlocked = this.isProcessBlocked(idDestino);
+        if(isProcessBlocked){
+            return false;
+            
+        }
+        else{
+            return this.colaMensajes.agregarIdDestino(contenido, idDestino);
+            
+        }
+        
     }
     
         

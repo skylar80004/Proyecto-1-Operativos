@@ -685,7 +685,21 @@ public class Menu extends javax.swing.JFrame {
         int idProcesoDestino = Integer.parseInt(idProcesoDestinoString);
         String contenidoMensaje = (String)this.jComboBox_sendMsg.getSelectedItem();
         
-        Singleton.getInstance().getControlador().Send(idProcesoDestino, contenidoMensaje);
+        boolean send = Singleton.getInstance().getControlador().Send(idProcesoDestino, contenidoMensaje);
+        
+        String contenidoMensajeDialog = "Se ha enviado el mensaje";
+        String tituloBarra = "Send";
+        if(send){
+            
+            contenidoMensajeDialog = "Se ha enviado el mensaje";
+            this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+            
+        }
+        else{
+            contenidoMensajeDialog = "El mensaje no se pudo enviar";
+            this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+        }
+        
         
             
             

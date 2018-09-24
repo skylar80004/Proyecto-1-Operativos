@@ -25,6 +25,21 @@ public class ColaProcesos {
     public ArrayList<Proceso> getListaProcesos(){
         return this.listaProcesos;
     }
+    
+    
+    public boolean isProcessBlocked(int idProceso){
+        
+        for(Proceso proceso : this.listaProcesos){
+            
+            int idProcesoTemporal = proceso.getIdentificador();
+            String estadoTemporal  = proceso.getEstado();
+            if(idProcesoTemporal == idProceso && estadoTemporal.equals("Blocked")){
+                return true;
+            }
+        }
+        return false;
+        
+    }
     public void ImprimirColaProcesos(){
 
         for (Proceso proceso : this.listaProcesos) {
