@@ -100,7 +100,7 @@
                               <EmptySpace min="-2" pref="422" max="-2" attributes="0"/>
                               <Component id="jLabel_size" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jTextField_size" min="-2" pref="165" max="-2" attributes="0"/>
+                              <Component id="jTextField_sizeOfMessage" min="-2" pref="165" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace pref="38" max="32767" attributes="0"/>
@@ -122,7 +122,7 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jTextField_size" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="jTextField_sizeOfMessage" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                           <Component id="jLabel_size" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="285" max="32767" attributes="0"/>
@@ -184,7 +184,7 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField_size">
+            <Component class="javax.swing.JTextField" name="jTextField_sizeOfMessage">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel_size">
               <Properties>

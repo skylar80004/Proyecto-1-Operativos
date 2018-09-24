@@ -133,15 +133,16 @@ public class Controlador {
         
   
     }
-    public void Create(String tipoContenido, String destinoString, String fuenteString, int largo, String contenido){
+    public void Create(String contenido){
         
         
-        int destino = Integer.parseInt(destinoString);
-        int fuente = Integer.parseInt(fuenteString);
+        String tipoContenido = this.configuracionSistema.getFormato().getContenido();
         int idMensaje = Singleton.getInstance().getCantidadMensajesCreados();
+        //String largoString = this.configuracionSistema.getFormato().getTamano();
+        int largo = this.configuracionSistema.getFormato().getTamano();
         
         
-        Mensaje mensaje = new Mensaje(idMensaje, tipoContenido, destino, fuente, largo, contenido);
+        Mensaje mensaje = new Mensaje(idMensaje, tipoContenido, 0, 0, largo, contenido);
         
         // Agrega mensaje a la cola de mensajes
         Singleton.getInstance().getControlador().AgregarMensaje(mensaje);
@@ -149,6 +150,7 @@ public class Controlador {
         cantidadMensajes++;
         
         Singleton.getInstance().setCantidadMensajesCreados(cantidadMensajes);
+        Singleton.getInstance().getControlador().colaMensajes.ImprimirColaMensaje();
         
     }
     public boolean Send(int destino, String contenidoMensaje){

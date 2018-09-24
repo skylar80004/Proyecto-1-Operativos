@@ -53,7 +53,7 @@ public class Settings extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jComboBox_typeContent = new javax.swing.JComboBox<>();
-        jTextField_size = new javax.swing.JTextField();
+        jTextField_sizeOfMessage = new javax.swing.JTextField();
         jLabel_size = new javax.swing.JLabel();
         jPanel_disciplinaManejoColas = new javax.swing.JPanel();
         jComboBox_manejoDeColas = new javax.swing.JComboBox<>();
@@ -122,7 +122,7 @@ public class Settings extends javax.swing.JFrame {
                         .addGap(422, 422, 422)
                         .addComponent(jLabel_size)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField_size, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTextField_sizeOfMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
         jPanel_formatoLayout.setVerticalGroup(
@@ -138,7 +138,7 @@ public class Settings extends javax.swing.JFrame {
                     .addComponent(jComboBox_typeContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel_formatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField_size, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField_sizeOfMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel_size))
                 .addContainerGap(285, Short.MAX_VALUE))
         );
@@ -375,10 +375,10 @@ public class Settings extends javax.swing.JFrame {
         System.out.println(addresingParameter);
         if(addresingParameter.equals("Largo Variable")){
             this.jLabel_size.setVisible(false);
-            this.jTextField_size.setVisible(false);
+            this.jTextField_sizeOfMessage.setVisible(false);
         }else{
             this.jLabel_size.setVisible(true);
-            this.jTextField_size.setVisible(true);
+            this.jTextField_sizeOfMessage.setVisible(true);
         }
     }//GEN-LAST:event_jComboBox_formatItemStateChanged
 
@@ -391,7 +391,7 @@ public class Settings extends javax.swing.JFrame {
         
         int largoMensajes;
         if(tipoLargo.equals("Largo Fijo")){
-            String largoString = this.jTextField_size.getText();
+            String largoString = this.jTextField_sizeOfMessage.getText();
             largoMensajes = Integer.parseInt(largoString);
         }
         else{
@@ -537,7 +537,7 @@ public class Settings extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel_synchronization;
     private javax.swing.JTabbedPane jTabbedPane_tabs;
     private javax.swing.JTextField jTextField_numberOfProcesses;
-    private javax.swing.JTextField jTextField_size;
+    private javax.swing.JTextField jTextField_sizeOfMessage;
     private javax.swing.JTextField jTextField_sizeOfQueue;
     private javax.swing.JLabel jlabel_syncReceive;
     private javax.swing.JLabel label_title;
