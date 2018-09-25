@@ -129,6 +129,11 @@ public class Menu extends javax.swing.JFrame {
         jButton_play.setText("Display()");
 
         jButton_GuardarDatos.setText("Guardar");
+        jButton_GuardarDatos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_GuardarDatosActionPerformed(evt);
+            }
+        });
 
         jPanel_create.setPreferredSize(new java.awt.Dimension(407, 180));
         //jPanel_create.setVisible(false);
@@ -292,7 +297,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(jPanel_receiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox_receiveSource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox_receiveMsg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addComponent(jButton_ejecutarR)
                 .addContainerGap())
         );
@@ -553,10 +558,10 @@ public class Menu extends javax.swing.JFrame {
         ArrayList<Mensaje> listaMensajes = colaMensajes.getListaMensajes();
         String contenidoMensaje;
         
-        this.jComboBox_sendMsg.removeAllItems();
+        this.jComboBox_receiveMsg.removeAllItems();
         for(Mensaje mensaje: listaMensajes){
             contenidoMensaje = (String)mensaje.getContenido();
-            this.jComboBox_sendMsg.addItem(contenidoMensaje);
+            this.jComboBox_receiveMsg.addItem(contenidoMensaje);
         }
         
             
@@ -644,7 +649,20 @@ public class Menu extends javax.swing.JFrame {
         String contenidoMensaje = (String)this.jComboBox_receiveMsg.getSelectedItem();
         int idProcesoFuente = Integer.parseInt(idProcesoFuenteString);
         
-        Singleton.getInstance().getControlador().Receive(idProcesoFuente,contenidoMensaje);
+        boolean receive = Singleton.getInstance().getControlador().Receive(idProcesoFuente,contenidoMensaje);
+        String contenidoMensajeDialog = "";
+        String tituloBarra = "Receive";
+        
+        if(receive){
+          
+            contenidoMensajeDialog = "Receive procesado";
+            this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+            
+        }
+        else{
+            contenidoMensajeDialog = "Receive no procesado";
+            this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+        }
         
         
     }//GEN-LAST:event_jButton_ejecutarRActionPerformed
@@ -664,6 +682,11 @@ public class Menu extends javax.swing.JFrame {
       
       
     }//GEN-LAST:event_jButton_manualUsuarioActionPerformed
+
+    private void jButton_GuardarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_GuardarDatosActionPerformed
+        // TODO add your handling code here:
+        System.out.println(""+Singleton.getInstance().getControlador().getListaSolicitudes().getListaSolicitudes().toString());
+    }//GEN-LAST:event_jButton_GuardarDatosActionPerformed
 
     /**
      * @param args the command line arguments

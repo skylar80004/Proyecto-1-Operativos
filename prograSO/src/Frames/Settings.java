@@ -15,6 +15,7 @@ import modelo.ColaProcesos;
 import modelo.ConfiguracionSistema;
 import modelo.Direccionamiento;
 import modelo.Formato;
+import modelo.ListaSolicitudes;
 import modelo.ManejoColas;
 import modelo.Sincronizacion;
 
@@ -476,7 +477,10 @@ public class Settings extends javax.swing.JFrame {
         Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
         
         Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
-
+            
+        //lista Solicitudes
+        ListaSolicitudes listaSolicitudes = new ListaSolicitudes();
+        Singleton.getInstance().getControlador().setListaSolicitudes(listaSolicitudes);
         this.dispose();
     }//GEN-LAST:event_jButton_guardarSettingsActionPerformed
 

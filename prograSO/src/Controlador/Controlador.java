@@ -9,8 +9,10 @@ import modelo.CasilleroMensajes;
 import modelo.ColaMensajes;
 import modelo.ColaProcesos;
 import modelo.ConfiguracionSistema;
+import modelo.ListaSolicitudes;
 import modelo.Mensaje;
 import modelo.Proceso;
+import modelo.Solicitudes;
 
 /**
  *
@@ -22,6 +24,7 @@ public class Controlador {
     private ConfiguracionSistema configuracionSistema;
     private ColaProcesos colaProcesos;
     private CasilleroMensajes casilleroMensaje;
+    private ListaSolicitudes listaSolicitudes;
 
     public CasilleroMensajes getCasilleroMensaje() {
         return casilleroMensaje;
@@ -31,8 +34,6 @@ public class Controlador {
         this.casilleroMensaje = casilleroMensaje;
     }
 
-    
-    
     
     public void CambiarEstadoProcesoReceive(int idProceso, String estado){
         
@@ -104,14 +105,15 @@ public class Controlador {
             boolean receiveDirectExplicit = this.isReceiveExplicit();
             
             if(receiveDirectExplicit){ // Receive Directo Explicito
-                          System.out.println("Recieve Directo Explicito");
-                return true;
+                boolean envio = agregarIdFuenteAMensaje(contenido, idProcesoFuente);
+                return envio;
             }          
             else{ // Receive Directo Implicito
                 boolean envio = agregarIdFuenteAMensaje(contenido, idProcesoFuente);
-                System.out.println("Recieve Directo Implicito");
-                return true;
-                
+                if(envio){
+                   agregarFuenteImplicito(contenido, idProcesoFuente); 
+                }
+                return envio;
             }
             
         }
@@ -165,7 +167,11 @@ public class Controlador {
             if(!agregarMensaje){ // El mensaje no se puedo enviar ya que el proceso esta bloqueado
                 return false;
             }
-
+            boolean receiveDirectExplicit = this.isReceiveExplicit();
+            
+            if(receiveDirectExplicit){
+                agregarFuenteExplicito(contenidoMensaje, destino);
+            }
         } // Direccionamiento Indirecto
         else{
             System.out.println("Direccionamiento Indirecto");
@@ -201,6 +207,20 @@ public class Controlador {
         
     }
     
+    public void setSolicitud(Solicitudes solicitudes){
+        this.listaSolicitudes.getListaSolicitudes().add(solicitudes);
+    }
+    
+    public boolean agregarFuenteImplicito(String idMensaje,int idProcesoFuente){
+        Solicitudes solicitud = new Solicitudes(idMensaje, idProcesoFuente, "ReceiveImplicito", true);
+        this.listaSolicitudes.getListaSolicitudes().add(solicitud);
+        return true;
+    }
+    public boolean agregarFuenteExplicito(String idMensaje,int idProcesoFuente){
+        Solicitudes solicitud = new Solicitudes(idMensaje, idProcesoFuente, "ReceiveExplicito", true);
+        this.listaSolicitudes.getListaSolicitudes().add(solicitud);
+        return true;
+    }
     
     public boolean isProcessSendBlocked(int idProceso){
         
@@ -236,6 +256,7 @@ public class Controlador {
             
         }
         else{
+            System.out.println("SD");
             return this.colaMensajes.agregarIdFuente(contenido, idFuente);
             
         }
@@ -317,6 +338,14 @@ public class Controlador {
             
         }
         return true;
+    }
+
+    public ListaSolicitudes getListaSolicitudes() {
+        return listaSolicitudes;
+    }
+
+    public void setListaSolicitudes(ListaSolicitudes listaSolicitudes) {
+        this.listaSolicitudes = listaSolicitudes;
     }
     
     
