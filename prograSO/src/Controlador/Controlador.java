@@ -122,7 +122,9 @@ public class Controlador {
             if(isIndirectStatic){ // Direccionamiento indirecto estatico
                 
                 
-                
+                Mensaje mensaje = this.casilleroMensaje.SacarMensaje();
+                String contenidoMensaje = (String)mensaje.getContenido();
+                Mensaje mensaje2 = this.colaMensajes.encontrarMensaje(contenido);
                 System.out.println("Recieve Indirecto estatico");
                 return false;
                 

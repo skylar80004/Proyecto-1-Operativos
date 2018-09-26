@@ -5,6 +5,8 @@
  */
 package modelo;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Rigo-PC
@@ -17,14 +19,22 @@ public class Proceso {
     private String estadoReceive;
     private int prioridad;
     private int ProgramCounter;
+    private ArrayList<String> logEventos;
 
     public Proceso(int identificador, String estadoSend, String estadoReceive, int prioridad) {
+        
         this.identificador = identificador;
         this.estadoSend = estadoSend;
         this.estadoReceive = estadoReceive;
         this.prioridad = prioridad;
+        this.logEventos = new ArrayList<String>();
     }
 
+    
+    
+    public void AgregarEvento(String evento){
+        this.logEventos.add(evento);
+    }
     public String getEstadoSend() {
         return estadoSend;
     }

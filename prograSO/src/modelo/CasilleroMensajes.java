@@ -6,6 +6,8 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  *
@@ -13,18 +15,98 @@ import java.util.ArrayList;
  */
 public class CasilleroMensajes {
     
-    private ArrayList<Mensaje> listaMensajes;
+    private Queue<Mensaje> listaMensajesCola;
+    private ArrayList<Mensaje> listaMensajes; 
     private int largoMaximo;
     private String manejoCola;
     private String tipoLargo; 
-   // private String 
+   // private String
+    
+    
     public CasilleroMensajes(int largoMaximo, String manejoCola, String tipoLargo){
         
         listaMensajes = new ArrayList<Mensaje>();
+        listaMensajesCola = new LinkedList<Mensaje>();
         this.largoMaximo = largoMaximo;
         this.manejoCola = manejoCola;
         this.tipoLargo = tipoLargo;
   
+    }
+    
+    
+    
+    public Mensaje SacarMensaje(){ // Las listas de mensajes son paralelas
+        
+        if(this.manejoCola.equals("FIFO")){
+            
+            Mensaje mensaje = this.listaMensajesCola.poll();
+            
+            String contenido = (String)mensaje.getContenido();
+            
+            Mensaje mensajeTemporal;
+            String contenidoTemporal;
+            // Se saca el mensaje de la lista de mensajes normal
+            
+            for(int i = 0; i<this.listaMensajes.size();i++){
+                
+                mensajeTemporal = this.listaMensajes.get(i);
+                contenidoTemporal = (String)mensajeTemporal.getContenido();
+                
+                if(contenido.equals(contenidoTemporal)){
+                    listaMensajes.remove(i);
+                }
+            }
+            
+            return mensaje;
+
+        }
+        else{ // Prioridad
+            
+            
+            int prioridadActual = 0 ;
+            int prioridadTemporal = 0 ;
+            for(Mensaje mensaje: this.listaMensajes){
+                             
+                prioridadTemporal = mensaje.getDestino();
+                if(prioridadTemporal < prioridadActual){
+                    prioridadActual = prioridadTemporal;
+                }    
+            }
+            
+            
+            Mensaje mensajeARetornar = null;
+            
+            for(Mensaje mensaje : this.listaMensajes){
+                
+                if(mensaje.getDestino() == prioridadActual){
+                    mensajeARetornar = mensaje;
+                    break;
+                }
+                
+            }
+            
+            this.listaMensajesCola.remove(mensajeARetornar); 
+            return mensajeARetornar;
+
+        }
+        
+    }
+    
+    public Mensaje EncontrarMensaje(String contenidoMensaje){
+        
+        
+        
+        String contenidoActual;
+        for(Mensaje mensaje : listaMensajes){
+            
+            contenidoActual = (String)mensaje.getContenido();
+            if (contenidoActual.equals(contenidoMensaje)){
+                return mensaje;
+            }
+        }
+        return null;
+    
+        
     }
     
     public boolean AgregarMensaje(Mensaje mensaje){
@@ -34,6 +116,7 @@ public class CasilleroMensajes {
         if(largoActual < this.largoMaximo){
             
             this.listaMensajes.add(mensaje);
+            this.listaMensajesCola.add(mensaje);
             return true;
             
         }
