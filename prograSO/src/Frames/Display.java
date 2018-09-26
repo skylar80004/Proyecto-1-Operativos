@@ -242,7 +242,9 @@ public class Display extends javax.swing.JFrame {
         
         String colaMensajes = Singleton.getInstance().getControlador().getColaMensajes().getStringColaMensajes();
         String colaMensajesProcesados = Singleton.getInstance().getControlador().getColaMensajesProcesados().getStringColaMensajes();
+        String casileroMensajes = Singleton.getInstance().getControlador().getCasilleroMensaje().getCasilleroString();
         
+        this.jTextArea_mailBox.setText(casileroMensajes);
         this.jTextArea_colaMensajes.setText(colaMensajes);
         this.jTextArea_ColaMensajesProcesados.setText(colaMensajesProcesados);
         
