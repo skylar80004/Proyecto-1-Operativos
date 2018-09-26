@@ -22,10 +22,25 @@ public class ColaProcesos {
     }
 
 
+    
     public ArrayList<Proceso> getListaProcesos(){
         return this.listaProcesos;
     }
     
+    
+    public String getLogEvento(int idProceso, int Ncomandos){
+        
+        int idTemporal;
+        String logEvento;
+        for(Proceso proceso: this.listaProcesos){
+            idTemporal = proceso.getIdentificador();
+            if(idTemporal == idProceso){
+                logEvento = proceso.getLogEventos(Ncomandos);
+                return logEvento;
+            }
+        }
+        return "";
+    }
     
     public boolean isProcessSendBlocked(int idProceso){
         

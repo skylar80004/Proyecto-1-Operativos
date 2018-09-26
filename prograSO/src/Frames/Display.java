@@ -163,6 +163,27 @@ public class Display extends javax.swing.JFrame {
         
         String idProcesoString = (String)this.jComboBox_Procesos.getSelectedItem();
         int idProceso = Integer.parseInt(idProcesoString);
+        String logEvento;
+        
+        if(this.jComboBox_opcionLogEvento.getSelectedIndex() == 0){ // Despues de cada comando
+            
+            
+            logEvento = Singleton.getInstance().getControlador().getColaProcesos().getLogEvento(idProceso, -1);
+            this.jTextArea_logEventos.setText(logEvento);
+            
+        }
+        else{ // Despues de N Comandos
+            
+            String nComandosString = this.jTextField_nProcesos.getText();
+            int nComandos = Integer.parseInt(nComandosString);
+            
+            logEvento = Singleton.getInstance().getControlador().getColaProcesos().getLogEvento(idProceso, nComandos);
+            this.jTextArea_logEventos.setText(logEvento);
+ 
+            
+        }
+        
+        
     }//GEN-LAST:event_jButton_verLogEventosActionPerformed
 
     /**

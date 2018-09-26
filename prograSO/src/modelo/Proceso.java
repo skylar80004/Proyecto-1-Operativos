@@ -30,7 +30,32 @@ public class Proceso {
         this.logEventos = new ArrayList<String>();
     }
     
-    
+    public String getLogEventos(int cantidadEventos){
+        
+        if(cantidadEventos == -1){
+            String evento;
+            String logEventos = "";
+            for(int i = 0 ; i <  this.logEventos.size(); i++){
+
+                evento = this.logEventos.get(i);
+                logEventos = logEventos + evento + "\n";           
+            }
+            return logEventos; 
+        }
+        
+        else{
+            
+            String evento;
+            String logEventos = "";
+            for(int i = 0 ; i < cantidadEventos && i < this.logEventos.size(); i++){
+                evento = this.logEventos.get(i);
+                logEventos = logEventos + evento + "\n";           
+        }
+            return logEventos;
+            
+        }
+        
+    }
     public void AgregarEvento(String evento){
         this.logEventos.add(evento);
     }
