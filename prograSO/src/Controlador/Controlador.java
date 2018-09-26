@@ -21,6 +21,7 @@ import modelo.Solicitudes;
 public class Controlador {
     
     private ColaMensajes colaMensajes;
+    private ColaMensajes colaMensajesProcesados;
     private ConfiguracionSistema configuracionSistema;
     private ColaProcesos colaProcesos;
     private CasilleroMensajes casilleroMensaje;
@@ -93,61 +94,21 @@ public class Controlador {
     }
     
     
-    public boolean Receive(int idProcesoFuente, String contenido){
-        
-        
-        boolean isDirectAdressing = this.IsDirectSend();
-        if(isDirectAdressing){ // Direccionamiento Directo
-            
-            boolean receiveDirectExplicit = this.isReceiveExplicit();
-            
-            if(receiveDirectExplicit){ // Receive Directo Explicito
-                boolean envio = agregarIdFuenteAMensaje(contenido, idProcesoFuente);
-                System.out.println(this.colaMensajes.getListaMensajes().toString());
-                return envio;
-            }          
-            else{ // Receive Directo Implicito
-                boolean envio = agregarIdFuenteAMensaje(contenido, idProcesoFuente);
-                if(envio){
-                   agregarFuenteImplicito(contenido, idProcesoFuente); 
-                }
-                System.out.println(this.colaMensajes.getListaMensajes().toString());
-                return envio;
-            }
-            
-        }
-        else{ // Direccionamiento Indirecto
-            boolean isIndirectStatic = this.isReceiveIndirectStatic();
-            if(isIndirectStatic){ // Direccionamiento indirecto estatico
-                
-                
-                Mensaje mensaje = this.casilleroMensaje.SacarMensaje();
-                String contenidoMensaje = (String)mensaje.getContenido();
-                Mensaje mensaje2 = this.colaMensajes.encontrarMensaje(contenido);
-                System.out.println("Recieve Indirecto estatico");
-                return false;
-                
-            }
-            else{ // Direccionamiento indirecto dinamico
-                System.out.println("Recieve Indirecto dinamico");
-                return false;
-            }
-        }
-        
-  
-    }
+    
     public boolean Create(String contenido){
         
         
         String tipoContenido = this.configuracionSistema.getFormato().getContenido();
         
-        int idMensaje = Singleton.getInstance().getCantidadMensajesCreados();
+        
+        int tamanoCola = Singleton.getInstance().getControlador().getColaMensajes().getListaMensajes().size();
         int maximo = Singleton.getInstance().getControlador().getColaMensajes().getTamano();
         
-        if(idMensaje<maximo){
+        if(tamanoCola<maximo){
+            int idMensaje = Singleton.getInstance().getCantidadMensajesCreados();
             int largo = this.configuracionSistema.getFormato().getTamano();
 
-            Mensaje mensaje = new Mensaje(idMensaje, tipoContenido, 0, 0, largo, contenido);
+            Mensaje mensaje = new Mensaje(idMensaje, tipoContenido, -1, -1, largo, contenido);
 
             // Agrega mensaje a la cola de mensajes
             Singleton.getInstance().getControlador().AgregarMensaje(mensaje);
@@ -155,7 +116,7 @@ public class Controlador {
             cantidadMensajes++;
 
             Singleton.getInstance().setCantidadMensajesCreados(cantidadMensajes);
-            Singleton.getInstance().getControlador().colaMensajes.ImprimirColaMensaje();
+            //Singleton.getInstance().getControlador().colaMensajes.ImprimirColaMensaje();
             return true;
         }
         
@@ -167,18 +128,19 @@ public class Controlador {
         boolean sendDirect = this.IsDirectSend();
         boolean sendBlocking = this.isBlockingSend();
         
-        if(sendDirect){ // Direccionamiento Directo
-            
+        if(sendDirect){ // Direccionamiento Directo    (FiFo/Prioridad)
+
             boolean agregarMensaje = agregarIdDestinoAMensaje(contenidoMensaje, destino);
             
             if(!agregarMensaje){ // El mensaje no se puedo enviar ya que el proceso esta bloqueado
                 return false;
             }
             boolean receiveDirectExplicit = this.isReceiveExplicit();
-            
+
             if(receiveDirectExplicit){
                 agregarFuenteExplicito(contenidoMensaje, destino);
             }
+            efectuarManejoCola();
         } // Direccionamiento Indirecto
         else{ 
             boolean isIndirectStatic = this.isReceiveIndirectStatic();
@@ -186,21 +148,68 @@ public class Controlador {
                 System.out.println("Direccionamiento Indirecto estatico");
                 Mensaje mensaje = this.colaMensajes.encontrarMensaje(contenidoMensaje);
                 boolean agregar = this.casilleroMensaje.AgregarMensajeEstatico(mensaje);
-                
-                //System.out.println("Casillero: "+this.getCasilleroMensaje().getListaMensajes().toString());
                 return agregar;
-            
             }else{
                 System.out.println("Direccionamiento Indirecto dinamico");
                 Mensaje mensaje = this.colaMensajes.encontrarMensaje(contenidoMensaje);
                 this.casilleroMensaje.AgregarMensajeDinamico(mensaje);         
-                System.out.println("Casillero: "+this.getCasilleroMensaje().getListaMensajes().toString());
             }
              
         }
         
         return true;
         
+    }
+    
+    public boolean Receive(int idProcesoFuente, String contenido){
+        
+        
+        boolean isDirectAdressing = this.IsDirectSend();
+        if(isDirectAdressing){ // Direccionamiento Directo (FiFo/Prioridad)
+            
+            boolean receiveDirectExplicit = this.isReceiveExplicit();
+            
+            if(receiveDirectExplicit){ // Receive Directo Explicito
+                boolean envio = agregarIdFuenteAMensaje(contenido, idProcesoFuente);
+                efectuarManejoCola();
+                return envio;
+            }          
+            else{ // Receive Directo Implicito
+                boolean envio = agregarIdFuenteAMensaje(contenido, idProcesoFuente);
+                if(envio){
+                   agregarFuenteImplicito(contenido, idProcesoFuente); 
+                }
+                efectuarManejoCola();
+                return envio;
+            }
+            
+        }
+        else{ // Direccionamiento Indirecto
+            
+            Mensaje mensaje = this.casilleroMensaje.SacarMensaje();
+            boolean eliminado = this.colaMensajes.getListaMensajes().remove(mensaje);
+            if(eliminado){
+                this.colaMensajesProcesados.agregarMensaje(mensaje);
+                return eliminado;
+            }
+            return false;
+        }
+       
+    }
+    
+    public void efectuarManejoCola(){
+        if(this.getConfiguracionSistema().getManejoColas().getTipo().equals("FIFO")){ //FIFO
+            Mensaje msg = this.primeroColaMensajes();
+            String contenido = (String) msg.getContenido();
+            if(completitudMensaje(contenido)){
+                if(this.getColaMensajes().getListaMensajes().size()>0){
+                    efectuarManejoCola();
+                }
+            }
+
+        }else{ //prioridad
+            
+        }
     }
     
     public void setSolicitud(Solicitudes solicitudes){
@@ -258,7 +267,43 @@ public class Controlador {
         }
         
     }
-        
+    
+    public boolean completitudMensaje(String contenidoMensaje){
+        String contenidoActual;
+        Mensaje mensaje;
+        for(int i=0;i<this.colaMensajes.getListaMensajes().size();i++){
+            mensaje = (Mensaje) this.colaMensajes.getListaMensajes().get(i);
+            contenidoActual = (String) mensaje.getContenido();
+            if (contenidoActual.equals(contenidoMensaje)){
+                if(mensaje.getDestino()!=-1 && mensaje.getFuente()!=-1){
+                    this.colaMensajesProcesados.getListaMensajes().add(mensaje);
+                    return colaMensajes.removerMensaje(mensaje);
+                }else{
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public boolean evaluarFiFo(String operacion){
+        Mensaje mensaje = (Mensaje) this.colaMensajes.getListaMensajes().get(0);
+        if(operacion.equals("Send")){
+            if(mensaje.getFuente()!=-1){
+                return true;
+            }
+        }else{
+            if(mensaje.getDestino()!=-1){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public Mensaje primeroColaMensajes(){
+        return (Mensaje) this.colaMensajes.getListaMensajes().get(0);
+    }
+    
     public Mensaje encontrarMensaje(String contenidoMensaje){
         Mensaje mensaje = this.colaMensajes.encontrarMensaje(contenidoMensaje);
         return mensaje;
@@ -342,6 +387,14 @@ public class Controlador {
 
     public void setListaSolicitudes(ListaSolicitudes listaSolicitudes) {
         this.listaSolicitudes = listaSolicitudes;
+    }
+
+    public ColaMensajes getColaMensajesProcesados() {
+        return colaMensajesProcesados;
+    }
+
+    public void setColaMensajesProcesados(ColaMensajes colaMensajesProcesados) {
+        this.colaMensajesProcesados = colaMensajesProcesados;
     }
     
     

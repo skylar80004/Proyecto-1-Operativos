@@ -481,6 +481,10 @@ public class Settings extends javax.swing.JFrame {
         //lista Solicitudes
         ListaSolicitudes listaSolicitudes = new ListaSolicitudes();
         Singleton.getInstance().getControlador().setListaSolicitudes(listaSolicitudes);
+        
+        //Cola mensajes procesados
+        ColaMensajes colaMensajesProcesados = new ColaMensajes(-1);
+        Singleton.getInstance().getControlador().setColaMensajesProcesados(colaMensajesProcesados);
         this.dispose();
     }//GEN-LAST:event_jButton_guardarSettingsActionPerformed
 

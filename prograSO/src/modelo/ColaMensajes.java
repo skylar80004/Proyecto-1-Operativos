@@ -69,6 +69,11 @@ public class ColaMensajes {
         }
         return null;
     }
+    
+    public boolean removerMensaje(Mensaje mensaje){
+        return listaMensajes.remove(mensaje);
+    }
+    
     public void agregarMensaje(Mensaje mensaje){
         this.listaMensajes.add(mensaje);
         

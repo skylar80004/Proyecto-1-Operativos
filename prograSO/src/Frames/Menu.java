@@ -635,7 +635,6 @@ public class Menu extends javax.swing.JFrame {
         String tituloBarra = "Send";
         
         if(send){
-          
             contenidoMensajeDialog = "Se ha enviado el mensaje";
             this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
             
@@ -658,14 +657,22 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         String idProcesoFuenteString = (String)this.jComboBox_receiveSource.getSelectedItem();
         String contenidoMensaje = (String)this.jComboBox_receiveMsg.getSelectedItem();
-        int idProcesoFuente = Integer.parseInt(idProcesoFuenteString);
+        int idProcesoFuente;
+        
+        try{
+            idProcesoFuente = Integer.parseInt(idProcesoFuenteString);
+            
+        }
+        catch(Exception e){
+            idProcesoFuente = 0;
+            
+        }
         
         boolean receive = Singleton.getInstance().getControlador().Receive(idProcesoFuente,contenidoMensaje);
         String contenidoMensajeDialog = "";
         String tituloBarra = "Receive";
         
         if(receive){
-          
             contenidoMensajeDialog = "Receive procesado";
             this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
             
