@@ -25,6 +25,7 @@ public class ColaMensajes {
     public String getStringColaMensajes(){
         
         String cola = "";
+        
         int id;
         String tipo ; 
         int destino;

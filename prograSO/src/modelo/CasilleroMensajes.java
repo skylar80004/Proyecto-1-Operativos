@@ -35,6 +35,40 @@ public class CasilleroMensajes {
     
     
     
+    public String getCasilleroString(){
+        
+        String casillero = "";
+        String mensajeActual;
+        String mensajeCompleto = "";
+        
+        int id;
+        String tipo ; 
+        int destino;
+        int fuente;
+        int largo;
+        String contenido;
+        
+        
+        for(Mensaje mensaje : this.listaMensajes){
+            
+            id = mensaje.getId();
+            contenido = (String)mensaje.getContenido();
+            tipo = mensaje.getTipo();
+            destino = mensaje.getDestino();
+            fuente = mensaje.getFuente();
+            largo = mensaje.getLargo();
+            
+            mensajeCompleto = "ID: " + String.valueOf(id) + " Contenido: " 
+                    + contenido + " Destino: " + 
+                    String.valueOf(destino) + " Fuente: " + String.valueOf(fuente) 
+                    + " Largo: " + largo  + "\n"; 
+            
+            casillero = casillero + mensajeCompleto;
+            
+        }
+        return casillero;
+    }
+    
     public Mensaje SacarMensaje(){ // Las listas de mensajes son paralelas
         
         if(this.manejoCola.equals("FIFO")){
