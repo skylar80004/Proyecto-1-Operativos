@@ -714,8 +714,16 @@ public class Menu extends javax.swing.JFrame {
     private void jButton_playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_playActionPerformed
         // TODO add your handling code here:
         
-        Display display = new Display();
-        display.show();
+        
+        if(Singleton.getInstance().getControlador().getColaProcesos() == null){
+            this.mensajeDialog("Falta Configuracion", "Falta Configuracion");
+        }
+        else{
+            Display display = new Display();
+            display.show();
+            
+        }
+        
     }//GEN-LAST:event_jButton_playActionPerformed
 
     /**

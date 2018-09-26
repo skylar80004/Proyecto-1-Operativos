@@ -5,6 +5,10 @@
  */
 package Frames;
 
+import Controlador.Singleton;
+import java.util.ArrayList;
+import modelo.Proceso;
+
 /**
  *
  * @author Rigo-PC
@@ -19,6 +23,7 @@ public class Display extends javax.swing.JFrame {
         initComponents();
         this.jLabel_N.setVisible(false);
         this.jTextField_nProcesos.setVisible(false);
+        this.LlenarComboBox();
     }
 
     /**
@@ -40,7 +45,7 @@ public class Display extends javax.swing.JFrame {
         jTextField_nProcesos = new javax.swing.JTextField();
         jLabel_N = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTextArea_logEventos = new javax.swing.JTextArea();
 
         jToggleButton1.setText("jToggleButton1");
 
@@ -63,12 +68,17 @@ public class Display extends javax.swing.JFrame {
         });
 
         jButton_verLogEventos.setText("Ver Log de Eventos");
+        jButton_verLogEventos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_verLogEventosActionPerformed(evt);
+            }
+        });
 
         jLabel_N.setText("N:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jTextArea_logEventos.setColumns(20);
+        jTextArea_logEventos.setRows(5);
+        jScrollPane1.setViewportView(jTextArea_logEventos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,6 +143,28 @@ public class Display extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jComboBox_opcionLogEventoActionPerformed
 
+    
+    private void LlenarComboBox(){
+        
+        ArrayList<Proceso> listaProcesos = Singleton.getInstance().getControlador().getColaProcesos().getListaProcesos();
+        int idProceso ;
+        String idProcesoString;
+        this.jComboBox_Procesos.removeAllItems();;
+        for(Proceso proceso: listaProcesos){
+            
+            idProceso = proceso.getIdentificador();
+            idProcesoString = String.valueOf(idProceso);
+            this.jComboBox_Procesos.addItem(idProcesoString);
+        }
+    }
+    private void jButton_verLogEventosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_verLogEventosActionPerformed
+        // TODO add your handling code here:
+        
+        
+        String idProcesoString = (String)this.jComboBox_Procesos.getSelectedItem();
+        int idProceso = Integer.parseInt(idProcesoString);
+    }//GEN-LAST:event_jButton_verLogEventosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -177,7 +209,7 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel_N;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea_logEventos;
     private javax.swing.JTextField jTextField_nProcesos;
     private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
