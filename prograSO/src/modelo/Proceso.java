@@ -29,12 +29,12 @@ public class Proceso {
         this.prioridad = prioridad;
         this.logEventos = new ArrayList<String>();
     }
-
     
     
     public void AgregarEvento(String evento){
         this.logEventos.add(evento);
     }
+    
     public String getEstadoSend() {
         return estadoSend;
     }

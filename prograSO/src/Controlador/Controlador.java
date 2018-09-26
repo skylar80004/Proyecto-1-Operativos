@@ -362,6 +362,7 @@ public class Controlador {
         
         String estadoSend ;
         String estadoReceive;
+        String evento;
         for(int i = 0; i < cantidadProcesos; i++){
             
             identificador = Singleton.getInstance().getCantidadProcesosCreados();
@@ -371,6 +372,12 @@ public class Controlador {
             estadoReceive = this.configuracionSistema.getSincronizacion().getReceive();
             
             Proceso proceso = new Proceso(identificador,estadoSend,estadoReceive,identificador);
+            int idProceso = proceso.getIdentificador();
+            
+            // Evento de creacion
+            evento = "El proceso " + String.valueOf(idProceso) + " fue creado";
+            proceso.AgregarEvento(evento);
+            
             identificador++;
             Singleton.getInstance().setCantidadProcesosCreados(identificador);
             
