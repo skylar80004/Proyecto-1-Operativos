@@ -68,6 +68,14 @@ public class ColaProcesos {
     }
 
 
-
+    public void agregarEventoProceso(int proceso,String evento){
+        for(int i=0;i<this.listaProcesos.size();i++){
+            Proceso proc = this.listaProcesos.get(i);
+            if(proc.getIdentificador()==proceso){
+                proc.AgregarEvento(evento);
+                this.listaProcesos.set(i, proc);
+            }
+        }
+    }
 
 }

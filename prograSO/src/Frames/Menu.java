@@ -640,11 +640,15 @@ public class Menu extends javax.swing.JFrame {
         String tituloBarra = "Send";
         
         if(send){
+            String var = "El proceso: "+String.valueOf(idProcesoDestino)+" pudo recibir el mensaje: "+contenidoMensaje;
+            Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoDestino,var);
             contenidoMensajeDialog = "Se ha enviado el mensaje";
             this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
             
         }
         else{
+            String var = "El proceso: "+String.valueOf(idProcesoDestino)+" no pudo recibir el mensaje: "+contenidoMensaje;
+            Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoDestino,var);
             contenidoMensajeDialog = "El mensaje no se pudo enviar";
             this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
         }
@@ -678,11 +682,15 @@ public class Menu extends javax.swing.JFrame {
         String tituloBarra = "Receive";
         
         if(receive){
+            String var = "El proceso: "+String.valueOf(idProcesoFuente)+" pudo enviar el mensaje: "+contenidoMensaje;
+            Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var);
             contenidoMensajeDialog = "Receive procesado";
             this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
             
         }
         else{
+            String var = "El proceso: "+String.valueOf(idProcesoFuente)+"no pudo enviar el mensaje: "+contenidoMensaje;
+            Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var);
             contenidoMensajeDialog = "Receive no procesado";
             this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
         }
@@ -708,7 +716,8 @@ public class Menu extends javax.swing.JFrame {
 
     private void jButton_GuardarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_GuardarDatosActionPerformed
         // TODO add your handling code here:
-        System.out.println(""+Singleton.getInstance().getControlador().getListaSolicitudes().getListaSolicitudes().toString());
+        System.out.println(Singleton.getInstance().getControlador().determinarPrioridadMensajes());
+        //System.out.println(""+Singleton.getInstance().getControlador().getListaSolicitudes().getListaSolicitudes().toString());
     }//GEN-LAST:event_jButton_GuardarDatosActionPerformed
 
     private void jButton_playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_playActionPerformed

@@ -5,6 +5,7 @@
  */
 package Controlador;
 
+import java.util.ArrayList;
 import modelo.CasilleroMensajes;
 import modelo.ColaMensajes;
 import modelo.ColaProcesos;
@@ -132,7 +133,7 @@ public class Controlador {
 
             boolean agregarMensaje = agregarIdDestinoAMensaje(contenidoMensaje, destino);
             
-            if(!agregarMensaje){ // El mensaje no se puedo enviar ya que el proceso esta bloqueado
+            if(!agregarMensaje){ // El mensaje no se puedo enviar ya que el proceso esta bloqueado               
                 return false;
             }
             boolean receiveDirectExplicit = this.isReceiveExplicit();
@@ -208,9 +209,48 @@ public class Controlador {
             }
 
         }else{ //prioridad
-            
+            System.out.println(determinarPrioridadMenor(determinarPrioridadMensajes()));
         }
     }
+    
+    public ArrayList<Integer> determinarPrioridadMensajes(){
+        ArrayList<Integer> listaPrioridad = new ArrayList<>();
+        
+        for(int i=0;i<this.colaMensajes.getListaMensajes().size();i++){
+           Mensaje msg = (Mensaje) this.colaMensajes.getListaMensajes().get(i);
+           int fuente = msg.getFuente();
+           int destino = msg.getDestino();
+           int prioridadFuente = obtenerPrioridadProceso(fuente);
+           int prioridadDestino = obtenerPrioridadProceso(destino);
+           listaPrioridad.add(prioridadDestino+prioridadFuente);
+        
+        }
+        
+        return listaPrioridad;
+    }
+    
+    public int determinarPrioridadMenor(ArrayList<Integer> prioridades){
+        int result=0;
+        int valor=prioridades.get(0);
+        int valor1=0;
+        for(int i=1;i<prioridades.size();i++){
+            valor1 = prioridades.get(i);
+            if(valor1>=0){
+                if(valor1<valor){
+                    result=i;
+                }
+            }
+        }
+        return result;
+    }
+    
+    public int obtenerPrioridadProceso(int proceso){
+        if(proceso==-1){
+            return -999;
+        }
+        return this.getColaProcesos().getListaProcesos().get(proceso).getPrioridad();
+    }
+    
     
     public void setSolicitud(Solicitudes solicitudes){
         this.listaSolicitudes.getListaSolicitudes().add(solicitudes);
