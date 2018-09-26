@@ -18,6 +18,7 @@ public class CasilleroMensajes {
     
     private Queue<Mensaje> listaMensajesCola;
     private ArrayList<Mensaje> listaMensajes; 
+    private ArrayList<Integer> listaPrioridades;
     private int largoMaximo;
     private String manejoCola;
     private String tipoLargo; 
@@ -26,12 +27,13 @@ public class CasilleroMensajes {
     
     public CasilleroMensajes(int largoMaximo, String manejoCola, String tipoLargo){
         
-        listaMensajes = new ArrayList<Mensaje>();
-        listaMensajesCola = new LinkedList<Mensaje>();
+        listaMensajes = new ArrayList<>();
+        listaMensajesCola = new LinkedList<>();
+        listaPrioridades = new ArrayList<>();
         this.largoMaximo = largoMaximo;
         this.manejoCola = manejoCola;
         this.tipoLargo = tipoLargo;
-  
+        
     }
     
     
@@ -48,8 +50,9 @@ public class CasilleroMensajes {
         int fuente;
         int largo;
         String contenido;
+        int prioridad;
         
-        
+        int i=0;
         for(Mensaje mensaje : this.listaMensajes){
             
             id = mensaje.getId();
@@ -58,14 +61,15 @@ public class CasilleroMensajes {
             destino = mensaje.getDestino();
             fuente = mensaje.getFuente();
             largo = mensaje.getLargo();
-            
+            prioridad = listaPrioridades.get(i);
+            System.out.println(".-.-.-.-.-.");
             mensajeCompleto = "ID: " + String.valueOf(id) + " Contenido: " 
                     + contenido + " Destino: " + 
                     String.valueOf(destino) + " Fuente: " + String.valueOf(fuente) 
-                    + " Largo: " + largo  + "\n"; 
+                    + " Largo: " + largo +" Prioridad: "+String.valueOf(prioridad) + "\n"; 
             
             casillero = casillero + mensajeCompleto;
-            
+            i+=1;
         }
         return casillero;
     }
@@ -91,76 +95,22 @@ public class CasilleroMensajes {
                     listaMensajes.remove(i);
                 }
             }
-            
-            //Singleton.getInstance().getControlador().getColaMensajes().removerMensaje(mensaje);
-            //Singleton.getInstance().getControlador().getColaMensajesProcesados().agregarMensaje(mensaje);
+
             return mensaje;
 
         }
         else{ // Prioridad
             
+            int prioridadActual = determinarPrioridadMenor(listaPrioridades);
             
-            int prioridadActual = 0 ;
-            int prioridadTemporal = 0 ;
-            for(Mensaje mensaje: this.listaMensajes){
-                             
-                prioridadTemporal = mensaje.getDestino();
-                if(prioridadTemporal < prioridadActual){
-                    prioridadActual = prioridadTemporal;
-                }    
-            }
-            
-            
-            Mensaje mensajeARetornar = null;
-            
-            for(Mensaje mensaje : this.listaMensajes){
-                
-                if(mensaje.getDestino() == prioridadActual){
-                    mensajeARetornar = mensaje;
-                    break;
-                }
-                
-            }
+            Mensaje mensajeARetornar = listaMensajes.get(prioridadActual);
             
             this.listaMensajesCola.remove(mensajeARetornar); 
+            listaMensajes.remove(mensajeARetornar);
             return mensajeARetornar;
 
         }
         
-    }
-    
-    public Mensaje EncontrarMensaje(String contenidoMensaje){
-        
-        
-        
-        String contenidoActual;
-        for(Mensaje mensaje : listaMensajes){
-            
-            contenidoActual = (String)mensaje.getContenido();
-            if (contenidoActual.equals(contenidoMensaje)){
-                return mensaje;
-            }
-        }
-        return null;
-    
-        
-    }
-    
-    public void ejecutarPrioridades(){
-        int cantidad = this.listaMensajes.size();
-        ArrayList<Integer> listaPrioridades;
-        int pos;
-        
-        for(int i=0;i<cantidad;i++){
-            listaPrioridades = determinarPrioridadMensajes();
-            pos = determinarPrioridadMenor(listaPrioridades);
-            //System.out.println("Posicion menor prioridad: "+pos);
-            Mensaje msg = (Mensaje) this.listaMensajes.get(pos);
-            String contenido = (String) msg.getContenido();
-            if(Singleton.getInstance().getControlador().completitudMensaje(contenido)){
-                //System.out.println("Elimino un valor");
-            }
-        }
     }
     
     public ArrayList<Integer> determinarPrioridadMensajes(){
@@ -208,6 +158,8 @@ public class CasilleroMensajes {
             
             this.listaMensajes.add(mensaje);
             this.listaMensajesCola.add(mensaje);
+            int numero = (int) (Math.random() * 10) + 1;
+            listaPrioridades.add(numero);
             return true;
             
         }
@@ -222,6 +174,8 @@ public class CasilleroMensajes {
 
         this.listaMensajes.add(mensaje);
         this.listaMensajesCola.add(mensaje);
+        int numero = (int) (Math.random() * 10) + 1;
+        listaPrioridades.add(numero);
         return true;
         
     }

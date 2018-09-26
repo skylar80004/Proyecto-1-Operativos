@@ -585,6 +585,7 @@ public class Menu extends javax.swing.JFrame {
                 this.jComboBox_receiveMsg.addItem(contenidoMensaje);
             }
             this.jComboBox_receiveSource.setVisible(false);
+            this.jComboBox_receiveMsg.setVisible(false);
         }
   
     }//GEN-LAST:event_jButton_receiveActionPerformed
@@ -600,12 +601,14 @@ public class Menu extends javax.swing.JFrame {
         int largoMaximo = Singleton.getInstance().getControlador().getConfiguracionSistema().getFormato().getTamano();
         
         
-        if(largoMensaje > largoMaximo){
+        if(Singleton.getInstance().getControlador().getConfiguracionSistema().getFormato().getLargo().equals("Largo Fijo")){
+            if(largoMensaje > largoMaximo){
             
-            String mensajeDialog = "El tamaño del mensaje es mayor que el permitido";
-            String tituloBarra = "Tamano no permitido";
-            this.mensajeDialog(mensajeDialog, tituloBarra);
-            return;
+                String mensajeDialog = "El tamaño del mensaje es mayor que el permitido";
+                String tituloBarra = "Tamano no permitido";
+                this.mensajeDialog(mensajeDialog, tituloBarra);
+                return;
+            }
         }
         
         //Comando Create
