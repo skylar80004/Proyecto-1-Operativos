@@ -109,7 +109,7 @@ public class CasilleroMensajes {
         
     }
     
-    public boolean AgregarMensaje(Mensaje mensaje){
+    public boolean AgregarMensajeEstatico(Mensaje mensaje){
         
         
         int largoActual = this.listaMensajes.size();
@@ -127,6 +127,14 @@ public class CasilleroMensajes {
         
     }
 
+    public boolean AgregarMensajeDinamico(Mensaje mensaje){
+
+        this.listaMensajes.add(mensaje);
+        this.listaMensajesCola.add(mensaje);
+        return true;
+        
+    }
+    
     public ArrayList<Mensaje> getListaMensajes() {
         return listaMensajes;
     }

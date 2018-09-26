@@ -83,9 +83,6 @@ public class Controlador {
         
     }
     
-    
-
-    
     public boolean isReceiveExplicit(){
         
         return this.configuracionSistema.getDireccionamiento().isReceiveExplicit();
@@ -106,6 +103,7 @@ public class Controlador {
             
             if(receiveDirectExplicit){ // Receive Directo Explicito
                 boolean envio = agregarIdFuenteAMensaje(contenido, idProcesoFuente);
+                System.out.println(this.colaMensajes.getListaMensajes().toString());
                 return envio;
             }          
             else{ // Receive Directo Implicito
@@ -113,6 +111,7 @@ public class Controlador {
                 if(envio){
                    agregarFuenteImplicito(contenido, idProcesoFuente); 
                 }
+                System.out.println(this.colaMensajes.getListaMensajes().toString());
                 return envio;
             }
             
@@ -137,26 +136,32 @@ public class Controlador {
         
   
     }
-    public void Create(String contenido){
+    public boolean Create(String contenido){
         
         
         String tipoContenido = this.configuracionSistema.getFormato().getContenido();
+        
         int idMensaje = Singleton.getInstance().getCantidadMensajesCreados();
-        //String largoString = this.configuracionSistema.getFormato().getTamano();
-        int largo = this.configuracionSistema.getFormato().getTamano();
+        int maximo = Singleton.getInstance().getControlador().getColaMensajes().getTamano();
         
+        if(idMensaje<maximo){
+            int largo = this.configuracionSistema.getFormato().getTamano();
+
+            Mensaje mensaje = new Mensaje(idMensaje, tipoContenido, 0, 0, largo, contenido);
+
+            // Agrega mensaje a la cola de mensajes
+            Singleton.getInstance().getControlador().AgregarMensaje(mensaje);
+            int cantidadMensajes = Singleton.getInstance().getCantidadMensajesCreados();
+            cantidadMensajes++;
+
+            Singleton.getInstance().setCantidadMensajesCreados(cantidadMensajes);
+            Singleton.getInstance().getControlador().colaMensajes.ImprimirColaMensaje();
+            return true;
+        }
         
-        Mensaje mensaje = new Mensaje(idMensaje, tipoContenido, 0, 0, largo, contenido);
-        
-        // Agrega mensaje a la cola de mensajes
-        Singleton.getInstance().getControlador().AgregarMensaje(mensaje);
-        int cantidadMensajes = Singleton.getInstance().getCantidadMensajesCreados();
-        cantidadMensajes++;
-        
-        Singleton.getInstance().setCantidadMensajesCreados(cantidadMensajes);
-        Singleton.getInstance().getControlador().colaMensajes.ImprimirColaMensaje();
-        
+        return false;
     }
+    
     public boolean Send(int destino, String contenidoMensaje){
         
         boolean sendDirect = this.IsDirectSend();
@@ -175,37 +180,26 @@ public class Controlador {
                 agregarFuenteExplicito(contenidoMensaje, destino);
             }
         } // Direccionamiento Indirecto
-        else{
-            System.out.println("Direccionamiento Indirecto");
+        else{ 
+            boolean isIndirectStatic = this.isReceiveIndirectStatic();
+            if(isIndirectStatic){ // Direccionamiento indirecto estatico
+                System.out.println("Direccionamiento Indirecto estatico");
+                Mensaje mensaje = this.colaMensajes.encontrarMensaje(contenidoMensaje);
+                boolean agregar = this.casilleroMensaje.AgregarMensajeEstatico(mensaje);
+                
+                //System.out.println("Casillero: "+this.getCasilleroMensaje().getListaMensajes().toString());
+                return agregar;
             
-            Mensaje mensaje = this.colaMensajes.encontrarMensaje(contenidoMensaje);
-            boolean agregar = this.casilleroMensaje.AgregarMensaje(mensaje);
-            
-            if(!agregar){
-                System.out.println("No se agrego");
-                return false;
+            }else{
+                System.out.println("Direccionamiento Indirecto dinamico");
+                Mensaje mensaje = this.colaMensajes.encontrarMensaje(contenidoMensaje);
+                this.casilleroMensaje.AgregarMensajeDinamico(mensaje);         
+                System.out.println("Casillero: "+this.getCasilleroMensaje().getListaMensajes().toString());
             }
-            
-            int largoActualCasillero = this.casilleroMensaje.getListaMensajes().size();
-            int largoMaximo = this.casilleroMensaje.getLargoMaximo();
-            System.out.println("Largo maximo del casillero: " + largoMaximo );
-            System.out.println("Cantidad de mensajes en el casillero: " + largoActualCasillero);
-
-            // El mensaje ya se encuentra en la cola de mensajes       
+             
         }
-        
-        // Synchronization
-        
-        /*
-        if(sendBlocking){
-            this.CambiarEstadoProceso(destino, "Blocked");
-        }
-        */
-        
         
         return true;
-        
-        
         
     }
     

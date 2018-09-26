@@ -554,27 +554,31 @@ public class Menu extends javax.swing.JFrame {
             }
             
             // Opciones de Mensaje
-        ColaMensajes colaMensajes = Singleton.getInstance().getControlador().getColaMensajes();
-        ArrayList<Mensaje> listaMensajes = colaMensajes.getListaMensajes();
-        String contenidoMensaje;
-        
-        this.jComboBox_receiveMsg.removeAllItems();
-        for(Mensaje mensaje: listaMensajes){
-            contenidoMensaje = (String)mensaje.getContenido();
-            this.jComboBox_receiveMsg.addItem(contenidoMensaje);
-        }
+            ColaMensajes colaMensajes = Singleton.getInstance().getControlador().getColaMensajes();
+            ArrayList<Mensaje> listaMensajes = colaMensajes.getListaMensajes();
+            String contenidoMensaje;
+
+            this.jComboBox_receiveMsg.removeAllItems();
+            for(Mensaje mensaje: listaMensajes){
+                contenidoMensaje = (String)mensaje.getContenido();
+                this.jComboBox_receiveMsg.addItem(contenidoMensaje);
+            }
         
             
-        }
-        else{   
-            this.jComboBox_receiveMsg.setVisible(false);
-        }
+        }else{   
+                // Opciones de Mensaje
+            ColaMensajes colaMensajes = Singleton.getInstance().getControlador().getColaMensajes();
+            ArrayList<Mensaje> listaMensajes = colaMensajes.getListaMensajes();
+            String contenidoMensaje;
 
-        
-        
-        
-        
-        
+            this.jComboBox_receiveMsg.removeAllItems();
+            for(Mensaje mensaje: listaMensajes){
+                contenidoMensaje = (String)mensaje.getContenido();
+                this.jComboBox_receiveMsg.addItem(contenidoMensaje);
+            }
+            this.jComboBox_receiveSource.setVisible(false);
+        }
+  
     }//GEN-LAST:event_jButton_receiveActionPerformed
 
     private void jButton_ejecutarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ejecutarCActionPerformed
@@ -586,14 +590,21 @@ public class Menu extends javax.swing.JFrame {
         
         
         //Comando Create
-        Singleton.getInstance().getControlador().Create(contenido);
+        boolean estado = Singleton.getInstance().getControlador().Create(contenido);
         
+        if(estado){
+            String mensajeDialogoContenido = "Se ha creado el mensaje";
+            String tituloDialogoContenido = "Mensaje creado";
+            this.mensajeDialog(mensajeDialogoContenido ,tituloDialogoContenido);
+        }else{
+            String mensajeDialogoContenido = "No se ha creado el mensaje";
+            String tituloDialogoContenido = "Mensaje no creado";
+            this.mensajeDialog(mensajeDialogoContenido ,tituloDialogoContenido);
+        }
 
-        String mensajeDialogoContenido = "Se ha creado el mensaje";
-        String tituloDialogoContenido = "Mensaje creado";
-        this.mensajeDialog(mensajeDialogoContenido ,tituloDialogoContenido);
         
-        Singleton.getInstance().getControlador().getColaMensajes().ImprimirColaMensaje();
+        
+        //Singleton.getInstance().getControlador().getColaMensajes().ImprimirColaMensaje();
         
         
         

@@ -85,6 +85,11 @@ public class Mensaje {
     public void setContenido(Object contenido) {
         this.contenido = contenido;
     }
+
+    @Override
+    public String toString() {
+        return "Mensaje{" + "id=" + id + ", tipo=" + tipo + ", destino=" + destino + ", fuente=" + fuente + ", largo=" + largo + ", contenido=" + contenido + '}';
+    }
     
     
 }
