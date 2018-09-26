@@ -5,6 +5,7 @@
  */
 package modelo;
 
+import Controlador.Singleton;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -91,6 +92,8 @@ public class CasilleroMensajes {
                 }
             }
             
+            //Singleton.getInstance().getControlador().getColaMensajes().removerMensaje(mensaje);
+            //Singleton.getInstance().getControlador().getColaMensajesProcesados().agregarMensaje(mensaje);
             return mensaje;
 
         }
@@ -141,6 +144,60 @@ public class CasilleroMensajes {
         return null;
     
         
+    }
+    
+    public void ejecutarPrioridades(){
+        int cantidad = this.listaMensajes.size();
+        ArrayList<Integer> listaPrioridades;
+        int pos;
+        
+        for(int i=0;i<cantidad;i++){
+            listaPrioridades = determinarPrioridadMensajes();
+            pos = determinarPrioridadMenor(listaPrioridades);
+            //System.out.println("Posicion menor prioridad: "+pos);
+            Mensaje msg = (Mensaje) this.listaMensajes.get(pos);
+            String contenido = (String) msg.getContenido();
+            if(Singleton.getInstance().getControlador().completitudMensaje(contenido)){
+                //System.out.println("Elimino un valor");
+            }
+        }
+    }
+    
+    public ArrayList<Integer> determinarPrioridadMensajes(){
+        ArrayList<Integer> listaPrioridad = new ArrayList<>();
+        for(int i=0;i<this.listaMensajes.size();i++){
+           Mensaje msg = (Mensaje) this.listaMensajes.get(i);
+           int fuente = msg.getFuente();
+           int destino = msg.getDestino();
+           int prioridadFuente = obtenerPrioridadProceso(fuente);
+           int prioridadDestino = obtenerPrioridadProceso(destino);
+           listaPrioridad.add(prioridadDestino+prioridadFuente);
+        
+        }
+        
+        return listaPrioridad;
+    }
+    
+    public int determinarPrioridadMenor(ArrayList<Integer> prioridades){
+        int result=0;
+        int valor=prioridades.get(0);
+        int valor1=0;
+        for(int i=1;i<prioridades.size();i++){
+            valor1 = prioridades.get(i);
+            //if(valor1>=0){
+                if(valor1<valor){
+                    result=i;
+                }
+            //}
+        }
+        return result;
+    }
+    
+    public int obtenerPrioridadProceso(int proceso){
+        if(proceso==-1){
+            return -999;
+        }
+        return Singleton.getInstance().getControlador().getColaProcesos().getListaProcesos().get(proceso).getPrioridad();
     }
     
     public boolean AgregarMensajeEstatico(Mensaje mensaje){
