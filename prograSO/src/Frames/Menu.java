@@ -14,7 +14,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileSystemView;
+import modelo.Batch;
 import modelo.ColaMensajes;
 import modelo.ColaProcesos;
 import modelo.ConfiguracionSistema;
@@ -727,7 +730,29 @@ public class Menu extends javax.swing.JFrame {
 
     private void jButton_GuardarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_GuardarDatosActionPerformed
         // TODO add your handling code here:
-        System.out.println(Singleton.getInstance().getControlador().determinarPrioridadMensajes());
+        
+        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+
+        int returnValue = jfc.showOpenDialog(null);
+		// int returnValue = jfc.showSaveDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = jfc.getSelectedFile();
+            Batch batch = new Batch();
+            
+            try {
+                batch.leerArchivo(selectedFile);
+                this.mensajeDialog("Configuracion Lista", "Configuracion");
+            } catch (IOException ex) {
+                this.mensajeDialog("El archivo no puedo ser leido", "Error en el archivo");
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            System.out.println(selectedFile.getAbsolutePath());
+        }
+                
+                
+
+       // System.out.println(Singleton.getInstance().getControlador().determinarPrioridadMensajes());
         //System.out.println(""+Singleton.getInstance().getControlador().getListaSolicitudes().getListaSolicitudes().toString());
     }//GEN-LAST:event_jButton_GuardarDatosActionPerformed
 
