@@ -127,6 +127,11 @@ public class Menu extends javax.swing.JFrame {
         });
 
         jButton_play.setText("Display()");
+        jButton_play.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_playActionPerformed(evt);
+            }
+        });
 
         jButton_GuardarDatos.setText("Guardar");
         jButton_GuardarDatos.addActionListener(new java.awt.event.ActionListener() {
@@ -297,7 +302,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(jPanel_receiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox_receiveSource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox_receiveMsg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addComponent(jButton_ejecutarR)
                 .addContainerGap())
         );
@@ -705,6 +710,13 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.out.println(""+Singleton.getInstance().getControlador().getListaSolicitudes().getListaSolicitudes().toString());
     }//GEN-LAST:event_jButton_GuardarDatosActionPerformed
+
+    private void jButton_playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_playActionPerformed
+        // TODO add your handling code here:
+        
+        Display display = new Display();
+        display.show();
+    }//GEN-LAST:event_jButton_playActionPerformed
 
     /**
      * @param args the command line arguments
