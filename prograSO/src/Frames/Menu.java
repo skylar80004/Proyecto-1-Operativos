@@ -593,6 +593,17 @@ public class Menu extends javax.swing.JFrame {
         
         String contenido = this.jTextField_msgContents.getText();
         
+        int largoMensaje = contenido.length();
+        int largoMaximo = Singleton.getInstance().getControlador().getConfiguracionSistema().getFormato().getTamano();
+        
+        
+        if(largoMensaje > largoMaximo){
+            
+            String mensajeDialog = "El tamaño del mensaje es mayor que el permitido";
+            String tituloBarra = "Tamano no permitido";
+            this.mensajeDialog(mensajeDialog, tituloBarra);
+            return;
+        }
         
         //Comando Create
         boolean estado = Singleton.getInstance().getControlador().Create(contenido);
