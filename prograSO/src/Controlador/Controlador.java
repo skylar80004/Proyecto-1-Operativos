@@ -209,13 +209,29 @@ public class Controlador {
             }
 
         }else{ //prioridad
-            System.out.println(determinarPrioridadMenor(determinarPrioridadMensajes()));
+             ejecutarPrioridades();
+        }
+    }
+    
+    public void ejecutarPrioridades(){
+        int cantidad = this.getColaMensajes().getListaMensajes().size();
+        ArrayList<Integer> listaPrioridades;
+        int pos;
+        
+        for(int i=0;i<cantidad;i++){
+            listaPrioridades = determinarPrioridadMensajes();
+            pos = determinarPrioridadMenor(listaPrioridades);
+            //System.out.println("Posicion menor prioridad: "+pos);
+            Mensaje msg = (Mensaje) this.colaMensajes.getListaMensajes().get(pos);
+            String contenido = (String) msg.getContenido();
+            if(completitudMensaje(contenido)){
+                //System.out.println("Elimino un valor");
+            }
         }
     }
     
     public ArrayList<Integer> determinarPrioridadMensajes(){
         ArrayList<Integer> listaPrioridad = new ArrayList<>();
-        
         for(int i=0;i<this.colaMensajes.getListaMensajes().size();i++){
            Mensaje msg = (Mensaje) this.colaMensajes.getListaMensajes().get(i);
            int fuente = msg.getFuente();
@@ -235,11 +251,11 @@ public class Controlador {
         int valor1=0;
         for(int i=1;i<prioridades.size();i++){
             valor1 = prioridades.get(i);
-            if(valor1>=0){
+            //if(valor1>=0){
                 if(valor1<valor){
                     result=i;
                 }
-            }
+            //}
         }
         return result;
     }
@@ -301,7 +317,6 @@ public class Controlador {
             
         }
         else{
-            System.out.println("SD");
             return this.colaMensajes.agregarIdFuente(contenido, idFuente);
             
         }
