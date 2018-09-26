@@ -24,6 +24,7 @@ public class Display extends javax.swing.JFrame {
         this.jLabel_N.setVisible(false);
         this.jTextField_nProcesos.setVisible(false);
         this.LlenarComboBox();
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 
     /**
@@ -46,6 +47,12 @@ public class Display extends javax.swing.JFrame {
         jLabel_N = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea_logEventos = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea_ColaMensajesProcesados = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextArea_colaMensajes = new javax.swing.JTextArea();
+        jLabel5 = new javax.swing.JLabel();
 
         jToggleButton1.setText("jToggleButton1");
 
@@ -80,6 +87,18 @@ public class Display extends javax.swing.JFrame {
         jTextArea_logEventos.setRows(5);
         jScrollPane1.setViewportView(jTextArea_logEventos);
 
+        jLabel4.setText("Cola Mensajes:");
+
+        jTextArea_ColaMensajesProcesados.setColumns(20);
+        jTextArea_ColaMensajesProcesados.setRows(5);
+        jScrollPane3.setViewportView(jTextArea_ColaMensajesProcesados);
+
+        jTextArea_colaMensajes.setColumns(20);
+        jTextArea_colaMensajes.setRows(5);
+        jScrollPane4.setViewportView(jTextArea_colaMensajes);
+
+        jLabel5.setText("Cola Mensajes Procesados:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -100,8 +119,20 @@ public class Display extends javax.swing.JFrame {
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jComboBox_Procesos, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(92, 92, 92)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(75, 75, 75)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(119, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(61, 61, 61)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(699, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,7 +156,18 @@ public class Display extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addComponent(jButton_verLogEventos))
                     .addComponent(jScrollPane1))
-                .addContainerGap(172, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addGap(31, 31, 31)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(352, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(26, 26, 26)))
         );
 
         pack();
@@ -183,6 +225,12 @@ public class Display extends javax.swing.JFrame {
             
         }
         
+        String colaMensajes = Singleton.getInstance().getControlador().getColaMensajes().getStringColaMensajes();
+        String colaMensajesProcesados = Singleton.getInstance().getControlador().getColaMensajesProcesados().getStringColaMensajes();
+        
+        this.jTextArea_colaMensajes.setText(colaMensajes);
+        this.jTextArea_ColaMensajesProcesados.setText(colaMensajesProcesados);
+        
         
     }//GEN-LAST:event_jButton_verLogEventosActionPerformed
 
@@ -228,8 +276,14 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel_N;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTextArea jTextArea_ColaMensajesProcesados;
+    private javax.swing.JTextArea jTextArea_colaMensajes;
     private javax.swing.JTextArea jTextArea_logEventos;
     private javax.swing.JTextField jTextField_nProcesos;
     private javax.swing.JToggleButton jToggleButton1;

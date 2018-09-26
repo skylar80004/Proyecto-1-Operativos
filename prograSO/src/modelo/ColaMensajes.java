@@ -20,6 +20,42 @@ public class ColaMensajes {
         this.tamano = tamano;
         this.listaMensajes = new ArrayList<Mensaje>();
     }
+    
+    
+    public String getStringColaMensajes(){
+        
+        String cola = "";
+        int id;
+        String tipo ; 
+        int destino;
+        int fuente;
+        int largo;
+        String contenido;
+        String mensajeCompleto;
+     
+        for(Mensaje mensaje: this.listaMensajes){
+            
+            id = mensaje.getId();
+            contenido = (String)mensaje.getContenido();
+            tipo = mensaje.getTipo();
+            destino = mensaje.getDestino();
+            fuente = mensaje.getFuente();
+            largo = mensaje.getLargo();
+            
+            mensajeCompleto = "ID: " + String.valueOf(id) + " Contenido: " 
+                    + contenido + " Destino: " + 
+                    String.valueOf(destino) + " Fuente: " + String.valueOf(fuente) 
+                    + " Largo: " + largo  + "\n"; 
+            
+            cola = cola + mensajeCompleto;
+  
+        }
+        
+        return cola;
+        
+        
+        
+    }
 
     
     
