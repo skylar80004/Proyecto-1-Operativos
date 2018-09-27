@@ -3,9 +3,17 @@ Texto
 Largo Fijo
 12
 FIFO
-Blocking
+NonBlocking
 NonBlocking
 Directo
 Receive Explícito
 12
 10
+#create
+Msg1
+#send
+4
+Msg1
+#receive
+3
+Msg1
