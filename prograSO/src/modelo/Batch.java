@@ -270,9 +270,14 @@ public class Batch {
                    linea = br.readLine();
                    String contenidoMensaje = linea;
                    
-                   idDestinoString.replace(" ", "");
-                   System.out.println("CONVERSION MALA: " + idDestinoString + "Contenido del Mensaje: " + contenidoMensaje);
-                   int idProcesoDestino = Integer.parseInt(idDestinoString);
+                   int idProcesoDestino;
+                   try{
+                       idProcesoDestino = Integer.parseInt(idDestinoString);
+                   }
+                   catch(Exception e){
+                       idProcesoDestino = 0;
+                   }
+
                    
 
                     boolean sendBoolean = Singleton.getInstance().getControlador().Send(idProcesoDestino, contenidoMensaje);
@@ -296,11 +301,36 @@ public class Batch {
                }
                else if(receive){
                    
-                   
-                   
+                   String idProcesoFuenteString = linea;
+                   linea = br.readLine();
+                   String contenidoMensaje = linea;
+                   int idProcesoFuente;
+                   try{
+                       idProcesoFuente = Integer.parseInt(idProcesoFuenteString);
+                   }
+                   catch(Exception e){
+                       idProcesoFuente = 0;
+                   }
+        
+                    boolean receiveBoolean = Singleton.getInstance().getControlador().Receive(idProcesoFuente,contenidoMensaje);
+                    String contenidoMensajeDialog = "";
+                    String tituloBarra = "Receive";
+
+                    if(receiveBoolean){
+                        String var = "El proceso: "+String.valueOf(idProcesoFuente)+" pudo enviar el mensaje: "+contenidoMensaje;
+                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var);
+                        contenidoMensajeDialog = "Receive procesado";
+                        this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+
+                    }
+                    else{
+                        String var = "El proceso: "+String.valueOf(idProcesoFuente)+"no pudo enviar el mensaje: "+contenidoMensaje;
+                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var);
+                        contenidoMensajeDialog = "Receive no procesado";
+                        this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+                    }
                }
-                   
-               }
+           }
        }
        
        
