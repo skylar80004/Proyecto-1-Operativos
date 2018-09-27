@@ -73,6 +73,8 @@ public class Settings extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jTextField_sizeOfQueue = new javax.swing.JTextField();
         jButton_guardarSettings = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jTextField_mailboxSize = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -275,10 +277,17 @@ public class Settings extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setText("Tamaño de MailBox:");
+
         javax.swing.GroupLayout jPanel_generalLayout = new javax.swing.GroupLayout(jPanel_general);
         jPanel_general.setLayout(jPanel_generalLayout);
         jPanel_generalLayout.setHorizontalGroup(
             jPanel_generalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_generalLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton_guardarSettings)
+                .addGap(28, 28, 28))
             .addGroup(jPanel_generalLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel_generalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -287,14 +296,14 @@ public class Settings extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jTextField_numberOfProcesses, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel_generalLayout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel_generalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField_sizeOfQueue, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel_generalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField_sizeOfQueue, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                            .addComponent(jTextField_mailboxSize))))
                 .addContainerGap(318, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_generalLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton_guardarSettings)
-                .addGap(28, 28, 28))
         );
         jPanel_generalLayout.setVerticalGroup(
             jPanel_generalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -307,7 +316,11 @@ public class Settings extends javax.swing.JFrame {
                 .addGroup(jPanel_generalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField_sizeOfQueue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 305, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel_generalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jTextField_mailboxSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 270, Short.MAX_VALUE)
                 .addComponent(jButton_guardarSettings)
                 .addGap(21, 21, 21))
         );
@@ -468,8 +481,13 @@ public class Settings extends javax.swing.JFrame {
         System.out.println("Configuracion Lista");
         
         
-        // Casillero de Mensajes int largoMaximo, String manejoCola, String tipoLargo){ 
-        CasilleroMensajes casilleroMensajes = new CasilleroMensajes(tamanoColaMensajes,manejoColasString,tipoLargo);
+        // Casillero de Mensajes int largoMaximo, String manejoCola, String tipoLargo){
+        int tamanoMailBox = 0;
+        String sts = this.jTextField_mailboxSize.getText();
+        if(!sts.equals("")){
+            tamanoMailBox = Integer.parseInt(sts);
+        }
+        CasilleroMensajes casilleroMensajes = new CasilleroMensajes(tamanoMailBox,manejoColasString,tipoLargo);
         Singleton.getInstance().getControlador().setCasilleroMensaje(casilleroMensajes);
         
         // Creacion de Procesos
@@ -535,6 +553,7 @@ public class Settings extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel_dirSend;
     private javax.swing.JLabel jLabel_numberOfProcesses;
     private javax.swing.JLabel jLabel_size;
@@ -544,6 +563,7 @@ public class Settings extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel_general;
     private javax.swing.JPanel jPanel_synchronization;
     private javax.swing.JTabbedPane jTabbedPane_tabs;
+    private javax.swing.JTextField jTextField_mailboxSize;
     private javax.swing.JTextField jTextField_numberOfProcesses;
     private javax.swing.JTextField jTextField_sizeOfMessage;
     private javax.swing.JTextField jTextField_sizeOfQueue;

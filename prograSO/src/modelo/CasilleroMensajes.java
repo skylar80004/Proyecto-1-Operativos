@@ -62,7 +62,6 @@ public class CasilleroMensajes {
             fuente = mensaje.getFuente();
             largo = mensaje.getLargo();
             prioridad = listaPrioridades.get(i);
-            System.out.println(".-.-.-.-.-.");
             mensajeCompleto = "ID: " + String.valueOf(id) + " Contenido: " 
                     + contenido + " Destino: " + 
                     String.valueOf(destino) + " Fuente: " + String.valueOf(fuente) 

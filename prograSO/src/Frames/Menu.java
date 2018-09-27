@@ -136,7 +136,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        jButton_GuardarDatos.setText("Guardar");
+        jButton_GuardarDatos.setText("Batch()");
         jButton_GuardarDatos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_GuardarDatosActionPerformed(evt);
@@ -305,7 +305,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(jPanel_receiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox_receiveSource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox_receiveMsg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addComponent(jButton_ejecutarR)
                 .addContainerGap())
         );
@@ -596,32 +596,42 @@ public class Menu extends javax.swing.JFrame {
         
         
         String contenido = this.jTextField_msgContents.getText();
-        
-        int largoMensaje = contenido.length();
-        int largoMaximo = Singleton.getInstance().getControlador().getConfiguracionSistema().getFormato().getTamano();
-        
-        
-        if(Singleton.getInstance().getControlador().getConfiguracionSistema().getFormato().getLargo().equals("Largo Fijo")){
-            if(largoMensaje > largoMaximo){
-            
-                String mensajeDialog = "El tamaño del mensaje es mayor que el permitido";
-                String tituloBarra = "Tamano no permitido";
-                this.mensajeDialog(mensajeDialog, tituloBarra);
-                return;
-            }
-        }
-        
-        //Comando Create
-        boolean estado = Singleton.getInstance().getControlador().Create(contenido);
-        
-        if(estado){
-            String mensajeDialogoContenido = "Se ha creado el mensaje";
-            String tituloDialogoContenido = "Mensaje creado";
-            this.mensajeDialog(mensajeDialogoContenido ,tituloDialogoContenido);
+        if(contenido.equals("")){
+            mensajeDialog("Escriba un mensaje", "Mensaje vació");
         }else{
-            String mensajeDialogoContenido = "No se ha creado el mensaje";
-            String tituloDialogoContenido = "Mensaje no creado";
-            this.mensajeDialog(mensajeDialogoContenido ,tituloDialogoContenido);
+            Mensaje msg = Singleton.getInstance().getControlador().encontrarMensaje(contenido);
+            if(msg!=null){
+                mensajeDialog("Existe un mensaje identico","Mensaje identico");
+                }else{
+                    int largoMensaje = contenido.length();
+                int largoMaximo = Singleton.getInstance().getControlador().getConfiguracionSistema().getFormato().getTamano();
+
+
+                if(Singleton.getInstance().getControlador().getConfiguracionSistema().getFormato().getLargo().equals("Largo Fijo")){
+                    if(largoMensaje > largoMaximo){
+
+                        String mensajeDialog = "El tamaño del mensaje es mayor que el permitido";
+                        String tituloBarra = "Tamano no permitido";
+                        this.mensajeDialog(mensajeDialog, tituloBarra);
+                        return;
+                    }
+                }
+
+                //Comando Create
+                boolean estado = Singleton.getInstance().getControlador().Create(contenido);
+
+                if(estado){
+                    String mensajeDialogoContenido = "Se ha creado el mensaje";
+                    String tituloDialogoContenido = "Mensaje creado";
+                    this.jTextField_msgContents.setText("");
+                    this.mensajeDialog(mensajeDialogoContenido ,tituloDialogoContenido);
+                }else{
+                    String mensajeDialogoContenido = "No se ha creado el mensaje";
+                    String tituloDialogoContenido = "Mensaje no creado";
+                    this.mensajeDialog(mensajeDialogoContenido ,tituloDialogoContenido);
+                }
+            }
+            
         }
 
         
@@ -718,14 +728,17 @@ public class Menu extends javax.swing.JFrame {
     private void jButton_manualUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_manualUsuarioActionPerformed
         // TODO add your handling code here:
         
-      if (Desktop.isDesktopSupported()) {
-        try {
-        File myFile = new File("D:\\Tec\\2 Semestre 2018\\Principios de Sistemas Operativos\\Proyecto 1\\OperativosGit\\Proyecto-1-Operativos\\prograSO\\src\\Frames\\manual.pdf");
-        Desktop.getDesktop().open(myFile);
-        } 
-        catch (IOException ex) {
-        // no application registered for PDFs
-        }
+      try {
+            if ((new File("ManualUsuario.pdf")).exists()) {
+                Process p = Runtime.getRuntime()
+			   .exec("rundll32 url.dll,FileProtocolHandler ManualUsuario.pdf");
+			p.waitFor();
+            } else {
+                System.out.println("Archivo no existe");
+            }
+            System.out.println("Listo");
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
       
       
