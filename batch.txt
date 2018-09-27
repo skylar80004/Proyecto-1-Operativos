@@ -1,0 +1,11 @@
+#configuracion
+Texto
+Largo Fijo
+12
+FIFO
+Blocking
+NonBlocking
+Directo
+Receive Explícito
+12
+10
