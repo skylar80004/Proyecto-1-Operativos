@@ -33,6 +33,7 @@ public class Menu extends javax.swing.JFrame {
     /**
      * Creates new form Menu
      */
+
     public Menu() {
         Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
         int height = pantalla.height;
@@ -493,22 +494,28 @@ public class Menu extends javax.swing.JFrame {
         
         // Direct Send
         if(direccionamientoDirecto){
-            
-            ColaProcesos colaProceso = Singleton.getInstance().getControlador().getColaProcesos();
-            ArrayList<Proceso> listaProcesos = colaProceso.getListaProcesos();
-            String identificadorProceso;
-            this.jComboBox_sendDestination.removeAllItems();
-            for(Proceso proceso : listaProcesos){
-
-                identificadorProceso = String.valueOf(proceso.getIdentificador());
-                this.jComboBox_sendDestination.addItem(identificadorProceso);
-            }
-            
+            cargarComboxProcesosSend();
         }
         else{
             this.jComboBox_sendDestination.setVisible(false);
         }
-
+        cargarComboxMensajesSend();
+    }//GEN-LAST:event_jButton_sendActionPerformed
+    
+    public void cargarComboxProcesosSend(){
+        ColaProcesos colaProceso = Singleton.getInstance().getControlador().getColaProcesos();
+        ArrayList<Proceso> listaProcesos = colaProceso.getListaProcesos();
+        String identificadorProceso;
+        this.jComboBox_sendDestination.removeAllItems();
+        for(Proceso proceso : listaProcesos){
+            if(!proceso.isUso()){
+                identificadorProceso = String.valueOf(proceso.getIdentificador());
+                this.jComboBox_sendDestination.addItem(identificadorProceso);
+            }
+        }
+    }
+    
+    public void cargarComboxMensajesSend(){
         // Opciones de Mensaje
         ColaMensajes colaMensajes = Singleton.getInstance().getControlador().getColaMensajes();
         ArrayList<Mensaje> listaMensajes = colaMensajes.getListaMensajes();
@@ -517,14 +524,12 @@ public class Menu extends javax.swing.JFrame {
         this.jComboBox_sendMsg.removeAllItems();
         for(Mensaje mensaje: listaMensajes){
             contenidoMensaje = (String)mensaje.getContenido();
-            this.jComboBox_sendMsg.addItem(contenidoMensaje);
+            if(mensaje.getDestino()==-1){
+                this.jComboBox_sendMsg.addItem(contenidoMensaje);
+            }
         }
-        
-        
-        
-        
-    }//GEN-LAST:event_jButton_sendActionPerformed
-
+    }
+    
     private void jButton_receiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_receiveActionPerformed
         // TODO add your handling code here:
         
@@ -550,29 +555,9 @@ public class Menu extends javax.swing.JFrame {
         
         // Direct Receive
         if(direccionamientoDirecto){
-            
-            ColaProcesos colaProceso = Singleton.getInstance().getControlador().getColaProcesos();
-            ArrayList<Proceso> listaProcesos = colaProceso.getListaProcesos();
-            String identificadorProceso;
-            this.jComboBox_receiveSource.removeAllItems();
-            for(Proceso proceso : listaProcesos){
+            cargarComboBoxProcesosReceive();
+            cargarComboBoxMensajesReceive();
 
-                identificadorProceso = String.valueOf(proceso.getIdentificador());
-                this.jComboBox_receiveSource.addItem(identificadorProceso);
-            }
-            
-            // Opciones de Mensaje
-            ColaMensajes colaMensajes = Singleton.getInstance().getControlador().getColaMensajes();
-            ArrayList<Mensaje> listaMensajes = colaMensajes.getListaMensajes();
-            String contenidoMensaje;
-
-            this.jComboBox_receiveMsg.removeAllItems();
-            for(Mensaje mensaje: listaMensajes){
-                contenidoMensaje = (String)mensaje.getContenido();
-                this.jComboBox_receiveMsg.addItem(contenidoMensaje);
-            }
-        
-            
         }else{   
                 // Opciones de Mensaje
             ColaMensajes colaMensajes = Singleton.getInstance().getControlador().getColaMensajes();
@@ -589,7 +574,35 @@ public class Menu extends javax.swing.JFrame {
         }
   
     }//GEN-LAST:event_jButton_receiveActionPerformed
+    
+    public void cargarComboBoxProcesosReceive(){
+        ColaProcesos colaProceso = Singleton.getInstance().getControlador().getColaProcesos();
+        ArrayList<Proceso> listaProcesos = colaProceso.getListaProcesos();
+        String identificadorProceso;
+        this.jComboBox_receiveSource.removeAllItems();
+        for(Proceso proceso : listaProcesos){
+            if(!proceso.isUso()){
+                identificadorProceso = String.valueOf(proceso.getIdentificador());
+                this.jComboBox_receiveSource.addItem(identificadorProceso);
+            }
+        }
+    }
+    
+    public void cargarComboBoxMensajesReceive(){
+        // Opciones de Mensaje
+        ColaMensajes colaMensajes = Singleton.getInstance().getControlador().getColaMensajes();
+        ArrayList<Mensaje> listaMensajes = colaMensajes.getListaMensajes();
+        String contenidoMensaje;
 
+        this.jComboBox_receiveMsg.removeAllItems();
+        for(Mensaje mensaje: listaMensajes){
+            contenidoMensaje = (String)mensaje.getContenido();
+            if(mensaje.getFuente()==-1){
+                this.jComboBox_receiveMsg.addItem(contenidoMensaje);
+            }
+        }
+    }
+    
     private void jButton_ejecutarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ejecutarCActionPerformed
         // TODO add your handling code here:
         
@@ -679,14 +692,8 @@ public class Menu extends javax.swing.JFrame {
             contenidoMensajeDialog = "El mensaje no se pudo enviar";
             this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
         }
-        
-        
-            
-            
-            
-        
-        
-        
+        cargarComboxMensajesSend();
+        cargarComboxProcesosSend();
     }//GEN-LAST:event_jButton_ejecutarSActionPerformed
 
     private void jButton_ejecutarRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ejecutarRActionPerformed
@@ -722,7 +729,8 @@ public class Menu extends javax.swing.JFrame {
             this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
         }
         
-        
+        cargarComboBoxMensajesReceive();
+        cargarComboBoxProcesosReceive();
     }//GEN-LAST:event_jButton_ejecutarRActionPerformed
 
     private void jButton_manualUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_manualUsuarioActionPerformed

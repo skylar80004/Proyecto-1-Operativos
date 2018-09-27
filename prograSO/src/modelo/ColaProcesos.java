@@ -92,5 +92,14 @@ public class ColaProcesos {
             }
         }
     }
-
+    
+    public void cambiarPC(int proceso,boolean cambio){
+        for(int i=0;i<this.listaProcesos.size();i++){
+            Proceso proc = this.listaProcesos.get(i);
+            if(proc.getIdentificador()==proceso){
+                proc.setUso(cambio);
+                this.listaProcesos.set(i, proc);
+            }
+        }
+    }
 }

@@ -20,7 +20,8 @@ public class Proceso {
     private int prioridad;
     private int ProgramCounter;
     private ArrayList<String> logEventos;
-
+    private boolean uso;
+    
     public Proceso(int identificador, String estadoSend, String estadoReceive, int prioridad) {
         
         this.identificador = identificador;
@@ -28,6 +29,7 @@ public class Proceso {
         this.estadoReceive = estadoReceive;
         this.prioridad = prioridad;
         this.logEventos = new ArrayList<String>();
+        this.uso=false;
     }
     
     public String getLogEventos(int cantidadEventos){
@@ -76,7 +78,13 @@ public class Proceso {
         this.estadoReceive = estadoReceive;
     }
 
-    
+    public boolean isUso() {
+        return uso;
+    }
+
+    public void setUso(boolean uso) {
+        this.uso = uso;
+    } 
     
     public void ImprimirProceso(){
         System.out.println("Proceso # " + this.identificador +

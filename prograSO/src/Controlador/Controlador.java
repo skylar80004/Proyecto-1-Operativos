@@ -141,7 +141,7 @@ public class Controlador {
             if(receiveDirectExplicit){
                 agregarFuenteExplicito(contenidoMensaje, destino);
             }
-            efectuarManejoCola();
+            efectuarManejoCola(destino);
         } // Direccionamiento Indirecto
         else{ 
             boolean isIndirectStatic = this.isReceiveIndirectStatic();
@@ -172,7 +172,7 @@ public class Controlador {
             
             if(receiveDirectExplicit){ // Receive Directo Explicito
                 boolean envio = agregarIdFuenteAMensaje(contenido, idProcesoFuente);
-                efectuarManejoCola();
+                efectuarManejoCola(idProcesoFuente);
                 return envio;
             }          
             else{ // Receive Directo Implicito
@@ -180,7 +180,7 @@ public class Controlador {
                 if(envio){
                    agregarFuenteImplicito(contenido, idProcesoFuente); 
                 }
-                efectuarManejoCola();
+                efectuarManejoCola(idProcesoFuente);
                 return envio;
             }
             
@@ -198,22 +198,24 @@ public class Controlador {
        
     }
     
-    public void efectuarManejoCola(){
+    public void efectuarManejoCola(int proceso){
         if(this.getConfiguracionSistema().getManejoColas().getTipo().equals("FIFO")){ //FIFO
             Mensaje msg = this.primeroColaMensajes();
             String contenido = (String) msg.getContenido();
             if(completitudMensaje(contenido)){
                 if(this.getColaMensajes().getListaMensajes().size()>0){
-                    efectuarManejoCola();
+                    efectuarManejoCola(proceso);
                 }
+            }else{
+                this.getColaProcesos().cambiarPC(proceso, true);
             }
 
         }else{ //prioridad
-             ejecutarPrioridades();
+             ejecutarPrioridades(proceso);
         }
     }
     
-    public void ejecutarPrioridades(){
+    public void ejecutarPrioridades(int proceso){
         int cantidad = this.getColaMensajes().getListaMensajes().size();
         ArrayList<Integer> listaPrioridades;
         int pos;
@@ -226,6 +228,8 @@ public class Controlador {
             String contenido = (String) msg.getContenido();
             if(completitudMensaje(contenido)){
                 //System.out.println("Elimino un valor");
+            }else{
+                this.getColaProcesos().cambiarPC(proceso, true);
             }
         }
     }
@@ -332,6 +336,8 @@ public class Controlador {
             if (contenidoActual.equals(contenidoMensaje)){
                 if(mensaje.getDestino()!=-1 && mensaje.getFuente()!=-1){
                     this.colaMensajesProcesados.getListaMensajes().add(mensaje);
+                    this.getColaProcesos().cambiarPC(mensaje.getDestino(), false);
+                    this.getColaProcesos().cambiarPC(mensaje.getFuente(), false);
                     return colaMensajes.removerMensaje(mensaje);
                 }else{
                     return false;
