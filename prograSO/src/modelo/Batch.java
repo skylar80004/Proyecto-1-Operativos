@@ -264,7 +264,43 @@ public class Batch {
                    }
                }
                
-           }
+               else if(send){
+                   
+                   String idDestinoString = linea;
+                   linea = br.readLine();
+                   String contenidoMensaje = linea;
+                   
+                   idDestinoString.replace(" ", "");
+                   System.out.println("CONVERSION MALA: " + idDestinoString + "Contenido del Mensaje: " + contenidoMensaje);
+                   int idProcesoDestino = Integer.parseInt(idDestinoString);
+                   
+
+                    boolean sendBoolean = Singleton.getInstance().getControlador().Send(idProcesoDestino, contenidoMensaje);
+
+                    String contenidoMensajeDialog = "Se ha enviado el mensaje";
+                    String tituloBarra = "Send";
+
+                    if(sendBoolean){
+                        String var = "El proceso: "+String.valueOf(idProcesoDestino)+" pudo recibir el mensaje: "+contenidoMensaje;
+                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoDestino,var);
+                        contenidoMensajeDialog = "Se ha enviado el mensaje";
+                        this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+
+                    }
+                    else{
+                        String var = "El proceso: "+String.valueOf(idProcesoDestino)+" no pudo recibir el mensaje: "+contenidoMensaje;
+                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoDestino,var);
+                        contenidoMensajeDialog = "El mensaje no se pudo enviar";
+                        this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+                    }  
+               }
+               else if(receive){
+                   
+                   
+                   
+               }
+                   
+               }
        }
        
        
