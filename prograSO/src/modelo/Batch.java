@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -152,100 +153,130 @@ public class Batch {
                    }
                    
                    cantidadInstruccionConfiguracion++;
+  
+               }
+               else if(create){
+                   int largoMensajes = Integer.parseInt(largoMensajeString);
+                    ManejoColas manejoColas = new ManejoColas(manejoColasString);
+                    Formato formato = new Formato(tipoContenido,tipoLargo,largoMensajes);
+                     // Direccionamiento
+                    String addresing = addresingType + addresingSubType;
+                    Direccionamiento direccionamiento = new Direccionamiento(addresing);
+
+                    if(addresingType.equals("Directo")){
+                        direccionamiento.setDirect(true);
+
+                        if(addresingSubType.equals("Receive Explícito")){
+
+                            direccionamiento.setReceiveExplicit(true);
+                            direccionamiento.setReceiveImplicit(false);
+                         }
+
+                         else{
+
+                             direccionamiento.setReceiveExplicit(false);
+                             direccionamiento.setReceiveImplicit(true);
+                         }  
+                     }
+                     else{
+
+                         direccionamiento.setDirect(false);
+                         if(addresingSubType.equals("Estático")){
+                             direccionamiento.setIndirectStatic(true);
+                             direccionamiento.setIndirectDynamic(false);
+                         }
+                         else{           
+                             direccionamiento.setIndirectStatic(false);
+                             direccionamiento.setIndirectDynamic(true);
+
+                         }
+
+                     }
+
+                     //---------------------------------------------------------------------
+                     Sincronizacion sincronizacion = new Sincronizacion(syncSend,syncReceive);
+
+                     // Instancia Confuguracion
+
+                     int cantidadProcesos = Integer.parseInt(numeroProcesos);
+                     int tamanoColaMensajes = Integer.parseInt(tamanoColaMensajesString);
+                     ConfiguracionSistema configuracionSistema = new ConfiguracionSistema(cantidadProcesos, tamanoColaMensajes, sincronizacion, direccionamiento, formato, manejoColas);
+
+                     // Configuracion
+                     Singleton.getInstance().getControlador().setConfiguracionSistema(configuracionSistema);
+                     int tamanoColaProcesos = Singleton.getInstance().getControlador().getConfiguracionSistema().getNumeroProcesos();
+
+                     // Cola de Procesos
+                     ColaProcesos colaProcesos = new ColaProcesos(tamanoColaProcesos);
+                     Singleton.getInstance().getControlador().setColaProcesos(colaProcesos);
+
+                     // Cola de Mensajes
+                     ColaMensajes colaMensajes = new ColaMensajes(tamanoColaMensajes);
+                     Singleton.getInstance().getControlador().setColaMensajes(colaMensajes);
+
+                     System.out.println("Configuracion Lista");
+
+
+                     // Casillero de Mensajes int largoMaximo, String manejoCola, String tipoLargo){ 
+                     CasilleroMensajes casilleroMensajes = new CasilleroMensajes(tamanoColaMensajes,manejoColasString,tipoLargo);
+                     Singleton.getInstance().getControlador().setCasilleroMensaje(casilleroMensajes);
+
+                     // Creacion de Procesos
+                     Singleton.getInstance().getControlador().crearProcesos();
+                     Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
+
+                     Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
+
+                     //lista Solicitudes
+                     ListaSolicitudes listaSolicitudes = new ListaSolicitudes();
+                     Singleton.getInstance().getControlador().setListaSolicitudes(listaSolicitudes);
+
+                     //Cola mensajes procesados
+                     ColaMensajes colaMensajesProcesados = new ColaMensajes(-1);
+                     Singleton.getInstance().getControlador().setColaMensajesProcesados(colaMensajesProcesados);
+        
+        
                    
+                   String contenido = linea;
+                   int largoMensaje = contenido.length();
+                   int largoMaximo = Singleton.getInstance().getControlador().getConfiguracionSistema().getFormato().getTamano();
+                   if(Singleton.getInstance().getControlador().getConfiguracionSistema().getFormato().getLargo().equals("Largo Fijo")){
+                       
+                       if(largoMensaje > largoMaximo){
+                           String mensajeDialog = "El tamaño del mensaje es mayor que el permitido";
+                           String tituloBarra = "Tamano no permitido";
+                           this.mensajeDialog(mensajeDialog, tituloBarra);
+                           return;
+                       }
+                   }
                    
-                   
+                   boolean estado = Singleton.getInstance().getControlador().Create(contenido);
+        
+                   if(estado){
+                       String mensajeDialogoContenido = "Se ha creado el mensaje";
+                       String tituloDialogoContenido = "Mensaje creado";
+                       this.mensajeDialog(mensajeDialogoContenido ,tituloDialogoContenido);
+                   }
+                   else{
+                       String mensajeDialogoContenido = "No se ha creado el mensaje";
+                       String tituloDialogoContenido = "Mensaje no creado";
+                       this.mensajeDialog(mensajeDialogoContenido ,tituloDialogoContenido);
+                   }
                }
                
            }
-           
-           
-           
        }
        
        
-       // Instancia de objetos
-       
-       int largoMensajes = Integer.parseInt(largoMensajeString);
-        ManejoColas manejoColas = new ManejoColas(manejoColasString);
-        Formato formato = new Formato(tipoContenido,tipoLargo,largoMensajes);
-        
-        // Direccionamiento
-        String addresing = addresingType + addresingSubType;
-        Direccionamiento direccionamiento = new Direccionamiento(addresing);
-        
-        if(addresingType.equals("Directo")){
-            direccionamiento.setDirect(true);
-            
-            if(addresingSubType.equals("Receive Explícito")){
-                direccionamiento.setReceiveExplicit(true);
-                direccionamiento.setReceiveImplicit(false);
-            }
-            else{
-                direccionamiento.setReceiveExplicit(false);
-                direccionamiento.setReceiveImplicit(true);
-            }  
-        }
-        else{
-            direccionamiento.setDirect(false);
-            if(addresingSubType.equals("Estático")){
-                direccionamiento.setIndirectStatic(true);
-                direccionamiento.setIndirectDynamic(false);
-            }
-            else{           
-                direccionamiento.setIndirectStatic(false);
-                direccionamiento.setIndirectDynamic(true);
-                
-            }
-                
-        }
-        
-        //---------------------------------------------------------------------
-        Sincronizacion sincronizacion = new Sincronizacion(syncSend,syncReceive);
-        
-        // Instancia Confuguracion
-        
-        int cantidadProcesos = Integer.parseInt(numeroProcesos);
-        int tamanoColaMensajes = Integer.parseInt(tamanoColaMensajesString);
-        ConfiguracionSistema configuracionSistema = new ConfiguracionSistema(cantidadProcesos, tamanoColaMensajes, sincronizacion, direccionamiento, formato, manejoColas);
-        
-        // Configuracion
-        Singleton.getInstance().getControlador().setConfiguracionSistema(configuracionSistema);
-        int tamanoColaProcesos = Singleton.getInstance().getControlador().getConfiguracionSistema().getNumeroProcesos();
-        
-        // Cola de Procesos
-        ColaProcesos colaProcesos = new ColaProcesos(tamanoColaProcesos);
-        Singleton.getInstance().getControlador().setColaProcesos(colaProcesos);
-        
-        // Cola de Mensajes
-        ColaMensajes colaMensajes = new ColaMensajes(tamanoColaMensajes);
-        Singleton.getInstance().getControlador().setColaMensajes(colaMensajes);
-        
-        System.out.println("Configuracion Lista");
-        
-        
-        // Casillero de Mensajes int largoMaximo, String manejoCola, String tipoLargo){ 
-        CasilleroMensajes casilleroMensajes = new CasilleroMensajes(tamanoColaMensajes,manejoColasString,tipoLargo);
-        Singleton.getInstance().getControlador().setCasilleroMensaje(casilleroMensajes);
-        
-        // Creacion de Procesos
-        Singleton.getInstance().getControlador().crearProcesos();
-        Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
-        
-        Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
-            
-        //lista Solicitudes
-        ListaSolicitudes listaSolicitudes = new ListaSolicitudes();
-        Singleton.getInstance().getControlador().setListaSolicitudes(listaSolicitudes);
-        
-        //Cola mensajes procesados
-        ColaMensajes colaMensajesProcesados = new ColaMensajes(-1);
-        Singleton.getInstance().getControlador().setColaMensajesProcesados(colaMensajesProcesados);
         
         
        
        
        
    }
+   public void mensajeDialog(String mensaje, String tituloBarra){
+        
+        JOptionPane.showMessageDialog(null, mensaje, tituloBarra, JOptionPane.INFORMATION_MESSAGE);
+    }
     
 }
