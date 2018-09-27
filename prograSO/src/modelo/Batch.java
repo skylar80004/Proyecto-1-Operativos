@@ -45,6 +45,7 @@ public class Batch {
        String addresingSubType = "";
        String numeroProcesos = "";
        String tamanoColaMensajesString = "";
+       String tamanoMailBoxString = "";
        
        
        
@@ -150,13 +151,21 @@ public class Batch {
                            tamanoColaMensajesString = linea;
                            break;
                        }
+                       case(10): {
+                           tamanoMailBoxString = linea;
+                           break;
+                           
+                       }
                    }
                    
                    cantidadInstruccionConfiguracion++;
   
                }
                else if(create){
-                   int largoMensajes = Integer.parseInt(largoMensajeString);
+                   
+                   if(Singleton.getInstance().getControlador().getConfiguracionSistema() == null){
+                       
+                    int largoMensajes = Integer.parseInt(largoMensajeString);
                     ManejoColas manejoColas = new ManejoColas(manejoColasString);
                     Formato formato = new Formato(tipoContenido,tipoLargo,largoMensajes);
                      // Direccionamiento
@@ -211,30 +220,33 @@ public class Batch {
                      Singleton.getInstance().getControlador().setColaProcesos(colaProcesos);
 
                      // Cola de Mensajes
-                     ColaMensajes colaMensajes = new ColaMensajes(tamanoColaMensajes);
-                     Singleton.getInstance().getControlador().setColaMensajes(colaMensajes);
-
-                     System.out.println("Configuracion Lista");
-
-
-                     // Casillero de Mensajes int largoMaximo, String manejoCola, String tipoLargo){ 
-                     CasilleroMensajes casilleroMensajes = new CasilleroMensajes(tamanoColaMensajes,manejoColasString,tipoLargo);
-                     Singleton.getInstance().getControlador().setCasilleroMensaje(casilleroMensajes);
-
-                     // Creacion de Procesos
-                     Singleton.getInstance().getControlador().crearProcesos();
-                     Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
-
-                     Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
-
-                     //lista Solicitudes
-                     ListaSolicitudes listaSolicitudes = new ListaSolicitudes();
-                     Singleton.getInstance().getControlador().setListaSolicitudes(listaSolicitudes);
-
-                     //Cola mensajes procesados
-                     ColaMensajes colaMensajesProcesados = new ColaMensajes(-1);
-                     Singleton.getInstance().getControlador().setColaMensajesProcesados(colaMensajesProcesados);
+        ColaMensajes colaMensajes = new ColaMensajes(tamanoColaMensajes);
+        Singleton.getInstance().getControlador().setColaMensajes(colaMensajes);
         
+        System.out.println("Configuracion Lista");
+        
+        
+        // Casillero de Mensajes int largoMaximo, String manejoCola, String tipoLargo){
+        int tamanoMailBox = 0;
+        
+        CasilleroMensajes casilleroMensajes = new CasilleroMensajes(tamanoMailBox,manejoColasString,tipoLargo);
+        Singleton.getInstance().getControlador().setCasilleroMensaje(casilleroMensajes);
+        
+        // Creacion de Procesos
+        Singleton.getInstance().getControlador().crearProcesos();
+        Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
+        
+        Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
+            
+        //lista Solicitudes
+        ListaSolicitudes listaSolicitudes = new ListaSolicitudes();
+        Singleton.getInstance().getControlador().setListaSolicitudes(listaSolicitudes);
+        
+        //Cola mensajes procesados
+        ColaMensajes colaMensajesProcesados = new ColaMensajes(-1);
+        Singleton.getInstance().getControlador().setColaMensajesProcesados(colaMensajesProcesados);
+                   }
+                   
         
                    
                    String contenido = linea;
