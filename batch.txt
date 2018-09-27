@@ -9,6 +9,7 @@ Directo
 Receive Explícito
 12
 10
+100
 #create
 Msg1
 #send
