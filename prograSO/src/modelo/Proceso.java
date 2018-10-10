@@ -15,8 +15,7 @@ public class Proceso {
     
     
     private int identificador;
-    private String estadoSend;
-    private String estadoReceive;
+    private String estado;
     private int prioridad;
     private int ProgramCounter;
     private ArrayList<String> logEventos;
@@ -25,8 +24,6 @@ public class Proceso {
     public Proceso(int identificador, String estadoSend, String estadoReceive, int prioridad) {
         
         this.identificador = identificador;
-        this.estadoSend = estadoSend;
-        this.estadoReceive = estadoReceive;
         this.prioridad = prioridad;
         this.logEventos = new ArrayList<String>();
         this.uso=false;
@@ -61,22 +58,15 @@ public class Proceso {
     public void AgregarEvento(String evento){
         this.logEventos.add(evento);
     }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
     
-    public String getEstadoSend() {
-        return estadoSend;
-    }
-
-    public void setEstadoSend(String estadoSend) {
-        this.estadoSend = estadoSend;
-    }
-
-    public String getEstadoReceive() {
-        return estadoReceive;
-    }
-
-    public void setEstadoReceive(String estadoReceive) {
-        this.estadoReceive = estadoReceive;
-    }
 
     public boolean isUso() {
         return uso;
@@ -88,7 +78,7 @@ public class Proceso {
     
     public void ImprimirProceso(){
         System.out.println("Proceso # " + this.identificador +
-        " estado Send: " + this.estadoSend + " estado Receive: " + estadoReceive + " Prioridad: " + this.prioridad);
+        " Estado:  " + estado + "Prioridad: " + this.prioridad);
     }
     
     public int getIdentificador() {
@@ -99,7 +89,6 @@ public class Proceso {
         this.identificador = identificador;
     }
 
- 
 
     public int getPrioridad() {
         return prioridad;

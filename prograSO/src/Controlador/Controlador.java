@@ -37,25 +37,9 @@ public class Controlador {
     }
 
     
-    public void CambiarEstadoProcesoReceive(int idProceso, String estado){
-        
-        int idTemporal;
-        Proceso procesoTemporal ;
-        for(int i = 0; i < this.colaProcesos.getListaProcesos().size();i++){
-            
-            procesoTemporal =  this.colaProcesos.getListaProcesos().get(i);
-            idTemporal = procesoTemporal.getIdentificador();
-            if(idTemporal == idProceso){
-                
-                procesoTemporal.setEstadoReceive(estado);
-                this.colaProcesos.getListaProcesos().set(i, procesoTemporal);
-                return;
-                
-            }
-        }
-    }
+  
     
-    public void CambiarEstadoProcesoSend(int idProceso, String estado){
+    public void CambiarEstadoProceso(int idProceso, String estado){
         
         int idTemporal;
         Proceso procesoTemporal ;
@@ -65,7 +49,7 @@ public class Controlador {
             idTemporal = procesoTemporal.getIdentificador();
             if(idTemporal == idProceso){
                 
-                procesoTemporal.setEstadoSend(estado);
+                procesoTemporal.setEstado(estado);
                 this.colaProcesos.getListaProcesos().set(i, procesoTemporal);
                 return;
                 
@@ -287,22 +271,18 @@ public class Controlador {
         return true;
     }
     
-    public boolean isProcessSendBlocked(int idProceso){
+    public boolean isProcessBlocked(int idProceso){
         
-        return this.colaProcesos.isProcessSendBlocked(idProceso);
+        return this.colaProcesos.isProcessBlocked(idProceso);
         
     }
     
-    public boolean isProcessReceiveBlocked(int idProceso){
-        
-        return this.colaProcesos.isProcessReceiveBlocked(idProceso);
-        
-    }
+  
     
     public boolean agregarIdDestinoAMensaje(String contenido, int idDestino){
         
-        boolean isProcessReceiveBlocked = this.isProcessReceiveBlocked(idDestino);
-        if(isProcessReceiveBlocked){
+        boolean isProcessBlocked= this.isProcessBlocked(idDestino);
+        if(isProcessBlocked){
             return false;
             
         }
@@ -315,8 +295,8 @@ public class Controlador {
     
     public boolean agregarIdFuenteAMensaje(String contenido, int idFuente){
         
-        boolean isProcessSourceBlocked = this.isProcessSendBlocked(idFuente);
-        if(isProcessSourceBlocked){
+        boolean isProcessBlocked = this.isProcessBlocked(idFuente);
+        if(isProcessBlocked){
             return false;
             
         }
