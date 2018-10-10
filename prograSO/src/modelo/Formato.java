@@ -43,6 +43,11 @@ public class Formato {
     public void setTamano(int tamano) {
         this.tamano = tamano;
     }
+
+    @Override
+    public String toString() {
+        return "Formato{" + "contenido=" + contenido + ", largo=" + largo + ", tamano=" + tamano + '}';
+    }
     
     
 }

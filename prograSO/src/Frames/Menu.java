@@ -78,6 +78,8 @@ public class Menu extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jComboBox_sendDestination = new javax.swing.JComboBox<>();
         jComboBox_sendMsg = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        jComboBox_proccessSend = new javax.swing.JComboBox<>();
         jPanel_receive = new javax.swing.JPanel();
         jButton_ejecutarR = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -85,6 +87,8 @@ public class Menu extends javax.swing.JFrame {
         jComboBox_receiveSource = new javax.swing.JComboBox<>();
         jLabel14 = new javax.swing.JLabel();
         jComboBox_receiveMsg = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        jComboBox_proccessReceive = new javax.swing.JComboBox<>();
         jButton_manualUsuario = new javax.swing.JButton();
 
         jRadioButton1.setText("jRadioButton1");
@@ -162,6 +166,7 @@ public class Menu extends javax.swing.JFrame {
         jPanel_create.setLayout(jPanel_createLayout);
         jPanel_createLayout.setHorizontalGroup(
             jPanel_createLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTextField_msgContents, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
             .addGroup(jPanel_createLayout.createSequentialGroup()
                 .addGroup(jPanel_createLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel_createLayout.createSequentialGroup()
@@ -170,10 +175,9 @@ public class Menu extends javax.swing.JFrame {
                             .addComponent(jLabel3)
                             .addComponent(jButton_ejecutarC)))
                     .addGroup(jPanel_createLayout.createSequentialGroup()
-                        .addGap(25, 25, 25)
+                        .addContainerGap()
                         .addComponent(jLabel10)))
-                .addContainerGap(188, Short.MAX_VALUE))
-            .addComponent(jTextField_msgContents, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+                .addContainerGap(185, Short.MAX_VALUE))
         );
         jPanel_createLayout.setVerticalGroup(
             jPanel_createLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,7 +186,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField_msgContents, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                .addComponent(jTextField_msgContents, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton_ejecutarC)
                 .addGap(18, 18, 18))
@@ -207,6 +211,10 @@ public class Menu extends javax.swing.JFrame {
 
         jComboBox_sendMsg.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jLabel6.setText("Proceso:");
+
+        jComboBox_proccessSend.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel_sendLayout = new javax.swing.GroupLayout(jPanel_send);
         jPanel_send.setLayout(jPanel_sendLayout);
         jPanel_sendLayout.setHorizontalGroup(
@@ -214,41 +222,54 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(jPanel_sendLayout.createSequentialGroup()
                 .addGroup(jPanel_sendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel_sendLayout.createSequentialGroup()
-                        .addGap(153, 153, 153)
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel_sendLayout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addComponent(jButton_ejecutarS))
-                    .addGroup(jPanel_sendLayout.createSequentialGroup()
-                        .addGap(28, 28, 28)
+                        .addContainerGap()
                         .addGroup(jPanel_sendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboBox_sendDestination, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11))
-                        .addGap(38, 38, 38)
+                            .addComponent(jLabel12))
+                        .addGap(16, 16, 16)
                         .addGroup(jPanel_sendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox_sendMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12))))
-                .addContainerGap(27, Short.MAX_VALUE))
+                            .addGroup(jPanel_sendLayout.createSequentialGroup()
+                                .addGap(38, 38, 38)
+                                .addComponent(jLabel11)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_sendLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                                .addComponent(jComboBox_sendMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel_sendLayout.createSequentialGroup()
+                        .addGap(161, 161, 161)
+                        .addComponent(jButton_ejecutarS))
+                    .addGroup(jPanel_sendLayout.createSequentialGroup()
+                        .addGap(151, 151, 151)
+                        .addGroup(jPanel_sendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel4)))
+                    .addGroup(jPanel_sendLayout.createSequentialGroup()
+                        .addGap(112, 112, 112)
+                        .addComponent(jComboBox_proccessSend, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel_sendLayout.setVerticalGroup(
             jPanel_sendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_sendLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addGap(22, 22, 22)
-                .addGroup(jPanel_sendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(jLabel12))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6)
                 .addGap(18, 18, 18)
+                .addComponent(jComboBox_proccessSend, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
+                .addGroup(jPanel_sendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel_sendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox_sendDestination, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox_sendMsg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jButton_ejecutarS)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel_receive.setPreferredSize(new java.awt.Dimension(407, 180));
         jPanel_receive.setRequestFocusEnabled(false);
         jPanel_receive.setVisible(false);
 
@@ -269,44 +290,64 @@ public class Menu extends javax.swing.JFrame {
 
         jComboBox_receiveMsg.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jLabel7.setText("Proceso");
+
+        jComboBox_proccessReceive.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel_receiveLayout = new javax.swing.GroupLayout(jPanel_receive);
         jPanel_receive.setLayout(jPanel_receiveLayout);
         jPanel_receiveLayout.setHorizontalGroup(
             jPanel_receiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_receiveLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addGap(154, 154, 154)
                 .addGroup(jPanel_receiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel13)
-                    .addComponent(jComboBox_receiveSource, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel5))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_receiveLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel_receiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel14)
-                    .addComponent(jComboBox_receiveMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_receiveLayout.createSequentialGroup()
+                        .addGap(0, 46, Short.MAX_VALUE)
+                        .addGroup(jPanel_receiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel_receiveLayout.createSequentialGroup()
+                                .addGap(130, 130, 130)
+                                .addComponent(jButton_ejecutarR)
+                                .addGap(141, 141, 141))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_receiveLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboBox_proccessReceive, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(113, 113, 113))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_receiveLayout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel14)
+                        .addGap(113, 113, 113))))
             .addGroup(jPanel_receiveLayout.createSequentialGroup()
-                .addGroup(jPanel_receiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel_receiveLayout.createSequentialGroup()
-                        .addGap(154, 154, 154)
-                        .addComponent(jLabel5))
-                    .addGroup(jPanel_receiveLayout.createSequentialGroup()
-                        .addGap(142, 142, 142)
-                        .addComponent(jButton_ejecutarR)))
-                .addGap(138, 138, 138))
+                .addContainerGap()
+                .addComponent(jComboBox_receiveSource, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jComboBox_receiveMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel_receiveLayout.setVerticalGroup(
             jPanel_receiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_receiveLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addGap(29, 29, 29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addComponent(jComboBox_proccessReceive, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel_receiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(jLabel14))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel_receiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox_receiveSource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox_receiveMsg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addGroup(jPanel_receiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBox_receiveMsg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox_receiveSource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(jButton_ejecutarR)
                 .addContainerGap())
         );
@@ -330,7 +371,7 @@ public class Menu extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(68, 68, 68)
                         .addComponent(jPanel_receive, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 50, Short.MAX_VALUE))))
+                        .addGap(0, 65, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(185, 185, 185)
@@ -339,8 +380,8 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(183, 183, 183)
-                    .addComponent(jPanel_create, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
-                    .addContainerGap(42, Short.MAX_VALUE)))
+                    .addComponent(jPanel_create, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+                    .addGap(43, 43, 43)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -356,7 +397,7 @@ public class Menu extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel_receive, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton_GuardarDatos)
                     .addComponent(jButton_play))
@@ -369,8 +410,8 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(19, 19, 19)
-                    .addComponent(jPanel_create, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(183, Short.MAX_VALUE)))
+                    .addComponent(jPanel_create, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(93, Short.MAX_VALUE)))
         );
 
         jButton_manualUsuario.setText("Manual de Usuario");
@@ -495,6 +536,7 @@ public class Menu extends javax.swing.JFrame {
         // Direct Send
         if(direccionamientoDirecto){
             cargarComboxProcesosSend();
+            cargarComboxBoxProcesosSend();
         }
         else{
             this.jComboBox_sendDestination.setVisible(false);
@@ -526,6 +568,19 @@ public class Menu extends javax.swing.JFrame {
             contenidoMensaje = (String)mensaje.getContenido();
             if(mensaje.getDestino()==-1){
                 this.jComboBox_sendMsg.addItem(contenidoMensaje);
+            }
+        }
+    }
+    
+    public void cargarComboxBoxProcesosSend(){
+        ColaProcesos colaProcesos = Singleton.getInstance().getControlador().getColaProcesos();
+        ArrayList<Proceso> listaProcesos = colaProcesos.getListaProcesos();
+        String identificadorProceso;
+        this.jComboBox_proccessSend.removeAllItems();
+        for(Proceso proceso : listaProcesos){
+            if(!proceso.isUso()){
+                identificadorProceso = String.valueOf(proceso.getIdentificador());
+                this.jComboBox_proccessSend.addItem(identificadorProceso);
             }
         }
     }
@@ -841,6 +896,8 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton jButton_play;
     private javax.swing.JButton jButton_receive;
     private javax.swing.JButton jButton_send;
+    private javax.swing.JComboBox<String> jComboBox_proccessReceive;
+    private javax.swing.JComboBox<String> jComboBox_proccessSend;
     private javax.swing.JComboBox<String> jComboBox_receiveMsg;
     private javax.swing.JComboBox<String> jComboBox_receiveSource;
     private javax.swing.JComboBox<String> jComboBox_sendDestination;
@@ -855,6 +912,8 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel_create;
     private javax.swing.JPanel jPanel_receive;

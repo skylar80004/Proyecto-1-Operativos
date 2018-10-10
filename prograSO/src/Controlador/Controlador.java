@@ -10,9 +10,13 @@ import modelo.CasilleroMensajes;
 import modelo.ColaMensajes;
 import modelo.ColaProcesos;
 import modelo.ConfiguracionSistema;
+import modelo.Direccionamiento;
+import modelo.Formato;
 import modelo.ListaSolicitudes;
+import modelo.ManejoColas;
 import modelo.Mensaje;
 import modelo.Proceso;
+import modelo.Sincronizacion;
 import modelo.Solicitudes;
 
 /**
@@ -28,6 +32,10 @@ public class Controlador {
     private CasilleroMensajes casilleroMensaje;
     private ListaSolicitudes listaSolicitudes;
 
+    public Controlador() {
+        DefinirConfiguraciónDefault();
+    }
+
     public CasilleroMensajes getCasilleroMensaje() {
         return casilleroMensaje;
     }
@@ -36,9 +44,19 @@ public class Controlador {
         this.casilleroMensaje = casilleroMensaje;
     }
 
+    @Override
+    public String toString() {
+        return "Controlador{" + "colaMensajes=" + colaMensajes + ", colaMensajesProcesados=" + colaMensajesProcesados + ", configuracionSistema=" + configuracionSistema + ", colaProcesos=" + colaProcesos + ", casilleroMensaje=" + casilleroMensaje + ", listaSolicitudes=" + listaSolicitudes + '}';
+    }
     
-  
-    
+    public void DefinirConfiguraciónDefault(){
+        Sincronizacion sincronizacion = new Sincronizacion("Nonblocking","NonBlocking");
+        Direccionamiento direccionamiento = new Direccionamiento("DirectoReceive Explícito",true,true,false,false,false);
+        Formato formato = new Formato("Texto","Largo Variable",-1);
+        ManejoColas manejoColas = new ManejoColas("FIFO");
+        this.configuracionSistema = new ConfiguracionSistema(10, 10, sincronizacion, direccionamiento, formato, manejoColas);
+    }
+
     public void CambiarEstadoProceso(int idProceso, String estado){
         
         int idTemporal;

@@ -73,6 +73,11 @@ public class ConfiguracionSistema {
     public void setManejoColas(ManejoColas manejoColas) {
         this.manejoColas = manejoColas;
     }
+
+    @Override
+    public String toString() {
+        return "ConfiguracionSistema{" + "numeroProcesos=" + numeroProcesos + ", tamanoCola=" + tamanoCola + ", sincronizacion=" + sincronizacion + ", direccionamiento=" + direccionamiento + ", formato=" + formato + ", manejoColas=" + manejoColas + '}';
+    }
     
     
     

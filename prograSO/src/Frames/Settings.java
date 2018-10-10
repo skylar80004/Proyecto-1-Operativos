@@ -465,7 +465,7 @@ public class Settings extends javax.swing.JFrame {
         
         // Instancia Confuguracion
         ConfiguracionSistema configuracion = new ConfiguracionSistema(cantidadProcesos, tamanoColaMensajes, sincronizacion, direccionamiento, formato, manejoColas);
-        
+        System.out.println(configuracion.toString());
         // Configuracion
         Singleton.getInstance().getControlador().setConfiguracionSistema(configuracion);
         int tamanoColaProcesos = Singleton.getInstance().getControlador().getConfiguracionSistema().getNumeroProcesos();
@@ -493,8 +493,7 @@ public class Settings extends javax.swing.JFrame {
         // Creacion de Procesos
         Singleton.getInstance().getControlador().crearProcesos();
         Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
-        
-        Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
+       
             
         //lista Solicitudes
         ListaSolicitudes listaSolicitudes = new ListaSolicitudes();

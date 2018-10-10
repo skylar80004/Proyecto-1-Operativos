@@ -19,6 +19,15 @@ public class Direccionamiento {
     private boolean receiveImplicit;
     private boolean indirectStatic;
     private boolean indirectDynamic;
+
+    public Direccionamiento(String tipoDireccionamiento, boolean direct, boolean receiveExplicit, boolean receiveImplicit, boolean indirectStatic, boolean indirectDynamic) {
+        this.tipoDireccionamiento = tipoDireccionamiento;
+        this.direct = direct;
+        this.receiveExplicit = receiveExplicit;
+        this.receiveImplicit = receiveImplicit;
+        this.indirectStatic = indirectStatic;
+        this.indirectDynamic = indirectDynamic;
+    }
     
     
     public Direccionamiento(String tipoDireccionamiento) {
@@ -72,6 +81,11 @@ public class Direccionamiento {
 
     public void setTipoDireccionamiento(String tipoDireccionamiento) {
         this.tipoDireccionamiento = tipoDireccionamiento;
+    }
+
+    @Override
+    public String toString() {
+        return "Direccionamiento{" + "tipoDireccionamiento=" + tipoDireccionamiento + ", direct=" + direct + ", receiveExplicit=" + receiveExplicit + ", receiveImplicit=" + receiveImplicit + ", indirectStatic=" + indirectStatic + ", indirectDynamic=" + indirectDynamic + '}';
     }
 
     

@@ -33,6 +33,12 @@ public class Sincronizacion {
     public void setReceive(String receive) {
         this.receive = receive;
     }
+
+    @Override
+    public String toString() {
+        return "Sincronizacion{" + "send=" + send + ", receive=" + receive + '}';
+    }
+    
     
     
 }
