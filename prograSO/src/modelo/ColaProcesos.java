@@ -46,6 +46,9 @@ public class ColaProcesos {
             if(idTemporal == idProceso){
                 String val = " ID:  "+proceso.getIdentificador()+"  Estado:  "+proceso.getEstado()
                         +"  Prioridad:  "+proceso.getPrioridad();
+                
+                
+                
                 return val;
             }
         }
@@ -127,9 +130,18 @@ public class ColaProcesos {
         for(int i=0;i<this.listaProcesos.size();i++){
             Proceso proc = this.listaProcesos.get(i);
             if(proc.getIdentificador()==proceso){
+                
+                
+                String estadoViejo = proc.getEstado();
+                
                 proc.setEstado(estado);
                 proc.setUso(uso);
                 this.listaProcesos.set(i, proc);
+                
+                String evento = "El proceso " + String.valueOf(proc.getIdentificador()) + " cambió de estado: " + estadoViejo + "al nuevo estado: "  + estado;
+                proc.AgregarEvento(evento);
+                
+                
             }
         }
     }

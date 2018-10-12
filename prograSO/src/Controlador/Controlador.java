@@ -120,7 +120,7 @@ public final class Controlador {
        return this.configuracionSistema.getDireccionamiento().isIndirectStatic();
     }
     
-    
+    // por aqui
     public void cambiarEstadoProceso(int proceso,String estado,boolean uso){
         this.colaProcesos.cambiarEstadoProceso(proceso, estado, uso);
     }
