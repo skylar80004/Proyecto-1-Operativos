@@ -455,7 +455,7 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(183, 183, 183)
-                    .addComponent(jPanel_create, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
+                    .addComponent(jPanel_create, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
                     .addGap(43, 43, 43)))
         );
         jPanel1Layout.setVerticalGroup(
@@ -495,7 +495,7 @@ public class Menu extends javax.swing.JFrame {
 
         jPanel_assocMailbox.setVisible(false);
 
-        jButton_manualUsuario.setText("Manual de Usuario");
+        jButton_manualUsuario.setText("Ayuda Sensitiva al Contexto");
         jButton_manualUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_manualUsuarioActionPerformed(evt);
@@ -962,11 +962,13 @@ public class Menu extends javax.swing.JFrame {
     private void jButton_manualUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_manualUsuarioActionPerformed
         // TODO add your handling code here:
         
+       
+        /*
       try {
             if ((new File("ManualUsuario.pdf")).exists()) {
                 Process p = Runtime.getRuntime()
-			   .exec("rundll32 url.dll,FileProtocolHandler ManualUsuario.pdf");
-			p.waitFor();
+         .exec("rundll32 url.dll,FileProtocolHandler ManualUsuario.pdf");
+      p.waitFor();
             } else {
                 System.out.println("Archivo no existe");
             }
@@ -974,6 +976,115 @@ public class Menu extends javax.swing.JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        
+        */
+      
+      
+      String ayudaSensitiva = "";
+      
+      
+      String contenidoMensaje = Singleton.getInstance().getControlador().getConfiguracionSistema().getFormato().getContenido();
+      String largoMensaje =  Singleton.getInstance().getControlador().getConfiguracionSistema().getFormato().getLargo();
+      String direccionamiento = Singleton.getInstance().getControlador().getConfiguracionSistema().getDireccionamiento().getTipoDireccionamiento();
+      String manejoCola =  Singleton.getInstance().getControlador().getConfiguracionSistema().getManejoColas().getTipo();
+      String syncSend =  Singleton.getInstance().getControlador().getConfiguracionSistema().getSincronizacion().getSend();
+      String syncReceive =  Singleton.getInstance().getControlador().getConfiguracionSistema().getSincronizacion().getReceive();
+      int largo = Singleton.getInstance().getControlador().getConfiguracionSistema().getFormato().getTamano();
+
+      
+      
+      ayudaSensitiva = "El contenido de los mensajes creados será de tipo: " + contenidoMensaje + "\n" ;
+      
+      if(largoMensaje.equals("Largo Fijo")){
+          
+          ayudaSensitiva += "El largo fijo de los mensajes indica que no posible crear mensajes que sobrepasen el tamaño establecido" + "\n";
+          ayudaSensitiva += "El tamaño de los mensajes es de " + String.valueOf(largo) + " bytes" + "\n";
+          
+      }
+      else{
+           ayudaSensitiva += "El largo variable de los mensajes indica que no existe un tamaño limite en bytes para los mensajes" + "\n";
+      }
+          
+          
+      switch(direccionamiento){
+          
+          case("DirectoReceive Explícito"):{
+              
+               ayudaSensitiva += "El direccionamiento directo establece una comunicación  directa entre procesos. "
+                  + "Comandos send específican cual proceso recibirá el mensaje" + "\n"
+                  + "Receive explícito establece que el comando 'receive' especifica de que proceso es recibido el mensaje" + "\n";
+               
+                break;
+          }
+          case("DirectoReceive Implícito"):{
+              
+              ayudaSensitiva += "El direccionamiento directo establece una comunicación  directa entre procesos. "
+                  + "Comandos send específican cual proceso recibirá el mensaje" + "\n"
+                  + " Receive implícito establece que el comando receive no especifique de que proceso es recibido el mensaje" + "\n";
+              
+              break;
+          }
+          case("IndirectoEstático"):{
+              
+              ayudaSensitiva += "El direccionamiento indirecto establece una comunicación entre procesos a través de un mailbox. "
+                  + " Indirecto Estático establece que el mailbox es reservado por un solo proceso, todo el contenido del mailbox pasa a ser de un único proceso" + "\n";
+              
+          }
+          case("IndirectoDinámico"):{
+              
+              ayudaSensitiva += "El direccionamiento indirecto establece una comunicación entre procesos a través de un mailbox. "
+                  + " Indirecto Dinámico establece que el mailbox no es reservador por ningún proceso, todos los procesos pueden recibir mensajes" + "\n";
+              
+              
+              
+              
+          }
+      }
+      
+      // Sync
+      
+      if(syncSend.equals("Blocking")){
+          
+          ayudaSensitiva += "Sincronización send blocking establece que el proceso que envió el mensaje queda bloqueado hasta " + "\n" + 
+                  " que reciba una notificación de que el mensaje que envió fue recibido" + "\n" ; 
+      }
+      else{
+          
+           ayudaSensitiva += "Sincronización send Non blocking establece que el proceso no se queda esperando una confirmación " + "\n" ;
+                  
+          
+      }
+      
+      if(syncReceive.equals("Blocking")){
+          
+          ayudaSensitiva += "Sincronización receive blocking establece que el proceso  se queda bloqueado sino hay mensajes para el" + "\n" ;
+                  
+          
+      }
+      else if(syncReceive.equals("NonBlocking")){
+          
+          ayudaSensitiva += "Sincronización receive non blocking establece que el proceso que recibe un mensaje no se queda bloqueado" + "\n" ;
+                  
+      }
+      else{
+          
+          ayudaSensitiva += "Sincronización receive Prueba de llegada establece que el proceso se queda preguntando constantemente si existen mensajes para el" + "\n" ;
+                  
+      }
+      
+      // Disciplina de manejo
+      
+      if(manejoCola.equals("FIFO")){
+          
+          ayudaSensitiva += "La disciplina de manejo de colas FIFO establece que el primer mensaje agregado a la cola es el primero en ser enviado" + "\n";
+          
+      }
+      else{
+          ayudaSensitiva += "La disciplina de manejo de colas por Prioridad establece que el mensaje con la mayor prioridad es el mensaje que se envia" + "\n";
+      }
+      
+    
+      this.mensajeDialog(ayudaSensitiva, "Ayuda Sensitiva");
       
       
     }//GEN-LAST:event_jButton_manualUsuarioActionPerformed
