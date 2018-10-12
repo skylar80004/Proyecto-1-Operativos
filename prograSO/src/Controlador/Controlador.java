@@ -251,30 +251,60 @@ public final class Controlador {
             return envio;
         }
         else{ // Direccionamiento Indirecto
-            
-            Mensaje mensaje = this.casilleroMensaje.SacarMensaje();
-            if(mensaje!=null){
-                switch(estadoProceso){
-                    case "Blocking":
-                        break;
-                    case "NonBlocking":
-                        break;
-                    default:
-                        break;
-                }        
-                mensaje.setDestino(idProceso);
-                String var = "El proceso: "+String.valueOf(idProceso)+" pudo recibir el mensaje: "+(String)mensaje.getContenido();
-                Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProceso,var);
+            String valor = Singleton.getInstance().getControlador().getConfiguracionSistema().getDireccionamiento().getTipoDireccionamiento();
+            if(valor.equals("IndirectoEstático")){
+                if(idProceso==Singleton.getInstance().getControlador().getCasilleroMensaje().getProcesoAsociado()){
+                    Mensaje mensaje = this.casilleroMensaje.SacarMensaje();
+                    if(mensaje!=null){
+                        switch(estadoProceso){
+                            case "Blocking":
+                                break;
+                            case "NonBlocking":
+                                break;
+                            default:
+                                break;
+                        }        
+                        mensaje.setDestino(idProceso);
+                        String var = "El proceso: "+String.valueOf(idProceso)+" pudo recibir el mensaje: "+(String)mensaje.getContenido();
+                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProceso,var);
 
-                boolean eliminado = this.colaMensajes.getListaMensajes().remove(mensaje);
-                if(eliminado){
-                    this.colaMensajesProcesados.agregarMensaje(mensaje);
-                    this.agregarMensajeProceso(idProceso, mensaje);
-                    return eliminado;
+                        boolean eliminado = this.colaMensajes.getListaMensajes().remove(mensaje);
+                        if(eliminado){
+                            this.colaMensajesProcesados.agregarMensaje(mensaje);
+                            this.agregarMensajeProceso(idProceso, mensaje);
+                            this.cambiarEstadoProceso(mensaje.getDestino(), "Running", false);
+                            this.cambiarEstadoProceso(mensaje.getFuente(), "Running", false);
+                            return eliminado;
+                        }
+
+                    }
                 }
-                
+            }else{
+                Mensaje mensaje = this.casilleroMensaje.SacarMensaje();
+                if(mensaje!=null){
+                    switch(estadoProceso){
+                        case "Blocking":
+                            break;
+                        case "NonBlocking":
+                            break;
+                        default:
+                            break;
+                    }        
+                    mensaje.setDestino(idProceso);
+                    String var = "El proceso: "+String.valueOf(idProceso)+" pudo recibir el mensaje: "+(String)mensaje.getContenido();
+                    Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProceso,var);
+
+                    boolean eliminado = this.colaMensajes.getListaMensajes().remove(mensaje);
+                    if(eliminado){
+                        this.colaMensajesProcesados.agregarMensaje(mensaje);
+                        this.agregarMensajeProceso(idProceso, mensaje);
+                        this.cambiarEstadoProceso(mensaje.getDestino(), "Running", false);
+                        this.cambiarEstadoProceso(mensaje.getFuente(), "Running", false);
+                        return eliminado;
+                    }
+
+                }
             }
-            
             return false;
         }
     }
@@ -525,6 +555,10 @@ public final class Controlador {
         return true;
     }
 
+    public void cambiarAsociacionMailbox(int proceso){
+        this.getCasilleroMensaje().setProcesoAsociado(proceso);
+    }
+    
     public ListaSolicitudes getListaSolicitudes() {
         return listaSolicitudes;
     }

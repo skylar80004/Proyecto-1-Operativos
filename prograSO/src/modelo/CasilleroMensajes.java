@@ -21,7 +21,8 @@ public class CasilleroMensajes {
     private ArrayList<Integer> listaPrioridades;
     private int largoMaximo;
     private String manejoCola;
-    private String tipoLargo; 
+    private String tipoLargo;
+    private int procesoAsociado;
    // private String
     
     
@@ -33,7 +34,16 @@ public class CasilleroMensajes {
         this.largoMaximo = largoMaximo;
         this.manejoCola = manejoCola;
         this.tipoLargo = tipoLargo;
+        this.procesoAsociado = -1;
         
+    }
+
+    public int getProcesoAsociado() {
+        return procesoAsociado;
+    }
+
+    public void setProcesoAsociado(int procesoAsociado) {
+        this.procesoAsociado = procesoAsociado;
     }
     
     
