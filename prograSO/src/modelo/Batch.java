@@ -51,8 +51,8 @@ public class Batch {
        
        
        
-       int cantidadInstruccionConfiguracion = 0;
-       int cantidadNComandos = 10 ;
+       int cantidadInstruccionConfiguracion = -1;
+       int cantidadNComandos = 1000 ;
        
        
        while( (linea = br.readLine() ) != null){
@@ -104,69 +104,66 @@ public class Batch {
                    switch(cantidadInstruccionConfiguracion){
  
                        
-                       /*
-                       case (-1):{
+                       
+                       case (0):{
                            
                            String cantidadComandos = linea;
-                          // cantidadNComandos = Integer.parseInt(cantidadComandos);
+                           // cantidadNComandos = Integer.parseInt(cantidadComandos);
                            cantidadNComandos = 10;
-                           break;
-                           
+                           break;                          
                        }
-                       */
-                       
-                       
-                       case(0): { // Tipo de Mensaje
+                          
+                       case(1): { // Tipo de Mensaje
                            
                            tipoContenido = linea;
                            break;
                        }
-                       case(1):{
+                       case(2):{
                            
                            tipoLargo = linea;
                            break;
                        }
-                       case(2):{
+                       case(3):{
                            
                            largoMensajeString = linea;
                            break;    
                        }
-                       case(3): {
+                       case(4): {
                            
                            manejoColasString = linea;
                            break;    
                        }
-                       case(4):{
+                       case(5):{
                            
                            syncSend = linea;
                            break;
                            
                        }
-                       case(5):{
+                       case(6):{
                            
                            syncReceive = linea;
                            break;
                        }
-                       case(6): {
+                       case(7): {
                            addresingType = linea;
                            break;
                        }
-                       case(7): {
+                       case(8): {
                            addresingSubType = linea;
                            break;
                            
                        }
-                       case(8):{
+                       case(9):{
                            
                            numeroProcesos = linea;
                            break;
                            
                        }
-                       case(9):{
+                       case(10):{
                            tamanoColaMensajesString = linea;
                            break;
                        }
-                       case(10): {
+                       case(11): {
                            tamanoMailBoxString = linea;
                            break;
                            
