@@ -20,6 +20,7 @@ public class Proceso {
     private int ProgramCounter;
     private ArrayList<String> logEventos;
     private boolean uso;
+    private ArrayList<Mensaje> bufferMensajes;
     
     public Proceso(int identificador,String estado, int prioridad) {
         
@@ -28,6 +29,7 @@ public class Proceso {
         this.logEventos = new ArrayList<String>();
         this.uso=false;
         this.estado = estado;
+        bufferMensajes =  new ArrayList<>();
     }
     
     public String getLogEventos(int cantidadEventos){
@@ -56,6 +58,11 @@ public class Proceso {
         }
         
     }
+    
+    public void AgregarMensaje(Mensaje mensaje){
+        bufferMensajes.add(mensaje);
+    }
+    
     public void AgregarEvento(String evento){
         this.logEventos.add(evento);
     }
@@ -79,7 +86,7 @@ public class Proceso {
     
     public void ImprimirProceso(){
         System.out.println("Proceso # " + this.identificador +
-        " Estado:  " + estado + "Prioridad: " + this.prioridad);
+        " Estado:  " + estado + " Prioridad: " + this.prioridad);
     }
     
     public int getIdentificador() {

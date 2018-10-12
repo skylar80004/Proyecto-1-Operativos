@@ -74,79 +74,75 @@ public class CasilleroMensajes {
     }
     
     public Mensaje SacarMensaje(){ // Las listas de mensajes son paralelas
-        
-        if(this.manejoCola.equals("FIFO")){
+        if(listaMensajes.size()>0){
+            if(this.manejoCola.equals("FIFO")){
             
-            Mensaje mensaje = this.listaMensajesCola.poll();
-            
-            String contenido = (String)mensaje.getContenido();
-            
-            Mensaje mensajeTemporal;
-            String contenidoTemporal;
-            // Se saca el mensaje de la lista de mensajes normal
-            
-            for(int i = 0; i<this.listaMensajes.size();i++){
-                
-                mensajeTemporal = this.listaMensajes.get(i);
-                contenidoTemporal = (String)mensajeTemporal.getContenido();
-                
-                if(contenido.equals(contenidoTemporal)){
-                    listaMensajes.remove(i);
+                Mensaje mensaje = this.listaMensajesCola.poll();
+
+                String contenido = (String)mensaje.getContenido();
+
+                Mensaje mensajeTemporal;
+                String contenidoTemporal;
+                // Se saca el mensaje de la lista de mensajes normal
+
+                for(int i = 0; i<this.listaMensajes.size();i++){
+
+                    mensajeTemporal = this.listaMensajes.get(i);
+                    contenidoTemporal = (String)mensajeTemporal.getContenido();
+
+                    if(contenido.equals(contenidoTemporal)){
+                        listaMensajes.remove(i);
+                    }
                 }
+
+                return mensaje;
+
             }
+            else{ // Prioridad
 
-            return mensaje;
+                listaPrioridades = determinarPrioridadMensajes();
 
+                System.out.println(listaPrioridades);
+
+                int prioridadActual = determinarPrioridadMayor(listaPrioridades);
+
+                Mensaje mensajeARetornar = listaMensajes.get(prioridadActual);
+
+                this.listaMensajesCola.remove(mensajeARetornar); 
+                listaMensajes.remove(mensajeARetornar);
+                return mensajeARetornar;
+
+            }
+        }else{
+            return null;
         }
-        else{ // Prioridad
-            
-            int prioridadActual = determinarPrioridadMenor(listaPrioridades);
-            
-            Mensaje mensajeARetornar = listaMensajes.get(prioridadActual);
-            
-            this.listaMensajesCola.remove(mensajeARetornar); 
-            listaMensajes.remove(mensajeARetornar);
-            return mensajeARetornar;
-
-        }
-        
     }
     
     public ArrayList<Integer> determinarPrioridadMensajes(){
         ArrayList<Integer> listaPrioridad = new ArrayList<>();
         for(int i=0;i<this.listaMensajes.size();i++){
            Mensaje msg = (Mensaje) this.listaMensajes.get(i);
-           int fuente = msg.getFuente();
-           int destino = msg.getDestino();
-           int prioridadFuente = obtenerPrioridadProceso(fuente);
-           int prioridadDestino = obtenerPrioridadProceso(destino);
-           listaPrioridad.add(prioridadDestino+prioridadFuente);
+           int prioridad = msg.getPrioridad();
+           listaPrioridad.add(prioridad);
         
         }
         
         return listaPrioridad;
     }
     
-    public int determinarPrioridadMenor(ArrayList<Integer> prioridades){
+    public int determinarPrioridadMayor(ArrayList<Integer> prioridades){
         int result=0;
         int valor=prioridades.get(0);
         int valor1=0;
         for(int i=1;i<prioridades.size();i++){
             valor1 = prioridades.get(i);
             //if(valor1>=0){
-                if(valor1<valor){
+                if(valor1>valor){
                     result=i;
                 }
             //}
         }
         return result;
-    }
-    
-    public int obtenerPrioridadProceso(int proceso){
-        if(proceso==-1){
-            return -999;
-        }
-        return Singleton.getInstance().getControlador().getColaProcesos().getListaProcesos().get(proceso).getPrioridad();
     }
     
     public boolean AgregarMensajeEstatico(Mensaje mensaje){

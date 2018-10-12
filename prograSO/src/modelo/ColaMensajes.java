@@ -33,6 +33,7 @@ public class ColaMensajes {
         int largo;
         String contenido;
         String mensajeCompleto;
+        int prioridad;
      
         for(Mensaje mensaje: this.listaMensajes){
             
@@ -42,11 +43,12 @@ public class ColaMensajes {
             destino = mensaje.getDestino();
             fuente = mensaje.getFuente();
             largo = mensaje.getLargo();
+            prioridad = mensaje.getPrioridad();
             
             mensajeCompleto = "ID: " + String.valueOf(id) + " Contenido: " 
                     + contenido + " Destino: " + 
                     String.valueOf(destino) + " Fuente: " + String.valueOf(fuente) 
-                    + " Largo: " + largo  + "\n"; 
+                    + " Largo: " + largo  +" Prioridad: "+String.valueOf(prioridad)+ "\n"; 
             
             cola = cola + mensajeCompleto;
   

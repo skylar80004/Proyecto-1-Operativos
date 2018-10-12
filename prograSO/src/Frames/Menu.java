@@ -658,7 +658,7 @@ public class Menu extends javax.swing.JFrame {
             cargarComboBoxMensajesReceive();
 
         }else{   
-                // Opciones de Mensaje
+            // Opciones de Mensaje
             ColaMensajes colaMensajes = Singleton.getInstance().getControlador().getColaMensajes();
             ArrayList<Mensaje> listaMensajes = colaMensajes.getListaMensajes();
             String contenidoMensaje;
@@ -670,10 +670,11 @@ public class Menu extends javax.swing.JFrame {
             }
             this.jComboBox_receiveSource.setVisible(false);
             this.jComboBox_receiveMsg.setVisible(false);
+            cargarComboBoxProcesosReceiveExplicito();
         }
   
     }//GEN-LAST:event_jButton_receiveActionPerformed
-    
+     
     public void cargarComboBoxProcesosReceiveExplicito(){
         ColaProcesos colaProceso = Singleton.getInstance().getControlador().getColaProcesos();
         ArrayList<Proceso> listaProcesos = colaProceso.getListaProcesos();

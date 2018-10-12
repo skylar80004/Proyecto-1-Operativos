@@ -253,14 +253,30 @@ public final class Controlador {
         else{ // Direccionamiento Indirecto
             
             Mensaje mensaje = this.casilleroMensaje.SacarMensaje();
-            boolean eliminado = this.colaMensajes.getListaMensajes().remove(mensaje);
-            if(eliminado){
-                this.colaMensajesProcesados.agregarMensaje(mensaje);
-                return eliminado;
+            if(mensaje!=null){
+                switch(estadoProceso){
+                    case "Blocking":
+                        break;
+                    case "NonBlocking":
+                        break;
+                    default:
+                        break;
+                }        
+                mensaje.setDestino(idProceso);
+                String var = "El proceso: "+String.valueOf(idProceso)+" pudo recibir el mensaje: "+(String)mensaje.getContenido();
+                Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProceso,var);
+
+                boolean eliminado = this.colaMensajes.getListaMensajes().remove(mensaje);
+                if(eliminado){
+                    this.colaMensajesProcesados.agregarMensaje(mensaje);
+                    this.agregarMensajeProceso(idProceso, mensaje);
+                    return eliminado;
+                }
+                
             }
+            
             return false;
         }
-       
     }
     
     public boolean efectuarReceive(int idProceso,int idFuente,Mensaje msg){
@@ -300,7 +316,7 @@ public final class Controlador {
         int pos;
         
         listaPrioridades = determinarPrioridadMensajes();
-        pos = determinarPrioridadMenor(listaPrioridades);
+        pos = determinarPrioridadMayor(listaPrioridades);
         //System.out.println("Posicion menor prioridad: "+pos);
         Mensaje msg = (Mensaje) this.colaMensajes.getListaMensajes().get(pos);
         
@@ -320,7 +336,6 @@ public final class Controlador {
         return listaPrioridad;
     }
     
-    public int determinarPrioridadMenor(ArrayList<Integer> prioridades){
         int result=0;
         int valor=prioridades.get(0);
         int valor1=0;
@@ -333,6 +348,10 @@ public final class Controlador {
             //}
         }
         return result;
+    }
+    
+    public void agregarMensajeProceso(int proceso,Mensaje mensaje){
+        this.colaProcesos.agregarMensajeProceso(proceso, mensaje);
     }
     
     /**

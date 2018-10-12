@@ -79,6 +79,16 @@ public class ColaProcesos {
         }
     }
     
+    public void agregarMensajeProceso(int proceso,Mensaje evento){
+        for(int i=0;i<this.listaProcesos.size();i++){
+            Proceso proc = this.listaProcesos.get(i);
+            if(proc.getIdentificador()==proceso){
+                proc.AgregarMensaje(evento);
+                this.listaProcesos.set(i, proc);
+            }
+        }
+    }
+    
     public void cambiarPC(int proceso,boolean cambio){
         for(int i=0;i<this.listaProcesos.size();i++){
             Proceso proc = this.listaProcesos.get(i);
