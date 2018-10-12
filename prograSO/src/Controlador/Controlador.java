@@ -23,18 +23,15 @@ import modelo.Solicitudes;
  *
  * @author Rigo-PC
  */
-public class Controlador {
+public final class Controlador {
     
+    private ColaMensajes mensajes;
     private ColaMensajes colaMensajes;
     private ColaMensajes colaMensajesProcesados;
     private ConfiguracionSistema configuracionSistema;
     private ColaProcesos colaProcesos;
     private CasilleroMensajes casilleroMensaje;
     private ListaSolicitudes listaSolicitudes;
-
-    public Controlador() {
-        DefinirConfiguraciónDefault();
-    }
 
     public CasilleroMensajes getCasilleroMensaje() {
         return casilleroMensaje;
@@ -54,7 +51,29 @@ public class Controlador {
         Direccionamiento direccionamiento = new Direccionamiento("DirectoReceive Explícito",true,true,false,false,false);
         Formato formato = new Formato("Texto","Largo Variable",-1);
         ManejoColas manejoColas = new ManejoColas("FIFO");
-        this.configuracionSistema = new ConfiguracionSistema(10, 10, sincronizacion, direccionamiento, formato, manejoColas);
+        int tamanoColaProcesos = 10;
+        int tamanoColaMensajes = 10;
+        this.configuracionSistema = new ConfiguracionSistema(tamanoColaProcesos, tamanoColaMensajes, sincronizacion, direccionamiento, formato, manejoColas);
+        // Cola de Procesos
+        ColaProcesos colaProcesos = new ColaProcesos(tamanoColaProcesos);
+        this.colaProcesos = colaProcesos;
+        
+        // Cola de Mensajes
+        ColaMensajes colaMensajes = new ColaMensajes(tamanoColaMensajes);
+        this.colaMensajes = colaMensajes;
+        
+        // Creacion de Procesos
+        Singleton.getInstance().getControlador().crearProcesos();
+        Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
+       
+            
+        //lista Solicitudes
+        ListaSolicitudes listaSolicitudes = new ListaSolicitudes();
+        Singleton.getInstance().getControlador().setListaSolicitudes(listaSolicitudes);
+        
+        //Cola mensajes procesados
+        ColaMensajes colaMensajesProcesados = new ColaMensajes(-1);
+        Singleton.getInstance().getControlador().setColaMensajesProcesados(colaMensajesProcesados);
     }
 
     public void CambiarEstadoProceso(int idProceso, String estado){
@@ -97,8 +116,11 @@ public class Controlador {
     }
     
     
+    public void cambiarEstadoProceso(int proceso,String estado,boolean uso){
+        this.colaProcesos.cambiarEstadoProceso(proceso, estado, uso);
+    }
     
-    public boolean Create(String contenido){
+    public boolean Create(String contenido,int prioridad){
         
         
         String tipoContenido = this.configuracionSistema.getFormato().getContenido();
@@ -111,7 +133,7 @@ public class Controlador {
             int idMensaje = Singleton.getInstance().getCantidadMensajesCreados();
             int largo = this.configuracionSistema.getFormato().getTamano();
 
-            Mensaje mensaje = new Mensaje(idMensaje, tipoContenido, -1, -1, largo, contenido);
+            Mensaje mensaje = new Mensaje(idMensaje, tipoContenido, -1, -1, largo, contenido,prioridad);
 
             // Agrega mensaje a la cola de mensajes
             Singleton.getInstance().getControlador().AgregarMensaje(mensaje);
@@ -126,24 +148,22 @@ public class Controlador {
         return false;
     }
     
-    public boolean Send(int destino, String contenidoMensaje){
+    public boolean Send(int proceso,int destino, String contenidoMensaje){
         
         boolean sendDirect = this.IsDirectSend();
         boolean sendBlocking = this.isBlockingSend();
         
         if(sendDirect){ // Direccionamiento Directo    (FiFo/Prioridad)
 
-            boolean agregarMensaje = agregarIdDestinoAMensaje(contenidoMensaje, destino);
+            agregarIdDestinoAMensaje(contenidoMensaje, destino);
+            agregarIdFuenteAMensaje(contenidoMensaje, proceso);
             
-            if(!agregarMensaje){ // El mensaje no se puedo enviar ya que el proceso esta bloqueado               
-                return false;
+            if(sendBlocking){
+                this.cambiarEstadoProceso(proceso,"Block", true);
+            }else{
+                this.cambiarEstadoProceso(proceso,"Running", false);
             }
-            boolean receiveDirectExplicit = this.isReceiveExplicit();
-
-            if(receiveDirectExplicit){
-                agregarFuenteExplicito(contenidoMensaje, destino);
-            }
-            efectuarManejoCola(destino);
+            //this.cambiarEstadoProceso(destino, "Running", false);
         } // Direccionamiento Indirecto
         else{ 
             boolean isIndirectStatic = this.isReceiveIndirectStatic();
@@ -164,28 +184,56 @@ public class Controlador {
         
     }
     
-    public boolean Receive(int idProcesoFuente, String contenido){
+    public boolean Receive(int idProceso,int idProcesoFuente){
         
         
         boolean isDirectAdressing = this.IsDirectSend();
+        String estadoProceso = Singleton.getInstance().getControlador().getConfiguracionSistema().getSincronizacion().getReceive();
         if(isDirectAdressing){ // Direccionamiento Directo (FiFo/Prioridad)
-            
-            boolean receiveDirectExplicit = this.isReceiveExplicit();
-            
-            if(receiveDirectExplicit){ // Receive Directo Explicito
-                boolean envio = agregarIdFuenteAMensaje(contenido, idProcesoFuente);
-                efectuarManejoCola(idProcesoFuente);
-                return envio;
-            }          
-            else{ // Receive Directo Implicito
-                boolean envio = agregarIdFuenteAMensaje(contenido, idProcesoFuente);
-                if(envio){
-                   agregarFuenteImplicito(contenido, idProcesoFuente); 
-                }
-                efectuarManejoCola(idProcesoFuente);
-                return envio;
+
+           
+            boolean envio;
+            Mensaje msg = efectuarManejoCola();
+            if(msg!=null){
+               envio = efectuarReceive(idProceso, idProcesoFuente, msg); 
+            }else{
+                envio=false;
             }
-            
+            switch (estadoProceso) {
+                case "Blocking":
+                    if(!envio){
+                        this.cambiarEstadoProceso(idProceso,"Block", true);
+                        System.out.println("Proceso bloqueado");
+                    }else{
+                        this.colaMensajes.removerMensaje(msg);
+                        msg.setDestino(idProceso);
+                        this.colaMensajesProcesados.agregarMensaje(msg);
+                        this.cambiarEstadoProceso(idProceso,"Running", false);
+                        this.cambiarEstadoProceso(idProcesoFuente,"Block", false);
+                        System.out.println("Mensaje procesado");
+                    }
+                    break;
+                case "NonBlocking":
+                    if(!envio){
+                        this.cambiarEstadoProceso(idProceso,"NonBlock", false);
+                        System.out.println("Proceso bloqueado-Non");
+                    }else{
+                        this.colaMensajes.removerMensaje(msg);
+                        msg.setDestino(idProceso);
+                        this.colaMensajesProcesados.agregarMensaje(msg);
+                        this.cambiarEstadoProceso(idProceso,"Running", false);
+                        this.cambiarEstadoProceso(idProcesoFuente,"Block", false);
+                        System.out.println("Mensaje procesado-Non");
+                    }
+                    break;
+                default: //test of arrive
+                   break;
+            }
+            if(envio){
+                String var = "El proceso: "+String.valueOf(idProceso)+" pudo recibir el mensaje: "+(String)msg.getContenido();
+                Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProceso,var);
+            }
+            return envio;
         }
         else{ // Direccionamiento Indirecto
             
@@ -200,51 +248,57 @@ public class Controlador {
        
     }
     
-    public void efectuarManejoCola(int proceso){
-        if(this.getConfiguracionSistema().getManejoColas().getTipo().equals("FIFO")){ //FIFO
-            Mensaje msg = this.primeroColaMensajes();
-            String contenido = (String) msg.getContenido();
-            if(completitudMensaje(contenido)){
-                if(this.getColaMensajes().getListaMensajes().size()>0){
-                    efectuarManejoCola(proceso);
+    public boolean efectuarReceive(int idProceso,int idFuente,Mensaje msg){
+        if(determinarSendEjecutado(msg)){
+            boolean receiveDirectExplicit = this.isReceiveExplicit();
+            if(receiveDirectExplicit){ // Receive Directo Explicito
+                if(msg.getFuente()==idFuente){
+                    return true;
+                }else{
+                    return false;
                 }
-            }else{
-                this.getColaProcesos().cambiarPC(proceso, true);
+            }          
+            else{ // Receive Directo Implicito
+                return true;
             }
-
-        }else{ //prioridad
-             ejecutarPrioridades(proceso);
         }
+        return false;
+            
     }
     
-    public void ejecutarPrioridades(int proceso){
-        int cantidad = this.getColaMensajes().getListaMensajes().size();
+    public Mensaje efectuarManejoCola(){
+        if(this.colaMensajes.getListaMensajes().size()>0){
+            if(this.getConfiguracionSistema().getManejoColas().getTipo().equals("FIFO")){ //FIFO
+                Mensaje msg = this.primeroColaMensajes();
+                return msg;
+
+            }else{ //prioridad
+                 return ejecutarPrioridades();
+            }
+        }
+        return null;
+    }
+    
+    public Mensaje ejecutarPrioridades(){
+        
         ArrayList<Integer> listaPrioridades;
         int pos;
         
-        for(int i=0;i<cantidad;i++){
-            listaPrioridades = determinarPrioridadMensajes();
-            pos = determinarPrioridadMenor(listaPrioridades);
-            //System.out.println("Posicion menor prioridad: "+pos);
-            Mensaje msg = (Mensaje) this.colaMensajes.getListaMensajes().get(pos);
-            String contenido = (String) msg.getContenido();
-            if(completitudMensaje(contenido)){
-                //System.out.println("Elimino un valor");
-            }else{
-                this.getColaProcesos().cambiarPC(proceso, true);
-            }
-        }
+        listaPrioridades = determinarPrioridadMensajes();
+        pos = determinarPrioridadMenor(listaPrioridades);
+        //System.out.println("Posicion menor prioridad: "+pos);
+        Mensaje msg = (Mensaje) this.colaMensajes.getListaMensajes().get(pos);
+        
+        return msg;
+
     }
     
     public ArrayList<Integer> determinarPrioridadMensajes(){
         ArrayList<Integer> listaPrioridad = new ArrayList<>();
         for(int i=0;i<this.colaMensajes.getListaMensajes().size();i++){
            Mensaje msg = (Mensaje) this.colaMensajes.getListaMensajes().get(i);
-           int fuente = msg.getFuente();
-           int destino = msg.getDestino();
-           int prioridadFuente = obtenerPrioridadProceso(fuente);
-           int prioridadDestino = obtenerPrioridadProceso(destino);
-           listaPrioridad.add(prioridadDestino+prioridadFuente);
+           int prioridad = msg.getPrioridad();
+           listaPrioridad.add(prioridad);
         
         }
         
@@ -258,7 +312,7 @@ public class Controlador {
         for(int i=1;i<prioridades.size();i++){
             valor1 = prioridades.get(i);
             //if(valor1>=0){
-                if(valor1<valor){
+                if(valor1>valor){
                     result=i;
                 }
             //}
@@ -266,13 +320,14 @@ public class Controlador {
         return result;
     }
     
-    public int obtenerPrioridadProceso(int proceso){
-        if(proceso==-1){
-            return -999;
-        }
-        return this.getColaProcesos().getListaProcesos().get(proceso).getPrioridad();
+    /**
+     * determina si un mensaje ya se le ejecuto un send
+     * @param msg 
+     * @return  
+     */
+    public boolean determinarSendEjecutado(Mensaje msg){
+        return msg.getDestino()!=-1;
     }
-    
     
     public void setSolicitud(Solicitudes solicitudes){
         this.listaSolicitudes.getListaSolicitudes().add(solicitudes);
@@ -299,29 +354,14 @@ public class Controlador {
     
     public boolean agregarIdDestinoAMensaje(String contenido, int idDestino){
         
-        boolean isProcessBlocked= this.isProcessBlocked(idDestino);
-        if(isProcessBlocked){
-            return false;
-            
-        }
-        else{
-            return this.colaMensajes.agregarIdDestino(contenido, idDestino);
-            
-        }
-        
+        return this.colaMensajes.agregarIdDestino(contenido, idDestino);
+
     }
     
     public boolean agregarIdFuenteAMensaje(String contenido, int idFuente){
         
-        boolean isProcessBlocked = this.isProcessBlocked(idFuente);
-        if(isProcessBlocked){
-            return false;
-            
-        }
-        else{
-            return this.colaMensajes.agregarIdFuente(contenido, idFuente);
-            
-        }
+        return this.colaMensajes.agregarIdFuente(contenido, idFuente);
+
         
     }
     
@@ -360,7 +400,10 @@ public class Controlador {
     }
     
     public Mensaje primeroColaMensajes(){
-        return (Mensaje) this.colaMensajes.getListaMensajes().get(0);
+        if(this.colaMensajes.getListaMensajes().size()>0){
+            return (Mensaje) this.colaMensajes.getListaMensajes().get(0);
+        }
+        return null;
     }
     
     public Mensaje encontrarMensaje(String contenidoMensaje){
@@ -430,7 +473,7 @@ public class Controlador {
             estadoSend = this.configuracionSistema.getSincronizacion().getSend();
             estadoReceive = this.configuracionSistema.getSincronizacion().getReceive();
             
-            Proceso proceso = new Proceso(identificador,estadoSend,estadoReceive,identificador);
+            Proceso proceso = new Proceso(identificador,"Running",identificador);
             int idProceso = proceso.getIdentificador();
             
             // Evento de creacion
@@ -462,7 +505,13 @@ public class Controlador {
     public void setColaMensajesProcesados(ColaMensajes colaMensajesProcesados) {
         this.colaMensajesProcesados = colaMensajesProcesados;
     }
-    
-    
+
+    public ColaMensajes getMensajes() {
+        return mensajes;
+    }
+
+    public void setMensajes(ColaMensajes mensajes) {
+        this.mensajes = mensajes;
+    }
     
 }

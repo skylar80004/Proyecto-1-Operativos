@@ -21,12 +21,13 @@ public class Proceso {
     private ArrayList<String> logEventos;
     private boolean uso;
     
-    public Proceso(int identificador, String estadoSend, String estadoReceive, int prioridad) {
+    public Proceso(int identificador,String estado, int prioridad) {
         
         this.identificador = identificador;
         this.prioridad = prioridad;
         this.logEventos = new ArrayList<String>();
         this.uso=false;
+        this.estado = estado;
     }
     
     public String getLogEventos(int cantidadEventos){

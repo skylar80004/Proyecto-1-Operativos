@@ -262,7 +262,7 @@ public class Batch {
                        }
                    }
                    
-                   boolean estado = Singleton.getInstance().getControlador().Create(contenido);
+                   boolean estado = Singleton.getInstance().getControlador().Create(contenido,0);
         
                    if(estado){
                        String mensajeDialogoContenido = "Se ha creado el mensaje";
@@ -292,7 +292,7 @@ public class Batch {
 
                    
 
-                    boolean sendBoolean = Singleton.getInstance().getControlador().Send(idProcesoDestino, contenidoMensaje);
+                    boolean sendBoolean = Singleton.getInstance().getControlador().Send(0,idProcesoDestino, contenidoMensaje);
 
                     String contenidoMensajeDialog = "Se ha enviado el mensaje";
                     String tituloBarra = "Send";
@@ -324,7 +324,7 @@ public class Batch {
                        idProcesoFuente = 0;
                    }
         
-                    boolean receiveBoolean = Singleton.getInstance().getControlador().Receive(idProcesoFuente,contenidoMensaje);
+                    boolean receiveBoolean = Singleton.getInstance().getControlador().Receive(idProcesoFuente,0);
                     String contenidoMensajeDialog = "";
                     String tituloBarra = "Receive";
 

@@ -20,9 +20,6 @@ public class ColaProcesos {
         this.tamano = tamano;
         listaProcesos = new ArrayList<Proceso>();
     }
-
-
-    
     public ArrayList<Proceso> getListaProcesos(){
         return this.listaProcesos;
     }
@@ -87,6 +84,17 @@ public class ColaProcesos {
             Proceso proc = this.listaProcesos.get(i);
             if(proc.getIdentificador()==proceso){
                 proc.setUso(cambio);
+                this.listaProcesos.set(i, proc);
+            }
+        }
+    }
+    
+    public void cambiarEstadoProceso(int proceso,String estado,boolean uso){
+        for(int i=0;i<this.listaProcesos.size();i++){
+            Proceso proc = this.listaProcesos.get(i);
+            if(proc.getIdentificador()==proceso){
+                proc.setEstado(estado);
+                proc.setUso(uso);
                 this.listaProcesos.set(i, proc);
             }
         }

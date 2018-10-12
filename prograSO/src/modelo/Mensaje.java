@@ -17,25 +17,27 @@ public class Mensaje {
     private int fuente;
     private int largo;
     private Object contenido;
+    private int prioridad;
     
     public Mensaje(){
         
     }
     
-    public Mensaje(int id, String tipo, int destino, int fuente, int largo, Object contenido) {
+    public Mensaje(int id, String tipo, int destino, int fuente, int largo, Object contenido,int prioridad) {
         this.id = id;
         this.tipo = tipo;
         this.destino = destino;
         this.fuente = fuente;
         this.largo = largo;
         this.contenido = contenido;
+        this.prioridad = prioridad;
     }
     
     
     public void ImprimirMensaje(){
         
         System.out.println("ID Mensaje: " + this.id + " Tipo Contenido: " + this.tipo + " Destino: " + destino + 
-                " Fuente: " + fuente + " Largo: " + largo + " Contenido: " + contenido);
+                " Fuente: " + fuente + " Largo: " + largo + " Contenido: " + contenido+" Prioridad: "+this.prioridad);
     }
 
     public int getId() {
@@ -86,10 +88,20 @@ public class Mensaje {
         this.contenido = contenido;
     }
 
+    public int getPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(int prioridad) {
+        this.prioridad = prioridad;
+    }
+
     @Override
     public String toString() {
-        return "Mensaje{" + "id=" + id + ", tipo=" + tipo + ", destino=" + destino + ", fuente=" + fuente + ", largo=" + largo + ", contenido=" + contenido + '}';
+        return "Mensaje{" + "id=" + id + ", tipo=" + tipo + ", destino=" + destino + ", fuente=" + fuente + ", largo=" + largo + ", contenido=" + contenido + ", prioridad=" + prioridad + '}';
     }
+
+    
     
     
 }

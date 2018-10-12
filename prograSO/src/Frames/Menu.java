@@ -71,6 +71,8 @@ public class Menu extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jTextField_msgContents = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jTextField_priorityMsg = new javax.swing.JTextField();
         jPanel_send = new javax.swing.JPanel();
         jButton_ejecutarS = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -162,22 +164,30 @@ public class Menu extends javax.swing.JFrame {
 
         jLabel10.setText("Contenido:");
 
+        jLabel8.setText("Prioridad:");
+
         javax.swing.GroupLayout jPanel_createLayout = new javax.swing.GroupLayout(jPanel_create);
         jPanel_create.setLayout(jPanel_createLayout);
         jPanel_createLayout.setHorizontalGroup(
             jPanel_createLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTextField_msgContents, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+            .addComponent(jTextField_msgContents, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
             .addGroup(jPanel_createLayout.createSequentialGroup()
                 .addGroup(jPanel_createLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel_createLayout.createSequentialGroup()
-                        .addGap(149, 149, 149)
-                        .addGroup(jPanel_createLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addComponent(jButton_ejecutarC)))
+                        .addGap(181, 181, 181)
+                        .addComponent(jLabel3))
                     .addGroup(jPanel_createLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel10)))
-                .addContainerGap(185, Short.MAX_VALUE))
+                        .addComponent(jLabel10))
+                    .addGroup(jPanel_createLayout.createSequentialGroup()
+                        .addGap(161, 161, 161)
+                        .addComponent(jButton_ejecutarC))
+                    .addGroup(jPanel_createLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel8)
+                        .addGap(29, 29, 29)
+                        .addComponent(jTextField_priorityMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel_createLayout.setVerticalGroup(
             jPanel_createLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,10 +196,14 @@ public class Menu extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField_msgContents, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField_msgContents, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel_createLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jTextField_priorityMsg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton_ejecutarC)
-                .addGap(18, 18, 18))
+                .addContainerGap())
         );
 
         jPanel_send.setVisible(false);
@@ -203,9 +217,9 @@ public class Menu extends javax.swing.JFrame {
 
         jLabel4.setText("Send()");
 
-        jLabel11.setText("Destino:");
+        jLabel11.setText("Mensaje:");
 
-        jLabel12.setText("Mensaje:");
+        jLabel12.setText("Destino:");
 
         jComboBox_sendDestination.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -351,6 +365,9 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(jButton_ejecutarR)
                 .addContainerGap())
         );
+
+        jLabel14.setVisible(false);
+        this.jComboBox_receiveMsg.setVisible(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -550,9 +567,22 @@ public class Menu extends javax.swing.JFrame {
         String identificadorProceso;
         this.jComboBox_sendDestination.removeAllItems();
         for(Proceso proceso : listaProcesos){
-            if(!proceso.isUso()){
+            //if(!proceso.isUso()){
                 identificadorProceso = String.valueOf(proceso.getIdentificador());
                 this.jComboBox_sendDestination.addItem(identificadorProceso);
+            //}
+        }
+    }
+    
+    public void cargarComboxBoxProcesosSend(){
+        ColaProcesos colaProcesos = Singleton.getInstance().getControlador().getColaProcesos();
+        ArrayList<Proceso> listaProcesos = colaProcesos.getListaProcesos();
+        String identificadorProceso;
+        this.jComboBox_proccessSend.removeAllItems();
+        for(Proceso proceso : listaProcesos){
+            if(!proceso.isUso()){
+                identificadorProceso = String.valueOf(proceso.getIdentificador());
+                this.jComboBox_proccessSend.addItem(identificadorProceso);
             }
         }
     }
@@ -567,20 +597,9 @@ public class Menu extends javax.swing.JFrame {
         for(Mensaje mensaje: listaMensajes){
             contenidoMensaje = (String)mensaje.getContenido();
             if(mensaje.getDestino()==-1){
+                //String contenido = contenidoMensaje.replace('_', ' ');
+                //System.out.println(contenido);
                 this.jComboBox_sendMsg.addItem(contenidoMensaje);
-            }
-        }
-    }
-    
-    public void cargarComboxBoxProcesosSend(){
-        ColaProcesos colaProcesos = Singleton.getInstance().getControlador().getColaProcesos();
-        ArrayList<Proceso> listaProcesos = colaProcesos.getListaProcesos();
-        String identificadorProceso;
-        this.jComboBox_proccessSend.removeAllItems();
-        for(Proceso proceso : listaProcesos){
-            if(!proceso.isUso()){
-                identificadorProceso = String.valueOf(proceso.getIdentificador());
-                this.jComboBox_proccessSend.addItem(identificadorProceso);
             }
         }
     }
@@ -610,7 +629,13 @@ public class Menu extends javax.swing.JFrame {
         
         // Direct Receive
         if(direccionamientoDirecto){
-            cargarComboBoxProcesosReceive();
+            boolean receiveDirectExplicit = Singleton.getInstance().getControlador().isReceiveExplicit();
+            if(receiveDirectExplicit){
+                cargarComboBoxProcesosReceiveExplicito();
+            }else{
+                this.jComboBox_receiveSource.setVisible(false);
+                cargarComboBoxProcesosReceiveImplicito();
+            }
             cargarComboBoxMensajesReceive();
 
         }else{   
@@ -630,16 +655,33 @@ public class Menu extends javax.swing.JFrame {
   
     }//GEN-LAST:event_jButton_receiveActionPerformed
     
-    public void cargarComboBoxProcesosReceive(){
+    public void cargarComboBoxProcesosReceiveExplicito(){
         ColaProcesos colaProceso = Singleton.getInstance().getControlador().getColaProcesos();
         ArrayList<Proceso> listaProcesos = colaProceso.getListaProcesos();
         String identificadorProceso;
         this.jComboBox_receiveSource.removeAllItems();
+        this.jComboBox_proccessReceive.removeAllItems();
         for(Proceso proceso : listaProcesos){
+            identificadorProceso = String.valueOf(proceso.getIdentificador());
             if(!proceso.isUso()){
-                identificadorProceso = String.valueOf(proceso.getIdentificador());
-                this.jComboBox_receiveSource.addItem(identificadorProceso);
+                this.jComboBox_proccessReceive.addItem(identificadorProceso);
             }
+            this.jComboBox_receiveSource.addItem(identificadorProceso);
+        }
+    }
+    
+    public void cargarComboBoxProcesosReceiveImplicito(){
+        ColaProcesos colaProceso = Singleton.getInstance().getControlador().getColaProcesos();
+        ArrayList<Proceso> listaProcesos = colaProceso.getListaProcesos();
+        String identificadorProceso;
+        this.jComboBox_receiveSource.removeAllItems();
+        this.jComboBox_proccessReceive.removeAllItems();
+        for(Proceso proceso : listaProcesos){
+            identificadorProceso = String.valueOf(proceso.getIdentificador());
+            if(!proceso.isUso()){
+                this.jComboBox_proccessReceive.addItem(identificadorProceso);
+            }
+            //this.jComboBox_receiveSource.addItem(identificadorProceso);
         }
     }
     
@@ -653,6 +695,7 @@ public class Menu extends javax.swing.JFrame {
         for(Mensaje mensaje: listaMensajes){
             contenidoMensaje = (String)mensaje.getContenido();
             if(mensaje.getFuente()==-1){
+                //String contenido = contenidoMensaje.replaceAll("_"," ");
                 this.jComboBox_receiveMsg.addItem(contenidoMensaje);
             }
         }
@@ -664,14 +707,18 @@ public class Menu extends javax.swing.JFrame {
         
         
         String contenido = this.jTextField_msgContents.getText();
+        String prioridadString = this.jTextField_priorityMsg.getText();
         if(contenido.equals("")){
             mensajeDialog("Escriba un mensaje", "Mensaje vació");
-        }else{
+        }else if(prioridadString.equals("")){
+            mensajeDialog("Prioridad vacía", "Complete la prioridad");
+        }
+        else{
             Mensaje msg = Singleton.getInstance().getControlador().encontrarMensaje(contenido);
             if(msg!=null){
                 mensajeDialog("Existe un mensaje identico","Mensaje identico");
                 }else{
-                    int largoMensaje = contenido.length();
+                int largoMensaje = contenido.length();
                 int largoMaximo = Singleton.getInstance().getControlador().getConfiguracionSistema().getFormato().getTamano();
 
 
@@ -683,15 +730,21 @@ public class Menu extends javax.swing.JFrame {
                         this.mensajeDialog(mensajeDialog, tituloBarra);
                         return;
                     }
+                    int faltantes = largoMaximo-largoMensaje;
+                    for(int i=0;i<faltantes;i++){
+                        contenido+="_";
+                    }
                 }
-
+                
+                int prioridad = Integer.parseInt(prioridadString);
                 //Comando Create
-                boolean estado = Singleton.getInstance().getControlador().Create(contenido);
+                boolean estado = Singleton.getInstance().getControlador().Create(contenido,prioridad);
 
                 if(estado){
                     String mensajeDialogoContenido = "Se ha creado el mensaje";
                     String tituloDialogoContenido = "Mensaje creado";
                     this.jTextField_msgContents.setText("");
+                    this.jTextField_priorityMsg.setText("");
                     this.mensajeDialog(mensajeDialogoContenido ,tituloDialogoContenido);
                 }else{
                     String mensajeDialogoContenido = "No se ha creado el mensaje";
@@ -716,76 +769,79 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         
-        String idProcesoDestinoString = (String)this.jComboBox_sendDestination.getSelectedItem();
-        int idProcesoDestino;
-        try{
-            idProcesoDestino = Integer.parseInt(idProcesoDestinoString);
-            
-        }
-        catch(Exception e){
-            idProcesoDestino = 0;
-            
+        String idProcesoDestinoString = (String) this.jComboBox_sendDestination.getSelectedItem();
+        int idProcesoDestino = Integer.parseInt(idProcesoDestinoString);
+        
+        String idProcesoSendString = (String) this.jComboBox_proccessSend.getSelectedItem();
+        int idProcesoSend = Integer.parseInt(idProcesoSendString);
+
+        if(idProcesoDestino!=idProcesoSend){
+            String contenidoMensaje = (String)this.jComboBox_sendMsg.getSelectedItem();
+        
+            boolean send = Singleton.getInstance().getControlador().Send(idProcesoSend,idProcesoDestino, contenidoMensaje);
+
+            String contenidoMensajeDialog = "Se ha enviado el mensaje";
+            String tituloBarra = "Send";
+
+            if(send){
+                String var = "El proceso: "+String.valueOf(idProcesoSend)+" pudo enviar el mensaje: "+contenidoMensaje;
+                Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoSend,var);
+                contenidoMensajeDialog = "Se ha enviado el mensaje";
+                this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+
+            }
+            else{
+                String var = "El proceso: "+String.valueOf(idProcesoDestino)+" no pudo recibir el mensaje: "+contenidoMensaje;
+                Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoDestino,var);
+                contenidoMensajeDialog = "El mensaje no se pudo enviar";
+                this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+            }
+            cargarComboxMensajesSend();
+            cargarComboxProcesosSend();
+            cargarComboxBoxProcesosSend();
+        }else{
+            this.mensajeDialog("Se esta realizando un envio al mismo proceso", "Error:");
         }
         
-        String contenidoMensaje = (String)this.jComboBox_sendMsg.getSelectedItem();
-        
-        boolean send = Singleton.getInstance().getControlador().Send(idProcesoDestino, contenidoMensaje);
-        
-        String contenidoMensajeDialog = "Se ha enviado el mensaje";
-        String tituloBarra = "Send";
-        
-        if(send){
-            String var = "El proceso: "+String.valueOf(idProcesoDestino)+" pudo recibir el mensaje: "+contenidoMensaje;
-            Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoDestino,var);
-            contenidoMensajeDialog = "Se ha enviado el mensaje";
-            this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
-            
-        }
-        else{
-            String var = "El proceso: "+String.valueOf(idProcesoDestino)+" no pudo recibir el mensaje: "+contenidoMensaje;
-            Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoDestino,var);
-            contenidoMensajeDialog = "El mensaje no se pudo enviar";
-            this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
-        }
-        cargarComboxMensajesSend();
-        cargarComboxProcesosSend();
     }//GEN-LAST:event_jButton_ejecutarSActionPerformed
 
     private void jButton_ejecutarRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ejecutarRActionPerformed
-        // TODO add your handling code here:
-        String idProcesoFuenteString = (String)this.jComboBox_receiveSource.getSelectedItem();
-        String contenidoMensaje = (String)this.jComboBox_receiveMsg.getSelectedItem();
-        int idProcesoFuente;
+        // TODO add your handling code here:    
+
+        String idProcesoReceiveString = (String) this.jComboBox_proccessReceive.getSelectedItem();
+        int idProcesoReceive = Integer.parseInt(idProcesoReceiveString);
         
-        try{
-            idProcesoFuente = Integer.parseInt(idProcesoFuenteString);
-            
-        }
-        catch(Exception e){
-            idProcesoFuente = 0;
-            
-        }
+        boolean receive = false;
         
-        boolean receive = Singleton.getInstance().getControlador().Receive(idProcesoFuente,contenidoMensaje);
+        boolean receiveDirectExplicit = Singleton.getInstance().getControlador().isReceiveExplicit();
+        if(receiveDirectExplicit){
+            String idProcesoFuenteString = (String)this.jComboBox_receiveSource.getSelectedItem();
+            int idProcesoFuente = Integer.parseInt(idProcesoFuenteString);
+            receive = Singleton.getInstance().getControlador().Receive(idProcesoReceive,idProcesoFuente);
+        }else{
+            this.jComboBox_receiveSource.setVisible(false);
+            cargarComboBoxProcesosReceiveImplicito();
+            receive = Singleton.getInstance().getControlador().Receive(idProcesoReceive,0);
+        }
+
         String contenidoMensajeDialog = "";
         String tituloBarra = "Receive";
         
         if(receive){
-            String var = "El proceso: "+String.valueOf(idProcesoFuente)+" pudo enviar el mensaje: "+contenidoMensaje;
-            Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var);
+            //String var = "El proceso: "+String.valueOf(idProcesoReceive)+" pudo recibir el mensaje: "+contenidoMensaje;
+            //Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoReceive,var);
             contenidoMensajeDialog = "Receive procesado";
             this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
             
         }
         else{
-            String var = "El proceso: "+String.valueOf(idProcesoFuente)+"no pudo enviar el mensaje: "+contenidoMensaje;
-            Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var);
+            
             contenidoMensajeDialog = "Receive no procesado";
             this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
         }
         
         cargarComboBoxMensajesReceive();
-        cargarComboBoxProcesosReceive();
+        cargarComboBoxProcesosReceiveExplicito();
     }//GEN-LAST:event_jButton_ejecutarRActionPerformed
 
     private void jButton_manualUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_manualUsuarioActionPerformed
@@ -914,11 +970,13 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel_create;
     private javax.swing.JPanel jPanel_receive;
     private javax.swing.JPanel jPanel_send;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JTextField jTextField_msgContents;
+    private javax.swing.JTextField jTextField_priorityMsg;
     // End of variables declaration//GEN-END:variables
 }
