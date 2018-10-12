@@ -52,7 +52,7 @@ public class Batch {
        
        
        int cantidadInstruccionConfiguracion = 0;
-       
+       int cantidadNComandos = 10 ;
        
        
        while( (linea = br.readLine() ) != null){
@@ -97,9 +97,24 @@ public class Batch {
            
            else{
                
+               System.out.println("Cantidad de Comandos: " + cantidadNComandos);
+               
                if(configuracion){
                    
                    switch(cantidadInstruccionConfiguracion){
+ 
+                       
+                       /*
+                       case (-1):{
+                           
+                           String cantidadComandos = linea;
+                          // cantidadNComandos = Integer.parseInt(cantidadComandos);
+                           cantidadNComandos = 10;
+                           break;
+                           
+                       }
+                       */
+                       
                        
                        case(0): { // Tipo de Mensaje
                            
@@ -163,92 +178,105 @@ public class Batch {
                }
                else if(create){
                    
-                   if(Singleton.getInstance().getControlador().getConfiguracionSistema() == null){
+                   
+                   if(cantidadNComandos > 0 ){
                        
-                    int largoMensajes = Integer.parseInt(largoMensajeString);
-                    ManejoColas manejoColas = new ManejoColas(manejoColasString);
-                    Formato formato = new Formato(tipoContenido,tipoLargo,largoMensajes);
-                     // Direccionamiento
-                    String addresing = addresingType + addresingSubType;
-                    Direccionamiento direccionamiento = new Direccionamiento(addresing);
+                       
+                       if(Singleton.getInstance().getControlador().getConfiguracionSistema() == null){
 
-                    if(addresingType.equals("Directo")){
-                        direccionamiento.setDirect(true);
+                             // Datos de interfaz
+                            //int cantidadProcesos = Integer.parseInt(cantidadProcesosString);
 
-                        if(addresingSubType.equals("Receive Explícito")){
+                            // Instancia de objetos
+                            ManejoColas manejoColas = new ManejoColas(manejoColasString);                          
+                            System.out.println("Largo Mensaje String: " + largoMensajeString);
+                            
+                            
+                            Formato formato = new Formato(tipoContenido,tipoLargo,Integer.parseInt(largoMensajeString));
+                            String addresing = addresingType + addresingSubType;
+                            
+                            //Direccionamiento
+                            Direccionamiento direccionamiento = new Direccionamiento(addresing);
 
-                            direccionamiento.setReceiveExplicit(true);
-                            direccionamiento.setReceiveImplicit(false);
-                         }
+                            if(addresingType.equals("Directo")){
+                                direccionamiento.setDirect(true);
 
-                         else{
+                                if(addresingSubType.equals("Receive Explícito")){
+                                    direccionamiento.setReceiveExplicit(true);
+                                    direccionamiento.setReceiveImplicit(false);
+                                }
+                                else{
+                                    direccionamiento.setReceiveExplicit(false);
+                                    direccionamiento.setReceiveImplicit(true);
+                                }  
+                            }
+                            else{
+                                direccionamiento.setDirect(false);
+                                if(addresingSubType.equals("Estático")){
+                                    direccionamiento.setIndirectStatic(true);
+                                    direccionamiento.setIndirectDynamic(false);
+                                }
+                                else{           
+                                    direccionamiento.setIndirectStatic(false);
+                                    direccionamiento.setIndirectDynamic(true);
 
-                             direccionamiento.setReceiveExplicit(false);
-                             direccionamiento.setReceiveImplicit(true);
-                         }  
-                     }
-                     else{
+                                }
 
-                         direccionamiento.setDirect(false);
-                         if(addresingSubType.equals("Estático")){
-                             direccionamiento.setIndirectStatic(true);
-                             direccionamiento.setIndirectDynamic(false);
-                         }
-                         else{           
-                             direccionamiento.setIndirectStatic(false);
-                             direccionamiento.setIndirectDynamic(true);
+                            }
 
-                         }
+                            //---------------------------------------------------------------------
+                            Sincronizacion sincronizacion = new Sincronizacion(syncSend,syncReceive);
 
-                     }
+                            // Instancia Confuguracion
+                            ConfiguracionSistema configuracionS = new ConfiguracionSistema(Integer.parseInt(numeroProcesos), Integer.parseInt(tamanoColaMensajesString), sincronizacion, direccionamiento, formato, manejoColas);
+                            System.out.println(configuracionS.toString());
+                            // Configuracion
+                            Singleton.getInstance().getControlador().setConfiguracionSistema(configuracionS);
+                            int tamanoColaProcesos = Singleton.getInstance().getControlador().getConfiguracionSistema().getNumeroProcesos();
 
-                     //---------------------------------------------------------------------
-                     Sincronizacion sincronizacion = new Sincronizacion(syncSend,syncReceive);
+                            // Cola de Procesos
+                            ColaProcesos colaProcesos = new ColaProcesos(tamanoColaProcesos);
+                            Singleton.getInstance().getControlador().setColaProcesos(colaProcesos);
 
-                     // Instancia Confuguracion
+                            // Cola de Mensajes
+                            ColaMensajes colaMensajes = new ColaMensajes(Integer.parseInt(tamanoColaMensajesString));
+                            Singleton.getInstance().getControlador().setColaMensajes(colaMensajes);
 
-                     int cantidadProcesos = Integer.parseInt(numeroProcesos);
-                     int tamanoColaMensajes = Integer.parseInt(tamanoColaMensajesString);
-                     ConfiguracionSistema configuracionSistema = new ConfiguracionSistema(cantidadProcesos, tamanoColaMensajes, sincronizacion, direccionamiento, formato, manejoColas);
+                            System.out.println("Configuracion Lista");
 
-                     // Configuracion
-                     Singleton.getInstance().getControlador().setConfiguracionSistema(configuracionSistema);
-                     int tamanoColaProcesos = Singleton.getInstance().getControlador().getConfiguracionSistema().getNumeroProcesos();
 
-                     // Cola de Procesos
-                     ColaProcesos colaProcesos = new ColaProcesos(tamanoColaProcesos);
-                     Singleton.getInstance().getControlador().setColaProcesos(colaProcesos);
+                            // Casillero de Mensajes int largoMaximo, String manejoCola, String tipoLargo){
+                            /*
+                            int tamanoMailBox = 0;
+                            String sts = this.jTextField_mailboxSize.getText();
+                            if(!sts.equals("")){
+                                tamanoMailBox = Integer.parseInt(sts);
+                            }
+                            
+*/
 
-                     // Cola de Mensajes
-        ColaMensajes colaMensajes = new ColaMensajes(tamanoColaMensajes);
-        Singleton.getInstance().getControlador().setColaMensajes(colaMensajes);
-        
-        System.out.println("Configuracion Lista");
-        
-        
-        // Casillero de Mensajes int largoMaximo, String manejoCola, String tipoLargo){
-        int tamanoMailBox = 0;
-        
-        CasilleroMensajes casilleroMensajes = new CasilleroMensajes(tamanoMailBox,manejoColasString,tipoLargo);
-        Singleton.getInstance().getControlador().setCasilleroMensaje(casilleroMensajes);
-        
-        // Creacion de Procesos
-        Singleton.getInstance().getControlador().crearProcesos();
-        Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
-        
-        Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
-            
-        //lista Solicitudes
-        ListaSolicitudes listaSolicitudes = new ListaSolicitudes();
-        Singleton.getInstance().getControlador().setListaSolicitudes(listaSolicitudes);
-        
-        //Cola mensajes procesados
-        ColaMensajes colaMensajesProcesados = new ColaMensajes(-1);
-        Singleton.getInstance().getControlador().setColaMensajesProcesados(colaMensajesProcesados);
+                            CasilleroMensajes casilleroMensajes = new CasilleroMensajes(Integer.parseInt(tamanoMailBoxString),manejoColasString,tipoLargo);
+                            Singleton.getInstance().getControlador().setCasilleroMensaje(casilleroMensajes);
+
+                            // Creacion de Procesos
+                            Singleton.getInstance().getControlador().crearProcesos();
+                            Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
+
+
+                            //lista Solicitudes
+                            ListaSolicitudes listaSolicitudes = new ListaSolicitudes();
+                            Singleton.getInstance().getControlador().setListaSolicitudes(listaSolicitudes);
+
+                            //Cola mensajes procesados
+                            ColaMensajes colaMensajesProcesados = new ColaMensajes(-1);
+                            Singleton.getInstance().getControlador().setColaMensajesProcesados(colaMensajesProcesados);
+                            Singleton.getInstance().getControlador().setMensajes(colaMensajesProcesados);
+                            
+                            System.out.println("Config desde batch list");
+                        
                    }
                    
-        
-                   
+ 
                    String contenido = linea;
                    int largoMensaje = contenido.length();
                    int largoMaximo = Singleton.getInstance().getControlador().getConfiguracionSistema().getFormato().getTamano();
@@ -262,7 +290,12 @@ public class Batch {
                        }
                    }
                    
-                   boolean estado = Singleton.getInstance().getControlador().Create(contenido,0);
+                   
+                   // Lectura segundo parametro de create 
+                   linea = br.readLine();
+                   int prioridadMensaje = Integer.parseInt(linea);
+                   
+                   boolean estado = Singleton.getInstance().getControlador().Create(contenido,prioridadMensaje);
         
                    if(estado){
                        String mensajeDialogoContenido = "Se ha creado el mensaje";
@@ -274,84 +307,154 @@ public class Batch {
                        String tituloDialogoContenido = "Mensaje no creado";
                        this.mensajeDialog(mensajeDialogoContenido ,tituloDialogoContenido);
                    }
+                   
+                   
+                   cantidadNComandos--;
+                       
+                   }
+                   else{
+                       
+                       System.out.println(" Se acabaron los comandos");
+                       // Ya se ejecutaron la cantidad de comandos establecidos
+                   }
+                   
+                   
                }
                
                else if(send){
                    
-                   String idDestinoString = linea;
-                   linea = br.readLine();
-                   String contenidoMensaje = linea;
-                   
-                   int idProcesoDestino;
-                   try{
-                       idProcesoDestino = Integer.parseInt(idDestinoString);
-                   }
-                   catch(Exception e){
-                       idProcesoDestino = 0;
-                   }
+                   if(cantidadNComandos > 0){
+                       
+                       
+                        String idProcesoFuenteString= linea;
+                        
+                        linea = br.readLine();                       
+                        String idProcesoDestinoString = linea;
+                        
+                        linea = br.readLine();
+                        String contenidoMensaje = br.readLine();
+
+                        int idProcesoDestino;
+                        int idProcesoFuente;
+                        
+                        try{
+                            idProcesoFuente = Integer.parseInt(idProcesoFuenteString);
+                            idProcesoDestino = Integer.parseInt(idProcesoDestinoString);
+                        }
+                        catch(Exception e){
+                            idProcesoDestino = 0;
+                            idProcesoFuente =  0;
+                        }
+                        
+                        
+                        if(idProcesoDestino != idProcesoFuente){
+
+                            boolean sendS = Singleton.getInstance().getControlador().Send(idProcesoFuente,idProcesoDestino, contenidoMensaje);
+
+                            String contenidoMensajeDialog = "Se ha enviado el mensaje";
+                            String tituloBarra = "Send";
+
+                            if(sendS){
+                                String var = "El proceso: "+String.valueOf(idProcesoFuente)+" pudo enviar el mensaje: "+contenidoMensaje;
+                                Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var);
+                                contenidoMensajeDialog = "Se ha enviado el mensaje";
+                                this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+
+                            }
+                            else{
+                                String var = "El proceso: "+String.valueOf(idProcesoDestino)+" no pudo recibir el mensaje: "+contenidoMensaje;
+                                Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoDestino,var);
+                                contenidoMensajeDialog = "El mensaje no se pudo enviar";
+                                this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+                            }
+
+                            boolean direccionamientoDirecto = Singleton.getInstance().
+                                getControlador().getConfiguracionSistema().
+                                getDireccionamiento().isDirect();
+
+
+                         
+                        }else{
+                            this.mensajeDialog("Se esta realizando un envio al mismo proceso", "Error:");
+                        }
+                        
+                        
+                        cantidadNComandos--;   
+
 
                    
-
-                    boolean sendBoolean = Singleton.getInstance().getControlador().Send(0,idProcesoDestino, contenidoMensaje);
-
-                    String contenidoMensajeDialog = "Se ha enviado el mensaje";
-                    String tituloBarra = "Send";
-
-                    if(sendBoolean){
-                        String var = "El proceso: "+String.valueOf(idProcesoDestino)+" pudo recibir el mensaje: "+contenidoMensaje;
-                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoDestino,var);
-                        contenidoMensajeDialog = "Se ha enviado el mensaje";
-                        this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
-
-                    }
-                    else{
-                        String var = "El proceso: "+String.valueOf(idProcesoDestino)+" no pudo recibir el mensaje: "+contenidoMensaje;
-                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoDestino,var);
-                        contenidoMensajeDialog = "El mensaje no se pudo enviar";
-                        this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
-                    }  
+                    
                }
                else if(receive){
                    
-                   String idProcesoFuenteString = linea;
-                   linea = br.readLine();
-                   String contenidoMensaje = linea;
-                   int idProcesoFuente;
-                   try{
-                       idProcesoFuente = Integer.parseInt(idProcesoFuenteString);
-                   }
-                   catch(Exception e){
-                       idProcesoFuente = 0;
-                   }
+                   
+                   if(cantidadNComandos > 0){
+                       
+                       
+                            String idProcesoDestinoString = linea;
+                            linea = br.readLine();
+                            String idProcesoFuenteString = linea;
+                            
+                            int idProcesoFuente;
+                            int idProcesoDestino;
+                            
+                            try{
+                                
+                                idProcesoFuente = Integer.parseInt(idProcesoFuenteString);
+                                idProcesoDestino = Integer.parseInt(idProcesoDestinoString);
+                            }
+                            
+                            catch(Exception e){
+                                idProcesoFuente = 0;
+                                idProcesoDestino = 0;
+                            }
+                            
+                            
+                            
         
-                    boolean receiveBoolean = Singleton.getInstance().getControlador().Receive(idProcesoFuente,0);
-                    String contenidoMensajeDialog = "";
-                    String tituloBarra = "Receive";
+                            boolean receiveDirectExplicit = Singleton.getInstance().getControlador().isReceiveExplicit();
+                            if(receiveDirectExplicit){
 
-                    if(receiveBoolean){
-                        String var = "El proceso: "+String.valueOf(idProcesoFuente)+" pudo enviar el mensaje: "+contenidoMensaje;
-                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var);
-                        contenidoMensajeDialog = "Receive procesado";
-                        this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+                                receive = Singleton.getInstance().getControlador().Receive(idProcesoDestino,idProcesoFuente);
+                            }else{
 
-                    }
-                    else{
-                        String var = "El proceso: "+String.valueOf(idProcesoFuente)+"no pudo enviar el mensaje: "+contenidoMensaje;
-                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var);
-                        contenidoMensajeDialog = "Receive no procesado";
-                        this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
-                    }
+                                receive = Singleton.getInstance().getControlador().Receive(idProcesoDestino,0);
+                            }
+
+                            String contenidoMensajeDialog = "";
+                            String tituloBarra = "Receive";
+
+                            if(receive){
+                                contenidoMensajeDialog = "Receive procesado";
+                                this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+
+                            }
+                            else{
+
+                                contenidoMensajeDialog = "Receive no procesado";
+                                this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+                            }
+       
+                   }
+                   else{
+                       // se ejecutaron la cantidad de comandos establecidos
+                   }
+                   
+                   
                }
            }
        }
-       
-       
-        
-        
-       
-       
-       
+           
+       }
    }
+       
+       
+        
+        
+       
+       
+       
+   
    public void mensajeDialog(String mensaje, String tituloBarra){
         
         JOptionPane.showMessageDialog(null, mensaje, tituloBarra, JOptionPane.INFORMATION_MESSAGE);

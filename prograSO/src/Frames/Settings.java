@@ -503,6 +503,8 @@ public class Settings extends javax.swing.JFrame {
         ColaMensajes colaMensajesProcesados = new ColaMensajes(-1);
         Singleton.getInstance().getControlador().setColaMensajesProcesados(colaMensajesProcesados);
         Singleton.getInstance().getControlador().setMensajes(colaMensajesProcesados);
+        
+        
         this.dispose();
     }//GEN-LAST:event_jButton_guardarSettingsActionPerformed
 

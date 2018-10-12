@@ -878,6 +878,7 @@ public class Menu extends javax.swing.JFrame {
         String idProcesoSendString = (String) this.jComboBox_proccessSend.getSelectedItem();
         int idProcesoSend = Integer.parseInt(idProcesoSendString);
 
+        
         if(idProcesoDestino!=idProcesoSend){
             String contenidoMensaje = (String)this.jComboBox_sendMsg.getSelectedItem();
         
