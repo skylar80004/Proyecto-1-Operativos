@@ -214,6 +214,7 @@ public final class Controlador {
                         this.colaMensajesProcesados.agregarMensaje(msg);
                         this.cambiarEstadoProceso(idProceso,"Running", false);
                         this.cambiarEstadoProceso(idProcesoFuente,"Block", false);
+                        this.agregarMensajeProceso(idProceso, msg);
                         System.out.println("Mensaje procesado");
                     }
                     break;
@@ -227,6 +228,7 @@ public final class Controlador {
                         this.colaMensajesProcesados.agregarMensaje(msg);
                         this.cambiarEstadoProceso(idProceso,"Running", false);
                         this.cambiarEstadoProceso(idProcesoFuente,"Block", false);
+                        this.agregarMensajeProceso(idProceso, msg);
                         System.out.println("Mensaje procesado-Non");
                     }
                     break;
@@ -240,6 +242,7 @@ public final class Controlador {
                         this.colaMensajesProcesados.agregarMensaje(msg);
                         this.cambiarEstadoProceso(idProceso,"Running", false);
                         this.cambiarEstadoProceso(idProcesoFuente,"Block", false);
+                        this.agregarMensajeProceso(idProceso, msg);
                         System.out.println("Mensaje procesado-Non");
                     }
                    break;

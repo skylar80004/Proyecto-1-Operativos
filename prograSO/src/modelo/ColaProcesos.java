@@ -38,6 +38,30 @@ public class ColaProcesos {
         }
         return "";
     }
+  
+    public String getProceso(int idProceso){
+        int idTemporal;
+        for(Proceso proceso: this.listaProcesos){
+            idTemporal = proceso.getIdentificador();
+            if(idTemporal == idProceso){
+                String val = " ID:  "+proceso.getIdentificador()+"  Estado:  "+proceso.getEstado()
+                        +"  Prioridad:  "+proceso.getPrioridad();
+                return val;
+            }
+        }
+        return "";
+    }
+    
+    public String getProcesoMensaje(int idProceso){
+        int idTemporal;
+        for(Proceso proceso: this.listaProcesos){
+            idTemporal = proceso.getIdentificador();
+            if(idTemporal == idProceso){
+                return proceso.getStringColaMensajes();
+            }
+        }
+        return "";
+    }
     
     public boolean isProcessBlocked(int idProceso){
         

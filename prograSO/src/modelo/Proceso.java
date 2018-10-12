@@ -114,5 +114,41 @@ public class Proceso {
         this.ProgramCounter = ProgramCounter;
     }
     
-    
+    public String getStringColaMensajes(){
+        
+        String cola = "";
+        
+        int id;
+        String tipo ; 
+        int destino;
+        int fuente;
+        int largo;
+        String contenido;
+        String mensajeCompleto;
+        int prioridad;
+     
+        for(Mensaje mensaje: this.bufferMensajes){
+            
+            id = mensaje.getId();
+            contenido = (String)mensaje.getContenido();
+            tipo = mensaje.getTipo();
+            destino = mensaje.getDestino();
+            fuente = mensaje.getFuente();
+            largo = mensaje.getLargo();
+            prioridad = mensaje.getPrioridad();
+            
+            mensajeCompleto = "ID: " + String.valueOf(id) + " Contenido: " 
+                    + contenido + " Destino: " + 
+                    String.valueOf(destino) + " Fuente: " + String.valueOf(fuente) 
+                    + " Largo: " + largo  +" Prioridad: "+String.valueOf(prioridad)+ "\n"; 
+            
+            cola = cola + mensajeCompleto;
+  
+        }
+        
+        return cola;
+        
+        
+        
+    }
 }
