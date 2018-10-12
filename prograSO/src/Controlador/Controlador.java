@@ -335,7 +335,7 @@ public final class Controlador {
         
         return listaPrioridad;
     }
-    
+    public int determinarPrioridadMayor(ArrayList<Integer> prioridades){
         int result=0;
         int valor=prioridades.get(0);
         int valor1=0;
