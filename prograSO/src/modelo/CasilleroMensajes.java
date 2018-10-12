@@ -61,7 +61,7 @@ public class CasilleroMensajes {
             destino = mensaje.getDestino();
             fuente = mensaje.getFuente();
             largo = mensaje.getLargo();
-            prioridad = listaPrioridades.get(i);
+            prioridad = mensaje.getPrioridad();
             mensajeCompleto = "ID: " + String.valueOf(id) + " Contenido: " 
                     + contenido + " Destino: " + 
                     String.valueOf(destino) + " Fuente: " + String.valueOf(fuente) 
@@ -167,6 +167,16 @@ public class CasilleroMensajes {
             
         }
         
+    }
+    /**
+     * Permite agregar un mensaje al mailbox
+     * @param mensaje
+     * @return 
+     */
+    public boolean AgregarMensajeCasillero(Mensaje mensaje){
+        this.listaMensajes.add(mensaje);
+        this.listaMensajesCola.add(mensaje);
+        return true;        
     }
 
     public boolean AgregarMensajeDinamico(Mensaje mensaje){

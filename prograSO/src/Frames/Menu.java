@@ -554,11 +554,13 @@ public class Menu extends javax.swing.JFrame {
         if(direccionamientoDirecto){
             cargarComboxProcesosSend();
             cargarComboxBoxProcesosSend();
+            cargarComboxMensajesSend();
         }
         else{
+            cargarComboxBoxProcesosSend();
+            cargarComboxMensajesSendIndirect();
             this.jComboBox_sendDestination.setVisible(false);
         }
-        cargarComboxMensajesSend();
     }//GEN-LAST:event_jButton_sendActionPerformed
     
     public void cargarComboxProcesosSend(){
@@ -597,6 +599,23 @@ public class Menu extends javax.swing.JFrame {
         for(Mensaje mensaje: listaMensajes){
             contenidoMensaje = (String)mensaje.getContenido();
             if(mensaje.getDestino()==-1){
+                //String contenido = contenidoMensaje.replace('_', ' ');
+                //System.out.println(contenido);
+                this.jComboBox_sendMsg.addItem(contenidoMensaje);
+            }
+        }
+    }
+    
+    public void cargarComboxMensajesSendIndirect(){
+        // Opciones de Mensaje
+        ColaMensajes colaMensajes = Singleton.getInstance().getControlador().getColaMensajes();
+        ArrayList<Mensaje> listaMensajes = colaMensajes.getListaMensajes();
+        String contenidoMensaje;
+        
+        this.jComboBox_sendMsg.removeAllItems();
+        for(Mensaje mensaje: listaMensajes){
+            contenidoMensaje = (String)mensaje.getContenido();
+            if(mensaje.getFuente()==-1){
                 //String contenido = contenidoMensaje.replace('_', ' ');
                 //System.out.println(contenido);
                 this.jComboBox_sendMsg.addItem(contenidoMensaje);
@@ -770,7 +789,12 @@ public class Menu extends javax.swing.JFrame {
         
         
         String idProcesoDestinoString = (String) this.jComboBox_sendDestination.getSelectedItem();
-        int idProcesoDestino = Integer.parseInt(idProcesoDestinoString);
+        int idProcesoDestino;
+        if(idProcesoDestinoString.equals("Item 1")){
+            idProcesoDestino=-1;
+        }else{
+            idProcesoDestino = Integer.parseInt(idProcesoDestinoString);
+        }
         
         String idProcesoSendString = (String) this.jComboBox_proccessSend.getSelectedItem();
         int idProcesoSend = Integer.parseInt(idProcesoSendString);
@@ -796,9 +820,23 @@ public class Menu extends javax.swing.JFrame {
                 contenidoMensajeDialog = "El mensaje no se pudo enviar";
                 this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
             }
-            cargarComboxMensajesSend();
-            cargarComboxProcesosSend();
-            cargarComboxBoxProcesosSend();
+            
+            boolean direccionamientoDirecto = Singleton.getInstance().
+                getControlador().getConfiguracionSistema().
+                getDireccionamiento().isDirect();
+        
+        
+            // Direct Send
+            if(direccionamientoDirecto){
+                cargarComboxProcesosSend();
+                cargarComboxBoxProcesosSend();
+                cargarComboxMensajesSend();
+            }
+            else{
+                cargarComboxBoxProcesosSend();
+                cargarComboxMensajesSendIndirect();
+                this.jComboBox_sendDestination.setVisible(false);
+            }
         }else{
             this.mensajeDialog("Se esta realizando un envio al mismo proceso", "Error:");
         }
@@ -828,8 +866,6 @@ public class Menu extends javax.swing.JFrame {
         String tituloBarra = "Receive";
         
         if(receive){
-            //String var = "El proceso: "+String.valueOf(idProcesoReceive)+" pudo recibir el mensaje: "+contenidoMensaje;
-            //Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoReceive,var);
             contenidoMensajeDialog = "Receive procesado";
             this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
             

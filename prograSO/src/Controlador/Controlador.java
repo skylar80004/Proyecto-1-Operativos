@@ -163,20 +163,24 @@ public final class Controlador {
             }else{
                 this.cambiarEstadoProceso(proceso,"Running", false);
             }
-            //this.cambiarEstadoProceso(destino, "Running", false);
+            this.cambiarEstadoProceso(destino, "Running", false);
+            
         } // Direccionamiento Indirecto
         else{ 
-            boolean isIndirectStatic = this.isReceiveIndirectStatic();
-            if(isIndirectStatic){ // Direccionamiento indirecto estatico
-                System.out.println("Direccionamiento Indirecto estatico");
-                Mensaje mensaje = this.colaMensajes.encontrarMensaje(contenidoMensaje);
-                boolean agregar = this.casilleroMensaje.AgregarMensajeEstatico(mensaje);
-                return agregar;
+            //boolean isIndirectStatic = this.isReceiveIndirectStatic();
+
+            Mensaje mensaje = this.colaMensajes.encontrarMensaje(contenidoMensaje);
+            mensaje.setFuente(proceso);
+            boolean agregar = this.casilleroMensaje.AgregarMensajeCasillero(mensaje);
+            agregarIdFuenteAMensaje(contenidoMensaje, proceso);
+            if(sendBlocking){
+                this.cambiarEstadoProceso(proceso,"Block", true);
             }else{
-                System.out.println("Direccionamiento Indirecto dinamico");
-                Mensaje mensaje = this.colaMensajes.encontrarMensaje(contenidoMensaje);
-                this.casilleroMensaje.AgregarMensajeDinamico(mensaje);         
+                this.cambiarEstadoProceso(proceso,"Running", false);
             }
+            
+            return agregar;
+
              
         }
         
