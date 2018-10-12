@@ -108,8 +108,8 @@ public class Batch {
                        case (0):{
                            
                            String cantidadComandos = linea;
-                           // cantidadNComandos = Integer.parseInt(cantidadComandos);
-                           cantidadNComandos = 10;
+                           cantidadNComandos = Integer.parseInt(cantidadComandos);
+                           //cantidadNComandos = 10;
                            break;                          
                        }
                           

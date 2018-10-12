@@ -168,7 +168,10 @@ public final class Controlador {
             }else{
                 this.cambiarEstadoProceso(proceso,"Running", false);
             }
-            this.cambiarEstadoProceso(destino, "Running", false);
+            boolean estadoDestino = Singleton.getInstance().getControlador().getColaProcesos().isProcessBlocked(destino);
+            if(estadoDestino){
+                this.cambiarEstadoProceso(destino, "Running", false);
+            }
             
         } // Direccionamiento Indirecto
         else{ 
@@ -218,7 +221,7 @@ public final class Controlador {
                         msg.setDestino(idProceso);
                         this.colaMensajesProcesados.agregarMensaje(msg);
                         this.cambiarEstadoProceso(idProceso,"Running", false);
-                        this.cambiarEstadoProceso(idProcesoFuente,"Block", false);
+                        this.cambiarEstadoProceso(idProcesoFuente,"Running", false);
                         this.agregarMensajeProceso(idProceso, msg);
                         System.out.println("Mensaje procesado");
                     }
@@ -232,7 +235,7 @@ public final class Controlador {
                         msg.setDestino(idProceso);
                         this.colaMensajesProcesados.agregarMensaje(msg);
                         this.cambiarEstadoProceso(idProceso,"Running", false);
-                        this.cambiarEstadoProceso(idProcesoFuente,"Block", false);
+                        this.cambiarEstadoProceso(idProcesoFuente,"Running", false);
                         this.agregarMensajeProceso(idProceso, msg);
                         System.out.println("Mensaje procesado-Non");
                     }
@@ -246,7 +249,7 @@ public final class Controlador {
                         msg.setDestino(idProceso);
                         this.colaMensajesProcesados.agregarMensaje(msg);
                         this.cambiarEstadoProceso(idProceso,"Running", false);
-                        this.cambiarEstadoProceso(idProcesoFuente,"Block", false);
+                        this.cambiarEstadoProceso(idProcesoFuente,"Running", false);
                         this.agregarMensajeProceso(idProceso, msg);
                         System.out.println("Mensaje procesado-Non");
                     }

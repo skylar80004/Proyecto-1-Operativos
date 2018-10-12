@@ -133,14 +133,14 @@ public class ColaProcesos {
                 
                 
                 String estadoViejo = proc.getEstado();
+                if(!proc.getEstado().equals(estado)){
+                    String evento = "El proceso: " + String.valueOf(proc.getIdentificador()) + " cambió de estado: " + estadoViejo + "  al nuevo estado: "  + estado;
+                    proc.AgregarEvento(evento);
+                }
                 
                 proc.setEstado(estado);
                 proc.setUso(uso);
                 this.listaProcesos.set(i, proc);
-                
-                String evento = "El proceso " + String.valueOf(proc.getIdentificador()) + " cambió de estado: " + estadoViejo + "al nuevo estado: "  + estado;
-                proc.AgregarEvento(evento);
-                
                 
             }
         }
