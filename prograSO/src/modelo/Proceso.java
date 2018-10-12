@@ -5,7 +5,10 @@
  */
 package modelo;
 
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -64,6 +67,14 @@ public class Proceso {
     }
     
     public void AgregarEvento(String evento){
+       
+        
+         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");  
+                Date date = new Date();
+
+        String timestamp = formatter.format(date);
+        evento += " " + timestamp;
+
         this.logEventos.add(evento);
     }
 

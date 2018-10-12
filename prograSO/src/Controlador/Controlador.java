@@ -86,8 +86,13 @@ public final class Controlador {
             idTemporal = procesoTemporal.getIdentificador();
             if(idTemporal == idProceso){
                 
+                
+                String estadoViejo = procesoTemporal.getEstado();
                 procesoTemporal.setEstado(estado);
                 this.colaProcesos.getListaProcesos().set(i, procesoTemporal);
+                
+                String evento = "El proceso " + String.valueOf(idProceso) + " cambió de estado: " + estadoViejo + "al nuevo estado: "  + estado;
+                procesoTemporal.AgregarEvento(evento);
                 return;
                 
             }
