@@ -226,7 +226,18 @@ public final class Controlador {
                         System.out.println("Mensaje procesado-Non");
                     }
                     break;
-                default: //test of arrive
+                default: //test of arrive esta igual al nonblocking
+                    if(!envio){
+                        this.cambiarEstadoProceso(idProceso,"NonBlock", false);
+                        System.out.println("Proceso bloqueado-Non");
+                    }else{
+                        this.colaMensajes.removerMensaje(msg);
+                        msg.setDestino(idProceso);
+                        this.colaMensajesProcesados.agregarMensaje(msg);
+                        this.cambiarEstadoProceso(idProceso,"Running", false);
+                        this.cambiarEstadoProceso(idProcesoFuente,"Block", false);
+                        System.out.println("Mensaje procesado-Non");
+                    }
                    break;
             }
             if(envio){
