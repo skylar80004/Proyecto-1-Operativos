@@ -57,7 +57,6 @@ public class Batch {
        
        while( (linea = br.readLine() ) != null){
            
-           
            if(linea.equals("#configuracion")){
                
                configuracion = true;
@@ -77,7 +76,6 @@ public class Batch {
            }
            
            else if(linea.equals("#send")){
-               
                send = true;
                configuracion = false;
                create = false;
@@ -86,7 +84,7 @@ public class Batch {
                
            }
            else if(linea.equals("#receive")){
-               
+               System.out.println("RECEIVE");
                receive = true;
                configuracion = false;
                create = false;
@@ -97,7 +95,7 @@ public class Batch {
            
            else{
                
-               System.out.println("Cantidad de Comandos: " + cantidadNComandos);
+               //System.out.println("Cantidad de Comandos: " + cantidadNComandos);
                
                if(configuracion){
                    
@@ -197,8 +195,8 @@ public class Batch {
 
                             if(addresingType.equals("Directo")){
                                 direccionamiento.setDirect(true);
-
-                                if(addresingSubType.equals("Receive Explícito")){
+                                System.out.println(addresingSubType);
+                                if(addresingSubType.equals("Receive Explicito")){
                                     direccionamiento.setReceiveExplicit(true);
                                     direccionamiento.setReceiveImplicit(false);
                                 }
@@ -209,7 +207,7 @@ public class Batch {
                             }
                             else{
                                 direccionamiento.setDirect(false);
-                                if(addresingSubType.equals("Estático")){
+                                if(addresingSubType.equals("Estatico")){
                                     direccionamiento.setIndirectStatic(true);
                                     direccionamiento.setIndirectDynamic(false);
                                 }
@@ -317,7 +315,6 @@ public class Batch {
                    
                    
                }
-               
                else if(send){
                    
                    if(cantidadNComandos > 0){
@@ -328,9 +325,8 @@ public class Batch {
                         linea = br.readLine();                       
                         String idProcesoDestinoString = linea;
                         
-                        linea = br.readLine();
                         String contenidoMensaje = br.readLine();
-
+                        
                         int idProcesoDestino;
                         int idProcesoFuente;
                         
@@ -382,63 +378,63 @@ public class Batch {
                    
                     
                }
-               else if(receive){
-                   
-                   
-                   if(cantidadNComandos > 0){
-                       
-                       
-                            String idProcesoDestinoString = linea;
-                            linea = br.readLine();
-                            String idProcesoFuenteString = linea;
-                            
-                            int idProcesoFuente;
-                            int idProcesoDestino;
-                            
-                            try{
-                                
-                                idProcesoFuente = Integer.parseInt(idProcesoFuenteString);
-                                idProcesoDestino = Integer.parseInt(idProcesoDestinoString);
-                            }
-                            
-                            catch(Exception e){
-                                idProcesoFuente = 0;
-                                idProcesoDestino = 0;
-                            }
-                            
-                            
-                            
-        
-                            boolean receiveDirectExplicit = Singleton.getInstance().getControlador().isReceiveExplicit();
-                            if(receiveDirectExplicit){
+               
+           }
+           else if(receive){
 
-                                receive = Singleton.getInstance().getControlador().Receive(idProcesoDestino,idProcesoFuente);
-                            }else{
+               if(cantidadNComandos > 0){
 
-                                receive = Singleton.getInstance().getControlador().Receive(idProcesoDestino,0);
-                            }
 
-                            String contenidoMensajeDialog = "";
-                            String tituloBarra = "Receive";
+                        String idProcesoDestinoString = linea;
+                        linea = br.readLine();
+                        String idProcesoFuenteString = linea;
+                        System.out.println(idProcesoFuenteString+" "+idProcesoDestinoString);
+                        int idProcesoFuente;
+                        int idProcesoDestino;
 
-                            if(receive){
-                                contenidoMensajeDialog = "Receive procesado";
-                                this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+                        try{
 
-                            }
-                            else{
+                            idProcesoFuente = Integer.parseInt(idProcesoFuenteString);
+                            idProcesoDestino = Integer.parseInt(idProcesoDestinoString);
+                        }
 
-                                contenidoMensajeDialog = "Receive no procesado";
-                                this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
-                            }
-       
-                   }
-                   else{
-                       // se ejecutaron la cantidad de comandos establecidos
-                   }
-                   
-                   
+                        catch(Exception e){
+                            idProcesoFuente = 0;
+                            idProcesoDestino = 0;
+                        }
+
+
+                        System.out.println("RECEIVE");
+
+                        boolean receiveDirectExplicit = Singleton.getInstance().getControlador().isReceiveExplicit();
+                        if(receiveDirectExplicit){
+
+                            receive = Singleton.getInstance().getControlador().Receive(idProcesoDestino,idProcesoFuente);
+                        }else{
+
+                            receive = Singleton.getInstance().getControlador().Receive(idProcesoDestino,0);
+                        }
+
+                        String contenidoMensajeDialog = "";
+                        String tituloBarra = "Receive";
+
+                        if(receive){
+                            contenidoMensajeDialog = "Receive procesado";
+                            this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+
+                        }
+                        else{
+
+                            contenidoMensajeDialog = "Receive no procesado";
+                            this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
+                        }
+
                }
+               else{
+                   // se ejecutaron la cantidad de comandos establecidos
+               }
+
+
            }
        }
            
