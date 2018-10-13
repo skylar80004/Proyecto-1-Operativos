@@ -5,6 +5,7 @@
  */
 package Frames;
 
+import Controlador.Controlador;
 import Controlador.DtoConfiguracion;
 import Controlador.Singleton;
 import java.awt.Dimension;
@@ -399,110 +400,178 @@ public class Settings extends javax.swing.JFrame {
     private void jButton_guardarSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_guardarSettingsActionPerformed
         // TODO add your handling code here:
 
-        // Datos de interfaz
-        String tipoContenido = (String)this.jComboBox_typeContent.getSelectedItem();
-        String tipoLargo = (String)this.jComboBox_format.getSelectedItem();
-        
-        int largoMensajes;
-        if(tipoLargo.equals("Largo Fijo")){
-            String largoString = this.jTextField_sizeOfMessage.getText();
-            largoMensajes = Integer.parseInt(largoString);
-        }
-        else{
-             largoMensajes = -1;
-        }
-        
-        String manejoColasString = (String)this.jComboBox_manejoDeColas.getSelectedItem();
-        String syncSend = (String)this.jComboBox_sendParameters.getSelectedItem();
-        String syncReceive = (String)this.jComboBox_receiveParameters.getSelectedItem();
-        
-        String addresingType = (String)this.jComboBox_adressingType.getSelectedItem();
-        String addresingSubType = (String)this.jComboBox_addresingSubType.getSelectedItem();
-        String cantidadProcesosString = this.jTextField_numberOfProcesses.getText();
-        int cantidadProcesos = Integer.parseInt(cantidadProcesosString);  
-        String addresing = addresingType + addresingSubType;
-        
-        String tamanoColaMensajesString = (String)this.jTextField_sizeOfQueue.getText();
-        int tamanoColaMensajes = Integer.parseInt(tamanoColaMensajesString);
-        
-        //int cantidadProcesos = Integer.parseInt(cantidadProcesosString);
+        ConfiguracionSistema confi1 = Singleton.getInstance().getControlador().getConfiguracionSistema();
+        if(confi1==null){
+            System.out.println("Configuración no existe");
+            // Datos de interfaz
+            String tipoContenido = (String)this.jComboBox_typeContent.getSelectedItem();
+            String tipoLargo = (String)this.jComboBox_format.getSelectedItem();
 
-        // Instancia de objetos
-        ManejoColas manejoColas = new ManejoColas(manejoColasString);
-        Formato formato = new Formato(tipoContenido,tipoLargo,largoMensajes);
-        
-        // Direccionamiento
-        Direccionamiento direccionamiento = new Direccionamiento(addresing);
-        
-        if(addresingType.equals("Directo")){
-            direccionamiento.setDirect(true);
-            
-            if(addresingSubType.equals("Receive Explícito")){
-                direccionamiento.setReceiveExplicit(true);
-                direccionamiento.setReceiveImplicit(false);
+            int largoMensajes;
+            if(tipoLargo.equals("Largo Fijo")){
+                String largoString = this.jTextField_sizeOfMessage.getText();
+                largoMensajes = Integer.parseInt(largoString);
             }
             else{
-                direccionamiento.setReceiveExplicit(false);
-                direccionamiento.setReceiveImplicit(true);
-            }  
-        }
-        else{
-            direccionamiento.setDirect(false);
-            if(addresingSubType.equals("Estático")){
-                direccionamiento.setIndirectStatic(true);
-                direccionamiento.setIndirectDynamic(false);
+                 largoMensajes = -1;
             }
-            else{           
-                direccionamiento.setIndirectStatic(false);
-                direccionamiento.setIndirectDynamic(true);
-                
+
+            String manejoColasString = (String)this.jComboBox_manejoDeColas.getSelectedItem();
+            String syncSend = (String)this.jComboBox_sendParameters.getSelectedItem();
+            String syncReceive = (String)this.jComboBox_receiveParameters.getSelectedItem();
+
+            String addresingType = (String)this.jComboBox_adressingType.getSelectedItem();
+            String addresingSubType = (String)this.jComboBox_addresingSubType.getSelectedItem();
+            String cantidadProcesosString = this.jTextField_numberOfProcesses.getText();
+            int cantidadProcesos = Integer.parseInt(cantidadProcesosString);  
+            String addresing = addresingType + addresingSubType;
+
+            String tamanoColaMensajesString = (String)this.jTextField_sizeOfQueue.getText();
+            int tamanoColaMensajes = Integer.parseInt(tamanoColaMensajesString);
+
+            //int cantidadProcesos = Integer.parseInt(cantidadProcesosString);
+
+            // Instancia de objetos
+            ManejoColas manejoColas = new ManejoColas(manejoColasString);
+            Formato formato = new Formato(tipoContenido,tipoLargo,largoMensajes);
+
+            // Direccionamiento
+            Direccionamiento direccionamiento = new Direccionamiento(addresing);
+
+            if(addresingType.equals("Directo")){
+                direccionamiento.setDirect(true);
+
+                if(addresingSubType.equals("Receive Explícito")){
+                    direccionamiento.setReceiveExplicit(true);
+                    direccionamiento.setReceiveImplicit(false);
+                }
+                else{
+                    direccionamiento.setReceiveExplicit(false);
+                    direccionamiento.setReceiveImplicit(true);
+                }  
             }
-                
+            else{
+                direccionamiento.setDirect(false);
+                if(addresingSubType.equals("Estático")){
+                    direccionamiento.setIndirectStatic(true);
+                    direccionamiento.setIndirectDynamic(false);
+                }
+                else{           
+                    direccionamiento.setIndirectStatic(false);
+                    direccionamiento.setIndirectDynamic(true);
+
+                }
+
+            }
+
+            //---------------------------------------------------------------------
+            Sincronizacion sincronizacion = new Sincronizacion(syncSend,syncReceive);
+
+            // Instancia Confuguracion
+            ConfiguracionSistema configuracion = new ConfiguracionSistema(cantidadProcesos, tamanoColaMensajes, sincronizacion, direccionamiento, formato, manejoColas);
+            System.out.println(configuracion.toString());
+            // Configuracion
+            Singleton.getInstance().getControlador().setConfiguracionSistema(configuracion);
+            int tamanoColaProcesos = Singleton.getInstance().getControlador().getConfiguracionSistema().getNumeroProcesos();
+
+            // Cola de Procesos
+            ColaProcesos colaProcesos = new ColaProcesos(tamanoColaProcesos);
+            Singleton.getInstance().getControlador().setColaProcesos(colaProcesos);
+
+            // Cola de Mensajes
+            ColaMensajes colaMensajes = new ColaMensajes(tamanoColaMensajes);
+            Singleton.getInstance().getControlador().setColaMensajes(colaMensajes);
+
+            //System.out.println("Configuracion Lista");
+
+            // Casillero de Mensajes int largoMaximo, String manejoCola, String tipoLargo){
+            int tamanoMailBox = 0;
+            String sts = this.jTextField_mailboxSize.getText();
+            if(!sts.equals("")){
+                tamanoMailBox = Integer.parseInt(sts);
+            }
+            CasilleroMensajes casilleroMensajes = new CasilleroMensajes(tamanoMailBox,manejoColasString,tipoLargo);
+            Singleton.getInstance().getControlador().setCasilleroMensaje(casilleroMensajes);
+
+            // Creacion de Procesos
+            Singleton.getInstance().getControlador().crearProcesos();
+            Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
+
+
+            //lista Solicitudes
+            ListaSolicitudes listaSolicitudes = new ListaSolicitudes();
+            Singleton.getInstance().getControlador().setListaSolicitudes(listaSolicitudes);
+
+            //Cola mensajes procesados
+            ColaMensajes colaMensajesProcesados = new ColaMensajes(-1);
+            Singleton.getInstance().getControlador().setColaMensajesProcesados(colaMensajesProcesados);
+            Singleton.getInstance().getControlador().setMensajes(colaMensajesProcesados);
+        }else{
+            System.out.println("Configuración existe");
+            String tipoContenido = (String)this.jComboBox_typeContent.getSelectedItem();
+            String tipoLargo = (String)this.jComboBox_format.getSelectedItem();
+
+            int largoMensajes;
+            if(tipoLargo.equals("Largo Fijo")){
+                String largoString = this.jTextField_sizeOfMessage.getText();
+                largoMensajes = Integer.parseInt(largoString);
+            }
+            else{
+                 largoMensajes = -1;
+            }
+
+            String manejoColasString = (String)this.jComboBox_manejoDeColas.getSelectedItem();
+            String syncSend = (String)this.jComboBox_sendParameters.getSelectedItem();
+            String syncReceive = (String)this.jComboBox_receiveParameters.getSelectedItem();
+
+            String addresingType = (String)this.jComboBox_adressingType.getSelectedItem();
+            String addresingSubType = (String)this.jComboBox_addresingSubType.getSelectedItem();
+            String addresing = addresingType + addresingSubType;
+
+            // Instancia de objetos
+            ManejoColas manejoColas = new ManejoColas(manejoColasString);
+            Formato formato = new Formato(tipoContenido,tipoLargo,largoMensajes);
+
+            // Direccionamiento
+            Direccionamiento direccionamiento = new Direccionamiento(addresing);
+
+            if(addresingType.equals("Directo")){
+                direccionamiento.setDirect(true);
+
+                if(addresingSubType.equals("Receive Explícito")){
+                    direccionamiento.setReceiveExplicit(true);
+                    direccionamiento.setReceiveImplicit(false);
+                }
+                else{
+                    direccionamiento.setReceiveExplicit(false);
+                    direccionamiento.setReceiveImplicit(true);
+                }  
+            }
+            else{
+                direccionamiento.setDirect(false);
+                if(addresingSubType.equals("Estático")){
+                    direccionamiento.setIndirectStatic(true);
+                    direccionamiento.setIndirectDynamic(false);
+                }
+                else{           
+                    direccionamiento.setIndirectStatic(false);
+                    direccionamiento.setIndirectDynamic(true);
+
+                }
+
+            }
+
+            //---------------------------------------------------------------------
+            Sincronizacion sincronizacion = new Sincronizacion(syncSend,syncReceive);
+
+            // Instancia Confuguracion
+            Singleton.getInstance().getControlador().getConfiguracionSistema().setSincronizacion(sincronizacion);
+            Singleton.getInstance().getControlador().getConfiguracionSistema().setDireccionamiento(direccionamiento);
+            Singleton.getInstance().getControlador().getConfiguracionSistema().setFormato(formato);
+            Singleton.getInstance().getControlador().getConfiguracionSistema().setManejoColas(manejoColas);
+
         }
         
-        //---------------------------------------------------------------------
-        Sincronizacion sincronizacion = new Sincronizacion(syncSend,syncReceive);
-        
-        // Instancia Confuguracion
-        ConfiguracionSistema configuracion = new ConfiguracionSistema(cantidadProcesos, tamanoColaMensajes, sincronizacion, direccionamiento, formato, manejoColas);
-        System.out.println(configuracion.toString());
-        // Configuracion
-        Singleton.getInstance().getControlador().setConfiguracionSistema(configuracion);
-        int tamanoColaProcesos = Singleton.getInstance().getControlador().getConfiguracionSistema().getNumeroProcesos();
-        
-        // Cola de Procesos
-        ColaProcesos colaProcesos = new ColaProcesos(tamanoColaProcesos);
-        Singleton.getInstance().getControlador().setColaProcesos(colaProcesos);
-        
-        // Cola de Mensajes
-        ColaMensajes colaMensajes = new ColaMensajes(tamanoColaMensajes);
-        Singleton.getInstance().getControlador().setColaMensajes(colaMensajes);
-        
-        System.out.println("Configuracion Lista");
-        
-        
-        // Casillero de Mensajes int largoMaximo, String manejoCola, String tipoLargo){
-        int tamanoMailBox = 0;
-        String sts = this.jTextField_mailboxSize.getText();
-        if(!sts.equals("")){
-            tamanoMailBox = Integer.parseInt(sts);
-        }
-        CasilleroMensajes casilleroMensajes = new CasilleroMensajes(tamanoMailBox,manejoColasString,tipoLargo);
-        Singleton.getInstance().getControlador().setCasilleroMensaje(casilleroMensajes);
-        
-        // Creacion de Procesos
-        Singleton.getInstance().getControlador().crearProcesos();
-        Singleton.getInstance().getControlador().getColaProcesos().ImprimirColaProcesos();
-       
-            
-        //lista Solicitudes
-        ListaSolicitudes listaSolicitudes = new ListaSolicitudes();
-        Singleton.getInstance().getControlador().setListaSolicitudes(listaSolicitudes);
-        
-        //Cola mensajes procesados
-        ColaMensajes colaMensajesProcesados = new ColaMensajes(-1);
-        Singleton.getInstance().getControlador().setColaMensajesProcesados(colaMensajesProcesados);
-        Singleton.getInstance().getControlador().setMensajes(colaMensajesProcesados);
         
         
         this.dispose();
