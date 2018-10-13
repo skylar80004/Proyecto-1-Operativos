@@ -225,6 +225,10 @@ public final class Controlador {
                         this.colaMensajes.removerMensaje(msg);
                         msg.setDestino(idProceso);
                         this.colaMensajesProcesados.agregarMensaje(msg);
+                        String var = "El proceso: "+String.valueOf(idProcesoFuente)+" recibio la confirmación del proceso: "+idProceso;
+                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var);
+                        String var1 = "El proceso: "+String.valueOf(idProceso)+" envio la confirmación al proceso: "+idProcesoFuente;
+                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProceso,var1);
                         this.cambiarEstadoProceso(idProceso,"Running", false);
                         this.cambiarEstadoProceso(idProcesoFuente,"Running", false);
                         this.agregarMensajeProceso(idProceso, msg);
@@ -239,6 +243,10 @@ public final class Controlador {
                         this.colaMensajes.removerMensaje(msg);
                         msg.setDestino(idProceso);
                         this.colaMensajesProcesados.agregarMensaje(msg);
+                        String var = "El proceso: "+String.valueOf(idProcesoFuente)+" recibio la confirmación del proceso: "+idProceso;
+                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var);
+                        String var1 = "El proceso: "+String.valueOf(idProceso)+" envio la confirmación al proceso: "+idProcesoFuente;
+                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProceso,var1);
                         this.cambiarEstadoProceso(idProceso,"Running", false);
                         this.cambiarEstadoProceso(idProcesoFuente,"Running", false);
                         this.agregarMensajeProceso(idProceso, msg);
@@ -253,6 +261,10 @@ public final class Controlador {
                         this.colaMensajes.removerMensaje(msg);
                         msg.setDestino(idProceso);
                         this.colaMensajesProcesados.agregarMensaje(msg);
+                        String var = "El proceso: "+String.valueOf(idProcesoFuente)+" recibio la confirmación del proceso: "+idProceso;
+                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var);
+                        String var1 = "El proceso: "+String.valueOf(idProceso)+" envio la confirmación al proceso: "+idProcesoFuente;
+                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProceso,var1);
                         this.cambiarEstadoProceso(idProceso,"Running", false);
                         this.cambiarEstadoProceso(idProcesoFuente,"Running", false);
                         this.agregarMensajeProceso(idProceso, msg);
@@ -281,11 +293,16 @@ public final class Controlador {
                                 break;
                         }        
                         mensaje.setDestino(idProceso);
-                        String var = "El proceso: "+String.valueOf(idProceso)+" pudo recibir el mensaje: "+(String)mensaje.getContenido();
-                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProceso,var);
-
+                       
                         boolean eliminado = this.colaMensajes.getListaMensajes().remove(mensaje);
                         if(eliminado){
+                            String var1 = "El proceso: "+String.valueOf(idProcesoFuente)+" recibio la confirmación del proceso: "+idProceso;
+                            Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var1);
+                            String var2 = "El proceso: "+String.valueOf(idProceso)+" envio la confirmación al proceso: "+idProcesoFuente;
+                            Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProceso,var2);
+                            String var = "El proceso: "+String.valueOf(idProceso)+" pudo recibir el mensaje: "+(String)mensaje.getContenido();
+                            Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProceso,var);
+                            
                             this.colaMensajesProcesados.agregarMensaje(mensaje);
                             this.agregarMensajeProceso(idProceso, mensaje);
                             this.cambiarEstadoProceso(mensaje.getDestino(), "Running", false);
@@ -307,11 +324,16 @@ public final class Controlador {
                             break;
                     }        
                     mensaje.setDestino(idProceso);
-                    String var = "El proceso: "+String.valueOf(idProceso)+" pudo recibir el mensaje: "+(String)mensaje.getContenido();
-                    Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProceso,var);
 
                     boolean eliminado = this.colaMensajes.getListaMensajes().remove(mensaje);
                     if(eliminado){
+                        String var1 = "El proceso: "+String.valueOf(idProcesoFuente)+" recibio la confirmación del proceso: "+idProceso;
+                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var1);
+                        String var2 = "El proceso: "+String.valueOf(idProceso)+" envio la confirmación al proceso: "+idProcesoFuente;
+                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProceso,var2);
+                        String var = "El proceso: "+String.valueOf(idProceso)+" pudo recibir el mensaje: "+(String)mensaje.getContenido();
+                        Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProceso,var);
+
                         this.colaMensajesProcesados.agregarMensaje(mensaje);
                         this.agregarMensajeProceso(idProceso, mensaje);
                         this.cambiarEstadoProceso(mensaje.getDestino(), "Running", false);
