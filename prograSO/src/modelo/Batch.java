@@ -348,24 +348,18 @@ public class Batch {
                             String tituloBarra = "Send";
 
                             if(sendS){
-                                String var = "El proceso: "+String.valueOf(idProcesoFuente)+" pudo enviar el mensaje: "+contenidoMensaje;
-                                Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var);
+                                //String var = "El proceso: "+String.valueOf(idProcesoFuente)+" pudo enviar el mensaje: "+contenidoMensaje;
+                                //Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoFuente,var);
                                 contenidoMensajeDialog = "Se ha enviado el mensaje";
                                 this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
 
                             }
                             else{
-                                String var = "El proceso: "+String.valueOf(idProcesoDestino)+" no pudo recibir el mensaje: "+contenidoMensaje;
-                                Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoDestino,var);
+                                //String var = "El proceso: "+String.valueOf(idProcesoDestino)+" no pudo recibir el mensaje: "+contenidoMensaje;
+                                //Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoDestino,var);
                                 contenidoMensajeDialog = "El mensaje no se pudo enviar";
                                 this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
                             }
-
-                            boolean direccionamientoDirecto = Singleton.getInstance().
-                                getControlador().getConfiguracionSistema().
-                                getDireccionamiento().isDirect();
-
-
                          
                         }else{
                             this.mensajeDialog("Se esta realizando un envio al mismo proceso", "Error:");

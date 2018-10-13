@@ -888,15 +888,15 @@ public class Menu extends javax.swing.JFrame {
             String tituloBarra = "Send";
 
             if(send){
-                String var = "El proceso: "+String.valueOf(idProcesoSend)+" pudo enviar el mensaje: "+contenidoMensaje;
-                Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoSend,var);
+                //String var = "El proceso: "+String.valueOf(idProcesoSend)+" pudo enviar el mensaje: "+contenidoMensaje;
+                //Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoSend,var);
                 contenidoMensajeDialog = "Se ha enviado el mensaje";
                 this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
 
             }
             else{
-                String var = "El proceso: "+String.valueOf(idProcesoDestino)+" no pudo recibir el mensaje: "+contenidoMensaje;
-                Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoDestino,var);
+                //String var = "El proceso: "+String.valueOf(idProcesoDestino)+" no pudo recibir el mensaje: "+contenidoMensaje;
+                //Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(idProcesoDestino,var);
                 contenidoMensajeDialog = "El mensaje no se pudo enviar";
                 this.mensajeDialog(contenidoMensajeDialog, tituloBarra);
             }
@@ -1160,6 +1160,8 @@ public class Menu extends javax.swing.JFrame {
             int proceso = Integer.parseInt(val);
             Singleton.getInstance().getControlador().cambiarAsociacionMailbox(proceso);
             this.jPanel_assocMailbox.setVisible(false);
+            String var = "El proceso: "+String.valueOf(proceso)+" fue asociado al mailbox.";
+                Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(proceso,var);
             this.mensajeDialog("El proceso Mailbox fue asociado al proceso: "+val, "Asociación Correcta");
         }
     }//GEN-LAST:event_jButton_assocMailboxActionPerformed

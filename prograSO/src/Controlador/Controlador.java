@@ -162,7 +162,8 @@ public final class Controlador {
 
             agregarIdDestinoAMensaje(contenidoMensaje, destino);
             agregarIdFuenteAMensaje(contenidoMensaje, proceso);
-            
+            String var = "El proceso: "+String.valueOf(proceso)+" pudo enviar el mensaje: "+contenidoMensaje;
+            Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(proceso,var);
             if(sendBlocking){
                 this.cambiarEstadoProceso(proceso,"Block", true);
             }else{
@@ -181,6 +182,10 @@ public final class Controlador {
             mensaje.setFuente(proceso);
             boolean agregar = this.casilleroMensaje.AgregarMensajeCasillero(mensaje);
             agregarIdFuenteAMensaje(contenidoMensaje, proceso);
+            if(agregar){
+                String var = "El proceso: "+String.valueOf(proceso)+" pudo enviar el mensaje: "+contenidoMensaje;
+                Singleton.getInstance().getControlador().getColaProcesos().agregarEventoProceso(proceso,var);
+            }
             if(sendBlocking){
                 this.cambiarEstadoProceso(proceso,"Block", true);
             }else{
@@ -553,7 +558,7 @@ public final class Controlador {
             int idProceso = proceso.getIdentificador();
             
             // Evento de creacion
-            evento = "El proceso " + String.valueOf(idProceso) + " fue creado";
+            evento = "El proceso: " + String.valueOf(idProceso) + " fue creado";
             proceso.AgregarEvento(evento);
             
             identificador++;
